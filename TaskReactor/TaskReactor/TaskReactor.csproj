@@ -8,12 +8,14 @@
 
   <ItemGroup>
     <Folder Include="Models\Converters\" />
-    <Folder Include="ViewModels\" />
+    <Folder Include="Models\DataBase\" />
     <Folder Include="Utilities\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="4.0.105-alpha" />
+    <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
+    <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0748" />
   </ItemGroup>
 
 </Project>
