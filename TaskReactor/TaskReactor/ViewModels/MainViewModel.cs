@@ -1,23 +1,24 @@
-﻿using System.Windows.Controls;
+﻿using System.ComponentModel.Composition;
+using System.Diagnostics;
+using System.Windows.Controls;
 using Caliburn.Micro;
+using JetBrains.Annotations;
 
 namespace TaskReactor.ViewModels
 {
+    [Export]
     public class MainViewModel : Screen
     {
-        private readonly SimpleContainer _container;
+        public INavigationService NavigationService { get; private set; }
 
-        private INavigationService _navigationService;
+        public MainViewModel() => DisplayName = "Task Reactor";
 
-        public MainViewModel(SimpleContainer container) => _container = container;
+        public void RegisterFrame([NotNull] Frame frame) => NavigationService = new FrameAdapter(frame);
 
-        public void RegisterFrame(Frame frame)
+        public void Navigate()
         {
-            _navigationService = new FrameAdapter(frame);
-
-            _container.Instance(_navigationService);
-
-            _navigationService.NavigateToViewModel<WelcomePageViewModel>();
+            Debug.Assert(NavigationService != null, nameof(NavigationService) + " != null");
+            NavigationService.NavigateToViewModel<WelcomePageViewModel>();
         }
     }
 }

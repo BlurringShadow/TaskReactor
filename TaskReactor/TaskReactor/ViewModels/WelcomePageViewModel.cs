@@ -1,8 +1,11 @@
-﻿using Caliburn.Micro;
+﻿using System.ComponentModel.Composition;
+using Caliburn.Micro;
 
 namespace TaskReactor.ViewModels
 {
-    class WelcomePageViewModel : Screen
+    [Export]
+    public class WelcomePageViewModel : Screen
     {
+        public WelcomePageViewModel() => DisplayName = "Welcome";
     }
 }

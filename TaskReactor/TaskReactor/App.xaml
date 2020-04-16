@@ -13,7 +13,7 @@
                 <!--MahApps.Metro-->
 
                 <ResourceDictionary>
-                    <local:Bootstrapper x:Key="Bootstrapper"/>
+                    <local:AppBootstrapper x:Key="Bootstrapper"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
