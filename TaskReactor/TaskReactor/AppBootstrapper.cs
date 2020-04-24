@@ -49,7 +49,7 @@ namespace TaskReactor
             try
             {
                 _container.GetExportedValue<IWindowManager>()
-                    .ShowWindowAsync(_container.GetExportedValue<MainViewModel>());
+                    .ShowWindowAsync(_container.GetExportedValue<MainScreenViewModel>());
             }
             catch (Exception e)
             {

@@ -1,11 +1,14 @@
 ﻿using System.ComponentModel.Composition;
-using Caliburn.Micro;
+using JetBrains.Annotations;
+using TaskReactor.Utilities;
 
 namespace TaskReactor.ViewModels
 {
     [Export]
-    public class WelcomePageViewModel : Screen
+    public class WelcomePageViewModel : ScreenViewModel
     {
-        public WelcomePageViewModel() => DisplayName = "Welcome";
+        [ImportingConstructor]
+        public WelcomePageViewModel([NotNull] ArgsHelper argsArgsHelper) : base(argsArgsHelper) =>
+            DisplayName = "Welcome";
     }
 }
