@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using JetBrains.Annotations;
-using TaskReactor.Utilities;
+using Presentation.Utilities;
 
-namespace TaskReactor.Models
+namespace Presentation.Models
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public class Schedule : IDataBaseModel

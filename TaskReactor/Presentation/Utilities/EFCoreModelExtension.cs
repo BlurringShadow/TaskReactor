@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace TaskReactor.Utilities
+namespace Presentation.Utilities
 {
     public static class EFCoreModelExtension
     {

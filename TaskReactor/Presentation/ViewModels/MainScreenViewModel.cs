@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using Caliburn.Micro;
 using JetBrains.Annotations;
-using TaskReactor.Utilities;
+using Presentation.Utilities;
 
-namespace TaskReactor.ViewModels
+namespace Presentation.ViewModels
 {
     [Export]
     public class MainScreenViewModel : ScreenViewModel

@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace TaskReactor.Utilities
+namespace Presentation.Utilities
 {
     public interface IViewModel
     {

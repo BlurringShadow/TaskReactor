@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TaskReactor.Utilities
+namespace Presentation.Utilities
 {
     [AttributeUsage(AttributeTargets.Method)]
     public sealed class ArgsInitializationAttribute : Attribute

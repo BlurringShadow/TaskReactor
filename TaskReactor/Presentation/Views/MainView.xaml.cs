@@ -1,4 +1,4 @@
-﻿namespace TaskReactor.Views
+﻿namespace Presentation.Views
 {
     public partial class MainView
     {

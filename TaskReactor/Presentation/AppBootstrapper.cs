@@ -6,11 +6,11 @@ using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using JetBrains.Annotations;
-using TaskReactor.Utilities;
-using TaskReactor.ViewModels;
+using Presentation.Utilities;
+using Presentation.ViewModels;
 using static System.Reflection.Assembly;
 
-namespace TaskReactor
+namespace Presentation
 {
     public class AppBootstrapper : BootstrapperBase
     {

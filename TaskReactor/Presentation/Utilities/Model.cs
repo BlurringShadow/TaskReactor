@@ -1,7 +1,7 @@
 ﻿using Caliburn.Micro;
 using JetBrains.Annotations;
 
-namespace TaskReactor.Utilities
+namespace Presentation.Utilities
 {
     public abstract class Model<TDataBaseModel> : PropertyChangedBase, IModel where TDataBaseModel : IDataBaseModel
     {

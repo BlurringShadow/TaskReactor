@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
-namespace TaskReactor.Utilities
+namespace Presentation.Utilities
 {
     [Export]
     public class ArgsHelper : Dictionary<ValueTuple<Type, Type, string>, object>

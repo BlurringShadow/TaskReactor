@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using static System.ComponentModel.Composition.AttributedModelServices;
 
-namespace TaskReactor.Utilities
+namespace Presentation.Utilities
 {
     public static class MEFExtension
     {

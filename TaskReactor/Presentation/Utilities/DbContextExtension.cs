@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
-namespace TaskReactor.Utilities
+namespace Presentation.Utilities
 {
     public static class DbContextExtension
     {

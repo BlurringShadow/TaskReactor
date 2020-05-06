@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.Composition;
 using JetBrains.Annotations;
-using TaskReactor.Utilities;
+using Presentation.Utilities;
 
-namespace TaskReactor.ViewModels
+namespace Presentation.ViewModels
 {
     [Export]
     public class WelcomePageViewModel : ScreenViewModel

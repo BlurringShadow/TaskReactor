@@ -1,4 +1,4 @@
-﻿namespace TaskReactor.Utilities
+﻿namespace Presentation.Utilities
 {
     public abstract class DataBaseModel : IDataBaseModel
     {

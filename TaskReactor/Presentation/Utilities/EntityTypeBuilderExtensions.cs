@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace TaskReactor.Utilities
+namespace Presentation.Utilities
 {
     public static class EntityTypeBuilderExtensions
     {

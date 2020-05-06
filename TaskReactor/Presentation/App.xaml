@@ -1,7 +1,7 @@
-﻿<Application x:Class="TaskReactor.App"
+﻿<Application x:Class="Presentation.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:TaskReactor">
+             xmlns:presentation="clr-namespace:Presentation">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -13,7 +13,7 @@
                 <!--MahApps.Metro-->
 
                 <ResourceDictionary>
-                    <local:AppBootstrapper x:Key="Bootstrapper"/>
+                    <presentation:AppBootstrapper x:Key="Bootstrapper"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

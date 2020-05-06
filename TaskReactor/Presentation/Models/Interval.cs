@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace TaskReactor.Models
+namespace Presentation.Models
 {
     [Owned]
     public class Interval

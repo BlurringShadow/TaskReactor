@@ -1,4 +1,4 @@
-﻿namespace TaskReactor.Models
+﻿namespace Presentation.Models
 {
     public enum IntervalKind : byte
     {

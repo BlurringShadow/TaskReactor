@@ -1,8 +1,8 @@
 ﻿using System;
 using JetBrains.Annotations;
-using TaskReactor.Utilities;
+using Presentation.Utilities;
 
-namespace TaskReactor.Models
+namespace Presentation.Models
 {
     public class ScheduleModel : Model<Schedule>
     {

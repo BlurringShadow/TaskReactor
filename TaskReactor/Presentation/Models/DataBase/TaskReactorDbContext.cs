@@ -1,11 +1,8 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TaskReactor.Utilities;
 
-namespace TaskReactor.Models.DataBase
+namespace Presentation.Models.DataBase
 {
     public class TaskReactorDbContext : DbContext
     {

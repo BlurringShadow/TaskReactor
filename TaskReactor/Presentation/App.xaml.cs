@@ -1,4 +1,4 @@
-﻿namespace TaskReactor
+﻿namespace Presentation
 {
     /// <summary>
     /// Interaction logic for App.xaml
