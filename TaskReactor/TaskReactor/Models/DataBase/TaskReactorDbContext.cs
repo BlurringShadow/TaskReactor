@@ -1,0 +1,43 @@
+﻿using System;
+using System.Configuration;
+using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using TaskReactor.Utilities;
+
+namespace TaskReactor.Models.DataBase
+{
+    public class TaskReactorDbContext : DbContext
+    {
+        [NotNull] public DbSet<User> Users { get; set; }
+        [NotNull] public DbSet<Schedule> Schedules { get; set; }
+
+        // ReSharper disable once NotNullMemberIsNotInitialized
+        public TaskReactorDbContext()
+        {
+        }
+
+        // ReSharper disable once NotNullMemberIsNotInitialized
+        public TaskReactorDbContext([NotNull] DbContextOptions<TaskReactorDbContext> options) : base(options)
+        {
+        }
+
+        protected override void OnConfiguring([NotNull] DbContextOptionsBuilder optionsBuilder)
+        {
+            if(optionsBuilder.IsConfigured) return;
+            var connections = ConfigurationManager.ConnectionStrings![0];
+            optionsBuilder.UseSqlServer(connections!.ConnectionString!);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder!.Entity<Schedule>(
+                buildAction =>
+                {
+                    buildAction!.HasKey(schedule => new {schedule.OwnerUserId, schedule.Title});
+                    buildAction.Property(schedule => schedule.StartTime);
+                }
+            );
+        }
+    }
+}
