@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TaskReactor\TaskReactor.csproj" />
+    <ProjectReference Include="..\TaskReactor\Presentation.csproj" />
   </ItemGroup>
 
 </Project>
