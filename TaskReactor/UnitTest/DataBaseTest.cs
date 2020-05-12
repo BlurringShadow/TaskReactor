@@ -24,7 +24,7 @@ namespace UnitTest
                 @"E:\DOCUMENTS\LEARNING\高级软件设计\TASKREACTOR\TASKREACTOR\UNITTEST\TESTINGDATABASE.MDF"
             );
 
-            var option = new DbContextOptionsBuilder<TaskReactorDbContext>().UseSqlServer(
+            var option = new DbContextOptionsBuilder<TaskReactorDbContext>().UseSqlite(
                 @$"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={testDbFilePath};Integrated Security=True;"
             );
 

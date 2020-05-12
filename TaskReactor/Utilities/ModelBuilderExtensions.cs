@@ -7,8 +7,7 @@ namespace Utilities
     public static class ModelBuilderExtensions
     {
         [NotNull]
-        public static ModelBuilder UseConverterForAllEntity
-        (
+        public static ModelBuilder UseConverterForAllEntity(
             [NotNull] this ModelBuilder builder,
             [NotNull] ValueConverter converter
         )

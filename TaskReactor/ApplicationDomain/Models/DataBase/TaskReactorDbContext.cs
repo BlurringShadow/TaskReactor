@@ -24,17 +24,13 @@ namespace ApplicationDomain.Models.DataBase
         {
             if(optionsBuilder.IsConfigured) return;
             var connections = ConfigurationManager.ConnectionStrings![0];
-            optionsBuilder.UseSqlServer(connections!.ConnectionString!);
+            optionsBuilder.UseSqlite(connections!.ConnectionString!);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder!.Entity<Schedule>(
-                buildAction =>
-                {
-                    buildAction!.HasKey(schedule => new {schedule.OwnerUserId, schedule.Title});
-                    buildAction.Property(schedule => schedule.StartTime);
-                }
+                buildAction => buildAction!.HasKey(schedule => new {schedule.OwnerUserId, schedule.Title})
             );
         }
     }
