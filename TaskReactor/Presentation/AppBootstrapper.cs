@@ -6,8 +6,8 @@ using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using JetBrains.Annotations;
-using Presentation.Utilities;
 using Presentation.ViewModels;
+using Utilities;
 using static System.Reflection.Assembly;
 
 namespace Presentation
@@ -36,11 +36,11 @@ namespace Presentation
 
         protected override object GetInstance([NotNull] Type serviceType, [NotNull] string contractName) =>
             _container.GetExportedValue<object>(
-                string.IsNullOrEmpty(contractName) ? serviceType.GetMEFContractName() : contractName
+                (string.IsNullOrEmpty(contractName) ? serviceType.GetMEFContractName() : contractName)!
             );
 
         protected override IEnumerable<object> GetAllInstances([NotNull] Type serviceType) =>
-            _container.GetExportedValues<object>(serviceType.GetMEFContractName());
+            _container.GetExportedValues<object>(serviceType.GetMEFContractName()!);
 
         protected override void BuildUp([NotNull] object instance) => _container.SatisfyImportsOnce(instance);
 

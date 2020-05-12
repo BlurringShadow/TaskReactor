@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using ApplicationDomain.Models.DataBase;
+using ApplicationDomain.Models.DataBase.Entity;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using TaskReactor.Models;
-using TaskReactor.Models.DataBase;
-using TaskReactor.Utilities;
+using Utilities;
 using Xunit;
 using Xunit.Abstractions;
 
