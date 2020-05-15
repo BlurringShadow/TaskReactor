@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using JetBrains.Annotations;
 using Utilities;
 
-namespace ApplicationDomain.Models.DataBase.Entity
+namespace ApplicationDomain.Models.Database.Entity
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public class User : DataBaseModel

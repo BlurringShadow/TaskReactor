@@ -1,7 +1,7 @@
 ﻿#pragma warning disable 649
 
 using System.ComponentModel.Composition;
-using ApplicationDomain.Models.DataBase.Entity;
+using ApplicationDomain.Models.Database.Entity;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 using Utilities;

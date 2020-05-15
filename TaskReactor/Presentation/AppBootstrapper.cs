@@ -14,12 +14,12 @@ namespace Presentation
 {
     public class AppBootstrapper : BootstrapperBase
     {
+        // IOC container
         [NotNull] private readonly CompositionContainer _container;
 
         public AppBootstrapper()
         {
             _container = new CompositionContainer(new AssemblyCatalog(GetExecutingAssembly()));
-
             Initialize();
         }
 
@@ -58,7 +58,6 @@ namespace Presentation
                     "An error as occurred.",
                     MessageBoxButton.OK
                 );
-
                 Environment.Exit(0);
             }
         }

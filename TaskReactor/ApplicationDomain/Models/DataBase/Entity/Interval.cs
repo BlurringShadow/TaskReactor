@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ApplicationDomain.Models.DataBase.Entity
+namespace ApplicationDomain.Models.Database.Entity
 {
     [Owned]
     public class Interval

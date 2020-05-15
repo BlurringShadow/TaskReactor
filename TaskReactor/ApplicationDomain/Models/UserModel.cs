@@ -1,4 +1,4 @@
-﻿using ApplicationDomain.Models.DataBase.Entity;
+﻿using ApplicationDomain.Models.Database.Entity;
 using JetBrains.Annotations;
 using Utilities;
 

@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using ApplicationDomain.Models.DataBase;
-using ApplicationDomain.Models.DataBase.Entity;
+using ApplicationDomain.Models.Database;
+using ApplicationDomain.Models.Database.Entity;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Utilities;
@@ -20,15 +19,7 @@ namespace UnitTest
         {
             _testOutputHelper = testOutputHelper;
 
-            var testDbFilePath = Path.Combine(
-                @"E:\DOCUMENTS\LEARNING\高级软件设计\TASKREACTOR\TASKREACTOR\UNITTEST\TESTINGDATABASE.MDF"
-            );
-
-            var option = new DbContextOptionsBuilder<TaskReactorDbContext>().UseSqlite(
-                @$"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={testDbFilePath};Integrated Security=True;"
-            );
-
-            _context = new TaskReactorDbContext(option!.Options!);
+            _context = new TaskReactorDbContext();
         }
 
         [Fact]
@@ -54,7 +45,7 @@ namespace UnitTest
                 Schedules = new List<Schedule> {schedule}
             };
 
-            _context.Users.Add(user);
+            _context.Set<User>()!.Add(user);
             _context.SaveChanges();
 
             _testOutputHelper.WriteLine(user.Id.ToString());
@@ -63,7 +54,7 @@ namespace UnitTest
         [Fact]
         public void ReadTest()
         {
-            var schedule = _context.Schedules.FirstAsync()?.Result;
+            var schedule = _context.Set<Schedule>()!.FirstAsync()?.Result;
             _testOutputHelper.WriteLine(schedule?.Interval.Value.ToString());
         }
 

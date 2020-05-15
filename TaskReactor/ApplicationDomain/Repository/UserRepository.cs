@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.Composition;
-using ApplicationDomain.Models.DataBase;
-using ApplicationDomain.Models.DataBase.Entity;
+using ApplicationDomain.Models.Database;
+using ApplicationDomain.Models.Database.Entity;
 using JetBrains.Annotations;
 using Utilities;
 
 namespace ApplicationDomain.Repository
 {
+    [Export]
     public class UserRepository : Repository<User, TaskReactorDbContext>
     {
         [ImportingConstructor]

@@ -1,4 +1,4 @@
-﻿namespace ApplicationDomain.Models.DataBase.Entity
+﻿namespace ApplicationDomain.Models.Database.Entity
 {
     public enum IntervalKind : byte
     {
