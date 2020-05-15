@@ -7,7 +7,7 @@ using Utilities;
 namespace ApplicationDomain.Repository
 {
     [Export]
-    public class UserRepository : Repository<User, TaskReactorDbContext>
+    public sealed class UserRepository : Repository<User, TaskReactorDbContext>
     {
         [ImportingConstructor]
         public UserRepository([NotNull] TaskReactorDbContext dbContext) : base(dbContext)

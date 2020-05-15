@@ -10,7 +10,7 @@ namespace Presentation.ViewModels
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized"),
      System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "UnassignedReadonlyField")]
-    public class UserProfileViewModel : ScreenViewModel
+    public sealed class UserProfileViewModel : ScreenViewModel
     {
         [NotNull, Args(typeof(WelcomePageViewModel))] 
         private readonly INavigationService _navigationService;

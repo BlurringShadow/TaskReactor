@@ -12,7 +12,7 @@ using static System.Reflection.Assembly;
 
 namespace Presentation
 {
-    public class AppBootstrapper : BootstrapperBase
+    public sealed class AppBootstrapper : BootstrapperBase
     {
         // IOC container
         [NotNull] private readonly CompositionContainer _container;
