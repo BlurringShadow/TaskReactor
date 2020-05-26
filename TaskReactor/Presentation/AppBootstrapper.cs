@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
+using ApplicationDomain.Models.Database;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 using Presentation.ViewModels;
 using Utilities;
-using static System.Reflection.Assembly;
 
 namespace Presentation
 {
@@ -19,7 +20,12 @@ namespace Presentation
 
         public AppBootstrapper()
         {
-            _container = new CompositionContainer(new AssemblyCatalog(GetExecutingAssembly()));
+            _container = new CompositionContainer(
+                new AggregateCatalog(
+                    new AssemblyCatalog(Assembly.GetAssembly(typeof(TaskReactorDbContext))!),
+                    new AssemblyCatalog(Assembly.GetAssembly(typeof(ArgsHelper))!)
+                )
+            );
             Initialize();
         }
 
