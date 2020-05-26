@@ -4,7 +4,6 @@ using System.ComponentModel.Composition;
 using ApplicationDomain.Models.Database.Entity;
 using Caliburn.Micro;
 using JetBrains.Annotations;
-using Utilities;
 
 namespace Presentation.ViewModels
 {

@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
-namespace Utilities
+namespace Presentation.ViewModels
 {
     public static class ViewModelExtension
     {

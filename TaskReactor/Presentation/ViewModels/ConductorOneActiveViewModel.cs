@@ -2,7 +2,7 @@
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
-namespace Utilities
+namespace Presentation.ViewModels
 {
     public abstract class ConductorOneActiveViewModel<T> : Conductor<T>.Collection.OneActive, IViewModel where T : class
     {

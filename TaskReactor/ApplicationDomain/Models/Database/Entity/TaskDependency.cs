@@ -4,13 +4,13 @@ using JetBrains.Annotations;
 namespace ApplicationDomain.Models.Database.Entity
 {
     /// <summary>
-    /// Each task contains several goals to complete
+    /// Item for task dependency
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-    public sealed class Goal : Schedule, IIdentityKey
+    public class TaskDependency : DataBaseModel
     {
-        public int Id { get; set; }
+        [Required, NotNull] public UserTask Target { get; set; }
 
-        [Required, NotNull] public UserTask FromTask { get; set; }
+        [Required, NotNull] public UserTask Dependency { get; set; }
     }
 }

@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using Caliburn.Micro;
 using JetBrains.Annotations;
-using Utilities;
 
 namespace Presentation.ViewModels
 {

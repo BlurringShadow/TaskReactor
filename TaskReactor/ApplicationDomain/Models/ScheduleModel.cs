@@ -2,62 +2,39 @@
 using System.ComponentModel;
 using ApplicationDomain.Models.Database.Entity;
 using JetBrains.Annotations;
-using Utilities;
 
 namespace ApplicationDomain.Models
 {
-    public class ScheduleModel : Model<Schedule>
+    public abstract class ScheduleModel<T> : ItemModel<T> where T : Schedule, new()
     {
-        public User OwnerUser => _dataBaseModel.OwnerUser;
-
-        [NotNull] public string Title
+        public override DateTime StartTime
         {
-            get => _dataBaseModel.Title;
+            get => base.StartTime;
             set
             {
-                _dataBaseModel.Title = value;
-                NotifyOfPropertyChange();
-            }
-        }
-
-        public DateTime StartTime
-        {
-            get => _dataBaseModel.StartTime;
-            set
-            {
-                _dataBaseModel.StartTime = value;
-                NotifyOfPropertyChange();
+                base.StartTime = value;
                 NotifyOfPropertyChange(nameof(StartTimeOfDay));
                 NotifyOfPropertyChange(nameof(EndTimeOfDay));
             }
         }
 
-        public TimeSpan DurationOfOneTime
+        public virtual TimeSpan DurationOfOneTime
         {
             get => _dataBaseModel.DurationOfOneTime;
             set
             {
                 _dataBaseModel.DurationOfOneTime = value;
                 NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(StartTimeOfDay));
                 NotifyOfPropertyChange(nameof(EndTimeOfDay));
             }
         }
 
-        public DateTime EndTime
-        {
-            get => _dataBaseModel.EndTime;
-            set
-            {
-                _dataBaseModel.EndTime = value;
-                NotifyOfPropertyChange();
-            }
-        }
+        public TimeSpan StartTimeOfDay => _dataBaseModel.StartTime.TimeOfDay;
 
-        public TimeSpan StartTimeOfDay => _dataBaseModel.StartTimeOfDay;
-
-        public TimeSpan EndTimeOfDay => _dataBaseModel.EndTimeOfDay;
-
-        [NotNull] public Interval Interval
+        public TimeSpan EndTimeOfDay => StartTimeOfDay + DurationOfOneTime;
+        
+        [NotNull] public virtual Interval Interval
         {
             get => _dataBaseModel.Interval;
             set
@@ -68,31 +45,31 @@ namespace ApplicationDomain.Models
         }
 
         /// <summary>
-        /// Get the date time using specified interval value
+        /// Get the date time using specified interval count
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="count">Interval count</param>
         /// <returns></returns>
-        public DateTime this[byte value] =>
+        public DateTime this[byte count] =>
             Interval.Kind switch
             {
                 IntervalKind.YearByWeek => StartTime.AddDays(-StartTime.Day)
-                    .AddYears(value)
+                    .AddYears(count)
                     .AddWeeks(StartTime.WeekOfMonth())
                     .AddDays((double)StartTime.DayOfWeek),
-                IntervalKind.YearByDay => StartTime.AddYears(value),
+                IntervalKind.YearByDay => StartTime.AddYears(count),
                 IntervalKind.MonthByWeek => StartTime.AddDays(-StartTime.Day)
-                    .AddMonths(value)
+                    .AddMonths(count)
                     .AddWeeks(StartTime.WeekOfMonth())
                     .AddDays((double)StartTime.DayOfWeek),
-                IntervalKind.MonthByDay => StartTime.AddMonths(value),
-                IntervalKind.ByWeek => StartTime.AddWeeks(value),
-                IntervalKind.ByDay => StartTime.AddDays(value),
+                IntervalKind.MonthByDay => StartTime.AddMonths(count),
+                IntervalKind.ByWeek => StartTime.AddWeeks(count),
+                IntervalKind.ByDay => StartTime.AddDays(count),
                 _ => throw new InvalidEnumArgumentException(
                     nameof(Interval.Kind), (byte)Interval.Kind, typeof(IntervalKind)
                 )
             };
 
-        public ScheduleModel([NotNull] Schedule dataBaseModel) : base(dataBaseModel)
+        protected ScheduleModel([NotNull] T item) : base(item)
         {
         }
     }

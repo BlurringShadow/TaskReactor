@@ -7,14 +7,19 @@ using Microsoft.Data.Sqlite;
 namespace ApplicationDomain.Models.Database.Entity
 {
     /// <summary>
-    /// Design for repetition.
+    /// Single time event
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-    public class Schedule : Item
+    public abstract class Item : DataBaseModel
     {
-        [Required, Column(TypeName = nameof(SqliteType.Integer))]
-        public TimeSpan DurationOfOneTime { get; set; }
+        [Required, NotNull] public string Title { get; set; }
 
-        [Required, NotNull] public Interval Interval { get; set; }
+        public string Description { get; set; }
+
+        [Required, Column(TypeName = nameof(SqliteType.Integer))]
+        public DateTime StartTime { get; set; }
+
+        [Required, Column(TypeName = nameof(SqliteType.Integer))]
+        public DateTime EndTime { get; set; }
     }
 }

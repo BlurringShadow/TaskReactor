@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using ApplicationDomain.Models.Database.Entity;
 using JetBrains.Annotations;
-using Utilities;
 
 namespace Presentation.ViewModels
 {

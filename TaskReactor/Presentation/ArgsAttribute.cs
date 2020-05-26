@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace Utilities
+namespace Presentation
 {
     //弥补navigation service的扩展函数只能调用property public setter的不足
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter)]

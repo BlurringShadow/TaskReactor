@@ -11,29 +11,24 @@ namespace ApplicationDomain.Models.Database
     [Export]
     public sealed class TaskReactorDbContext : DbContext
     {
-        public const string DbPath = @"DataBase/TaskReactor.db";
-
-        // ReSharper disable once NotNullMemberIsNotInitialized
-        public TaskReactorDbContext() : this(new DbContextOptions<TaskReactorDbContext>())
-        {
-        }
+        public const string DbPath = @"database/task_reactor.db";
 
         /// <summary>
         /// Create the db file and tables if not exists.
         /// </summary>
-        /// <param name="options"> <see cref="DbContext(DbContextOptions)"/>> </param>
         // ReSharper disable once NotNullMemberIsNotInitialized
-        public TaskReactorDbContext([NotNull] DbContextOptions<TaskReactorDbContext> options) : base(options)
+        [ImportingConstructor]
+        public TaskReactorDbContext()
         {
             if(Database is null) throw new NullReferenceException();
 
-            if(Database.CanConnect()) Database.Migrate();
-            else
+            if(!Database.CanConnect())
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(DbPath));
                 File.Create(DbPath)!.Dispose();
-                Database.EnsureCreated();
             }
+
+            Database.Migrate();
         }
 
         protected override void OnConfiguring([NotNull] DbContextOptionsBuilder optionsBuilder)
@@ -49,13 +44,21 @@ namespace ApplicationDomain.Models.Database
             );
         }
 
-        protected override void OnModelCreating([NotNull] ModelBuilder modelBuilder)
+        protected override void OnModelCreating([NotNull] ModelBuilder modelBuilder) => BuildEntity(modelBuilder);
+
+        internal static void BuildEntity([NotNull] ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>();
+            modelBuilder.Entity<TaskDependency>(
+                buildAction =>
+                {
+                    var targetForeignKey = $"{nameof(TaskDependency.Target)}Id";
+                    var dependencyForeignKey = $"{nameof(TaskDependency.Dependency)}Id";
 
-            // configure composition key
-            modelBuilder.Entity<Schedule>(
-                buildAction => buildAction!.HasKey(schedule => new {schedule.OwnerUserId, schedule.Title})
+                    buildAction!.HasOne(t => t.Target)!.WithMany()!.HasForeignKey(targetForeignKey);
+                    buildAction.HasOne(t => t.Dependency)!.WithMany()!.HasForeignKey(dependencyForeignKey);
+                    buildAction.HasKey(targetForeignKey, dependencyForeignKey);
+                }
             );
         }
     }

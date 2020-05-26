@@ -1,63 +1,69 @@
-using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
+using System.Reflection;
+using System.Threading.Tasks;
 using ApplicationDomain.Models.Database;
 using ApplicationDomain.Models.Database.Entity;
+using ApplicationDomain.Models.Database.Repository;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using Utilities;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace UnitTest
 {
-    public sealed class DataBaseTest : IDisposable
+    public sealed class DataBaseTest
     {
         [NotNull] private readonly ITestOutputHelper _testOutputHelper;
-        [NotNull] private readonly TaskReactorDbContext _context;
 
-        public DataBaseTest([NotNull] ITestOutputHelper testOutputHelper)
-        {
-            _testOutputHelper = testOutputHelper;
+        [NotNull] private readonly CompositionContainer _container = new CompositionContainer(new AssemblyCatalog(Assembly.GetAssembly(typeof(TaskReactorDbContext))!));
 
-            _context = new TaskReactorDbContext();
-        }
+        public DataBaseTest([NotNull] ITestOutputHelper testOutputHelper) => _testOutputHelper = testOutputHelper;
 
         [Fact]
-        public void DeleteTest()
+        public void DbContextCreateTest()
         {
-            _context.DeleteTableFromDbSet<User>();
-            _context.TruncateTableFromDbSet<Schedule>();
+            using var context = new TaskReactorDbContext();
         }
 
         [Fact]
         public void UpdateTest()
         {
-            var random = new Random();
-            var schedule = new Schedule
-            {
-                Title = $"My First Schedule{random.Next()}",
-                Interval = new Interval {Value = 1, Kind = IntervalKind.ByDay}
-            };
+            var userRepository = _container.GetExportedValue<UserRepository>();
             var user = new User
             {
                 Name = "My First User",
                 Password = "...",
-                Schedules = new List<Schedule> {schedule}
+                Tasks = new List<UserTask>
+                {
+                    new UserTask
+                    {
+                        Title = "My First Task",
+                        Goals = new List<Goal>
+                        {
+                            new Goal
+                            {
+                                Title = "My First Goal",
+                                Interval = new Interval {Value = 1, Kind = IntervalKind.ByDay}
+                            }
+                        }
+                    }
+                }
             };
 
-            _context.Set<User>()!.Add(user);
-            _context.SaveChanges();
+            userRepository.Update(user);
+            Task.WaitAll(userRepository.DbSync());
 
             _testOutputHelper.WriteLine(user.Id.ToString());
         }
 
         [Fact]
         public void ReadTest()
-        {
-            var schedule = _context.Set<Schedule>()!.FirstAsync()?.Result;
-            _testOutputHelper.WriteLine(schedule?.Interval.Value.ToString());
-        }
+        {            
+            var goalRepository = _container.GetExportedValue<GoalRepository>();
 
-        public void Dispose() => _context.Dispose();
+            var goal = goalRepository.DbSet!.FirstAsync()?.Result;
+            _testOutputHelper.WriteLine(goal?.Interval.Value.ToString());
+        }
     }
 }

@@ -6,15 +6,13 @@ using JetBrains.Annotations;
 namespace ApplicationDomain.Models.Database.Entity
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-    public class User : DataBaseModel, IIdentityKey
+    public class UserTask : Item, IIdentityKey
     {
         public int Id { get; set; }
 
-        [Required, NotNull] public string Name { get; set; }
+        [Required, NotNull] public User OwnerUser { get; set; }
 
-        [Required, NotNull] public string Password { get; set; }
-
-        [InverseProperty(nameof(UserTask.OwnerUser))]
-        public IList<UserTask> Tasks { get; set; }
+        [InverseProperty(nameof(Goal.FromTask))]
+        public IList<Goal> Goals { get; set; }
     }
 }

@@ -7,10 +7,10 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
-namespace Utilities
+namespace Presentation
 {
     [Export]
-    public class ArgsHelper : Dictionary<ValueTuple<Type, Type, string>, object>
+    public class ArgsHelper : Dictionary<(Type, Type, string), object>
     {
         public void Update<TFrom, TTo>(object value, [CallerMemberName] string key = null) =>
             Update(typeof(TFrom), typeof(TTo), value, key);

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Utilities
+namespace ApplicationDomain.Models.Database
 {
     public static class ModelBuilderExtensions
     {
