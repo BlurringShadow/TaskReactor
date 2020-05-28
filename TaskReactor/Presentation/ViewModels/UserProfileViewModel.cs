@@ -18,7 +18,8 @@ namespace Presentation.ViewModels
         [NotNull] public readonly User CurrentUser;
 
         [ImportingConstructor]
-        public UserProfileViewModel([NotNull] CompositionContainer container,
+        public UserProfileViewModel(
+            [NotNull] CompositionContainer container,
             [NotNull, Import(nameof(CurrentUser) + ":" + nameof(WelcomePageViewModel))]
             User currentUser,
             [NotNull, Import(nameof(_navigationService) + ":" + nameof(WelcomePageViewModel))]
