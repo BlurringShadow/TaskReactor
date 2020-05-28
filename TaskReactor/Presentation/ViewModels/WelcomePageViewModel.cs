@@ -10,7 +10,7 @@ using JetBrains.Annotations;
 
 namespace Presentation.ViewModels
 {
-    [Export, System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
+    [Export]
     public sealed class WelcomePageViewModel : ScreenViewModel
     {
         [NotNull] private readonly INavigationService _navigationService;

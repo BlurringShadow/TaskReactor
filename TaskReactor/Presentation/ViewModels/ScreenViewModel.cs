@@ -13,7 +13,6 @@ namespace Presentation.ViewModels
 
         public Type InstanceType { get; }
 
-        /// <inheritdoc />
         public IDictionary<(Type, string), ComposablePart> VariableParts { get; }
 
         protected ScreenViewModel(

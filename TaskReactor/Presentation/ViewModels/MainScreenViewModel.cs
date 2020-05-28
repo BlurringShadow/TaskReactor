@@ -9,12 +9,13 @@ using JetBrains.Annotations;
 
 namespace Presentation.ViewModels
 {
-    [Export, System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
+    [Export]
     public sealed class MainScreenViewModel : ScreenViewModel
     {
         [NotNull] public INavigationService NavigationService { get; private set; }
 
         [ImportingConstructor]
+        // ReSharper disable once NotNullMemberIsNotInitialized
         public MainScreenViewModel(
             [NotNull] CompositionContainer container,
             [NotNull] IDictionary<(Type, string), ComposablePart> variableParts

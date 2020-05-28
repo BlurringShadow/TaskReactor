@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 
 namespace Presentation.ViewModels
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "UnassignedReadonlyField")]
+    [Export]
     public sealed class ScheduleEditViewModel : ScreenViewModel
     {
         public readonly User CurrentUser;
@@ -16,9 +16,12 @@ namespace Presentation.ViewModels
         [ImportingConstructor]
         public ScheduleEditViewModel(
             [NotNull] CompositionContainer container,
-            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts
+            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts,
+            [NotNull, Import(nameof(CurrentUser) + ":" + nameof(WelcomePageViewModel))]
+            User currentUser
         ) : base(container, variableParts)
         {
+            CurrentUser = currentUser;
         }
     }
 }
