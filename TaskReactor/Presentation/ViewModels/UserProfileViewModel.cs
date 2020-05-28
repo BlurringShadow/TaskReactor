@@ -31,7 +31,7 @@ namespace Presentation.ViewModels
             CurrentUser = currentUser;
             _navigationService = navigationService;
 
-            this.ShareFor(_navigationService).WithName(nameof(_navigationService)).Share();
+            this.ForVariable(_navigationService).WithName(nameof(_navigationService)).Share();
         }
 
         public void AddSchedule() => _navigationService.NavigateToViewModel<ScheduleEditViewModel>();

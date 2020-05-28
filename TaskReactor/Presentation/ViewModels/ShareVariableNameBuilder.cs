@@ -7,7 +7,7 @@ namespace Presentation.ViewModels
     {
         public Type FromViewModelType { get; }
         public string VariableName { get; private set; }
-        public string ContractName => $"{FromViewModelType?.Name ?? ""}:{VariableName ?? ""}";
+        public string ContractName => $"{VariableName ?? ""}:{FromViewModelType?.Name ?? ""}";
 
         public ShareVariableNameBuilder(Type fromViewModelType) => FromViewModelType = fromViewModelType;
 

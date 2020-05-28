@@ -12,7 +12,7 @@ namespace Presentation.ViewModels
     [Export]
     public sealed class MainScreenViewModel : ScreenViewModel
     {
-        [NotNull] public INavigationService NavigationService { get; private set; }
+        [NotNull] private INavigationService _navigationService;
 
         [ImportingConstructor]
         // ReSharper disable once NotNullMemberIsNotInitialized
@@ -21,16 +21,13 @@ namespace Presentation.ViewModels
             [NotNull] IDictionary<(Type, string), ComposablePart> variableParts
         ) : base(container, variableParts) => DisplayName = "Task Reactor";
 
-        /// <summary>
-        /// Initialize the frame navigation service
-        /// </summary>
-        /// <param name="frame"></param>
+        /// <summary> Initialize the frame navigation service </summary>
         public void RegisterFrame([NotNull] Frame frame)
         {
-            NavigationService = new FrameAdapter(frame);
-            this.Share(NavigationService);
+            _navigationService = new FrameAdapter(frame);
+            this.ShareWithName(_navigationService, nameof(_navigationService));
         }
 
-        public void Navigate() => NavigationService.NavigateToViewModel<WelcomePageViewModel>();
+        public void Navigate() => _navigationService.NavigateToViewModel<WelcomePageViewModel>();
     }
 }

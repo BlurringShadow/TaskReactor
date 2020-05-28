@@ -18,6 +18,11 @@ namespace Presentation.ViewModels
             NameBuilder = new ShareVariableNameBuilder(viewModel.InstanceType);
         }
 
+        /// <summary>
+        /// Set the variable name
+        /// </summary>
+        /// <param name="variableName"> name of the variable </param>
+        /// <returns></returns>
         [NotNull]
         public ShareVariableBuilder<TVariable> WithName([CallerMemberName] string variableName = null)
         {
@@ -25,6 +30,9 @@ namespace Presentation.ViewModels
             return this;
         }
 
+        /// <summary>
+        /// Share the variable <see cref="ViewModelExtension.Share{TVariable}"/>
+        /// </summary>
         public void Share() => ViewModel.Share(Variable, NameBuilder.ContractName);
     }
 }

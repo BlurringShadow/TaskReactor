@@ -8,7 +8,6 @@ using JetBrains.Annotations;
 
 namespace Presentation.ViewModels
 {
-    [Export]
     public sealed class ScheduleEditViewModel : ScreenViewModel
     {
         public readonly User CurrentUser;

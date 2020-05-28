@@ -18,7 +18,7 @@ namespace Presentation.ViewModels
 
         /// <summary>
         /// Extension for view model to share variable.
-        /// If the specified variable exists, new value will overwrite it.  
+        /// If the specified variable exists, it will be overwrote by new value.  
         /// </summary>
         /// <param name="viewModel"> View model to share </param>
         /// <param name="value"> The variable to shared </param>
@@ -67,7 +67,7 @@ namespace Presentation.ViewModels
         /// <param name="viewModel"> View model to share </param>
         /// <param name="value"> The variable to shared </param>
         [NotNull]
-        internal static ShareVariableBuilder<TVariable> ShareFor<TViewModel, TVariable>(
+        internal static ShareVariableBuilder<TVariable> ForVariable<TViewModel, TVariable>(
             [NotNull] this TViewModel viewModel,
             [NotNull] TVariable value
         ) where TViewModel : IViewModel => new ShareVariableBuilder<TVariable>(viewModel, value);
@@ -80,11 +80,10 @@ namespace Presentation.ViewModels
         /// <param name="viewModel"> View model to share </param>
         /// <param name="value"> The variable to shared </param>
         /// <param name="variableName"> Name of the variable </param>
-        [NotNull]
-        internal static ShareVariableBuilder<TVariable> ShareForWithName<TViewModel, TVariable>(
+        internal static void ShareWithName<TViewModel, TVariable>(
             [NotNull] this TViewModel viewModel,
             [NotNull] TVariable value,
             [CallerMemberName] string variableName = null
-        ) where TViewModel : IViewModel => viewModel.ShareFor(value).WithName(variableName);
+        ) where TViewModel : IViewModel => viewModel.ForVariable(value).WithName(variableName).Share();
     }
 }

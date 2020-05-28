@@ -24,15 +24,15 @@ namespace Presentation.ViewModels
         public string UserPassword { get => _userPassword; set => Set(ref _userPassword, value); }
 
         [ImportingConstructor]
-        public WelcomePageViewModel([NotNull] CompositionContainer container,
-            [NotNull, Import(nameof(_navigationService) + ":" + nameof(MainScreenViewModel))]
+        public WelcomePageViewModel(
+            [NotNull] CompositionContainer container,
+            [NotNull, ShareVariable(nameof(_navigationService) + ":" + nameof(MainScreenViewModel))]
             INavigationService navigationService,
             [NotNull] IDictionary<(Type, string), ComposablePart> variableParts
         ) : base(container, variableParts)
         {
             DisplayName = "Welcome";
             _navigationService = navigationService;
-            this.ShareForWithName(_navigationService, nameof(_navigationService));
         }
 
         public void Login() => _navigationService.NavigateToViewModel<UserProfileViewModel>();
