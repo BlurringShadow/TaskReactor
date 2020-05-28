@@ -23,7 +23,7 @@ namespace Presentation
             _container = new CompositionContainer(
                 new AggregateCatalog(
                     new AssemblyCatalog(Assembly.GetAssembly(typeof(TaskReactorDbContext))!),
-                    new AssemblyCatalog(Assembly.GetAssembly(typeof(ArgsHelper))!)
+                    new AssemblyCatalog(Assembly.GetAssembly(typeof(IViewModel))!)
                 )
             );
             Initialize();
@@ -36,6 +36,9 @@ namespace Presentation
             // Instances for Caliburn.Micro 
             batch.AddExportedValue<IWindowManager>(new WindowManager());
             batch.AddExportedValue<IEventAggregator>(new EventAggregator());
+
+            // Add container itself
+            batch.AddExportedValue(_container);
 
             _container.Compose(batch);
         }

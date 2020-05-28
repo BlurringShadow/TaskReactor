@@ -7,36 +7,29 @@ using ApplicationDomain.Models.Database.Entity;
 using ApplicationDomain.Models.Database.Repository;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using Presentation;
+using Presentation.ViewModels;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace UnitTest
 {
-    public sealed class DataBaseTest
+    public sealed class DatabaseTest
     {
         [NotNull] private readonly ITestOutputHelper _testOutputHelper;
 
         [NotNull] private readonly CompositionContainer _container = new CompositionContainer(
             new AggregateCatalog(
                 new AssemblyCatalog(Assembly.GetAssembly(typeof(TaskReactorDbContext))!),
-                new AssemblyCatalog(Assembly.GetAssembly(typeof(ArgsHelper))!)
+                new AssemblyCatalog(Assembly.GetAssembly(typeof(IViewModel))!)
             )
         );
 
-        public DataBaseTest([NotNull] ITestOutputHelper testOutputHelper) => _testOutputHelper = testOutputHelper;
+        public DatabaseTest([NotNull] ITestOutputHelper testOutputHelper) => _testOutputHelper = testOutputHelper;
 
         [Fact]
         public void DbContextCreateTest()
         {
             using var context = new TaskReactorDbContext();
-        }
-
-        [Fact]
-        public void ArgsHelperExportTest()
-        {
-            var argsHelper = _container.GetExportedValue<ArgsHelper>();
-            _testOutputHelper.WriteLine(argsHelper.ToString());
         }
 
         [Fact]

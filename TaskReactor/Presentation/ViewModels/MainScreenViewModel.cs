@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System.Windows.Controls;
 using Caliburn.Micro;
 using JetBrains.Annotations;
@@ -11,9 +12,17 @@ namespace Presentation.ViewModels
         [NotNull] public INavigationService NavigationService { get; private set; }
 
         [ImportingConstructor]
-        public MainScreenViewModel([NotNull] ArgsHelper argsArgsHelper) : base(argsArgsHelper) => DisplayName = "Task Reactor";
+        public MainScreenViewModel([NotNull] CompositionContainer container) : base(container) => DisplayName = "Task Reactor";
 
-        public void RegisterFrame([NotNull] Frame frame) => NavigationService = new FrameAdapter(frame);
+        /// <summary>
+        /// Initialize the frame navigation service
+        /// </summary>
+        /// <param name="frame"></param>
+        public void RegisterFrame([NotNull] Frame frame)
+        {
+            NavigationService = new FrameAdapter(frame);
+            this.Share(NavigationService);
+        }
 
         public void Navigate() => NavigationService.NavigateToViewModel<WelcomePageViewModel>();
     }

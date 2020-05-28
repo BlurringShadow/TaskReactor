@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Composition.Hosting;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
@@ -6,14 +7,14 @@ namespace Presentation.ViewModels
 {
     public abstract class ScreenViewModel : Screen, IViewModel
     {
-        public ArgsHelper ArgsHelper { get; }
+        public CompositionContainer Container { get; }
 
         public Type InstanceType { get; }
 
-        protected ScreenViewModel([NotNull] ArgsHelper argsArgsHelper, bool includeNonPublic = false)
+        protected ScreenViewModel([NotNull] CompositionContainer container)
         {
-            ArgsHelper = argsArgsHelper;
-            InstanceType = this.Initialize(includeNonPublic);
+            Container = container;
+            InstanceType = this.Initialize();
         }
     }
 }

@@ -1,30 +1,76 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace Presentation.ViewModels
 {
-    public static class ViewModelExtension
+    internal static class ViewModelExtension
     {
+        /// <summary>
+        /// Initialize the view model
+        /// </summary>
+        /// <param name="viewModel"> the view model </param>
+        /// <returns> Type of the view model </returns>
         [NotNull]
-        public static Type Initialize([NotNull] this IViewModel viewModel, bool includeNonPublic = false)
-        {
-            var instanceType = viewModel.GetType();
-            viewModel.ArgsHelper.Inject(instanceType, includeNonPublic);
+        internal static Type Initialize([NotNull] this IViewModel viewModel) => viewModel.GetType();
 
-            return instanceType;
+        /// <summary>
+        /// Extension for view model to share variable
+        /// </summary>
+        /// <param name="viewModel"> View model to share </param>
+        /// <param name="value"> The variable to shared </param>
+        /// <param name="contractName"> Name of the variable </param>
+        internal static void Share<TVariable>(
+            [NotNull] this IViewModel viewModel,
+            [NotNull] TVariable value,
+            [CallerMemberName] string contractName = null
+        )
+        {
+            var container = viewModel.Container;
+            if(contractName is null) container.ComposeExportedValue(value);
+            else container.ComposeExportedValue(contractName, value);
         }
 
-        public static void Update<TTargetViewModel>(
-            [NotNull] this IViewModel viewModel,
-            object value,
-            [CallerMemberName] string key = null
-        ) => Update(viewModel, typeof(TTargetViewModel), value, key);
+        /// <summary>
+        /// Extension for view model to import share variable
+        /// </summary>
+        /// <param name="viewModel"> Referenced view model </param>
+        /// <param name="contractName"> Name of the variable </param>
+        /// <returns> Shared variable </returns>
+        [NotNull,
+         System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
+        internal static TVariable GetShared<TViewModel, TVariable>(
+            [NotNull] this TViewModel viewModel,
+            [CallerMemberName] string contractName = null
+        ) where TViewModel : IViewModel => viewModel.Container.GetExportedValue<TVariable>(contractName);
 
-        public static void Update([NotNull] this IViewModel viewModel,
-            [NotNull] Type targetType,
-            object value,
-            [CallerMemberName] string key = null
-        ) => viewModel.ArgsHelper.Update(viewModel.InstanceType, targetType, value, key);
+
+        /// <summary>
+        /// Extension for view model to share variable.
+        /// Build unique contract name relative to <paramref name="viewModel.InstanceType"/> and variableName
+        /// </summary>
+        /// <param name="viewModel"> View model to share </param>
+        /// <param name="value"> The variable to shared </param>
+        [NotNull]
+        internal static ShareVariableBuilder<TVariable> ShareFor<TViewModel, TVariable>(
+            [NotNull] this TViewModel viewModel,
+            [NotNull] TVariable value
+        ) where TViewModel : IViewModel => new ShareVariableBuilder<TVariable>(viewModel, value);
+
+
+        /// <summary>
+        /// Extension for view model to share variable.
+        /// Build unique contract name relative to <paramref name="viewModel.InstanceType"/> and <paramref name="variableName"/>
+        /// </summary>
+        /// <param name="viewModel"> View model to share </param>
+        /// <param name="value"> The variable to shared </param>
+        /// <param name="variableName"> Name of the variable </param>
+        [NotNull]
+        internal static ShareVariableBuilder<TVariable> ShareForWithName<TViewModel, TVariable>(
+            [NotNull] this TViewModel viewModel,
+            [NotNull] TVariable value,
+            [CallerMemberName] string variableName = null
+        ) where TViewModel : IViewModel => viewModel.ShareFor(value).WithName(variableName);
     }
 }

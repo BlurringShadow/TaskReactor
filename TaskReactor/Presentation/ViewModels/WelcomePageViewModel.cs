@@ -1,6 +1,7 @@
 ﻿#pragma warning disable 649
 
 using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
@@ -9,8 +10,7 @@ namespace Presentation.ViewModels
     [Export, System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public sealed class WelcomePageViewModel : ScreenViewModel
     {
-        [Args(typeof(MainScreenViewModel)), NotNull]
-        private readonly INavigationService _navigationService;
+        [NotNull] private readonly INavigationService _navigationService;
 
         private string _userName;
 
@@ -21,12 +21,16 @@ namespace Presentation.ViewModels
         public string UserPassword { get => _userPassword; set => Set(ref _userPassword, value); }
 
         [ImportingConstructor]
-        public WelcomePageViewModel([NotNull] ArgsHelper argsArgsHelper) : base(argsArgsHelper) 
-            => DisplayName = "Welcome";
-
-        public void Login()
+        public WelcomePageViewModel(
+            [NotNull] CompositionContainer container,
+            [NotNull, Import(nameof(_navigationService) + ":" + nameof(MainScreenViewModel))]
+            INavigationService navigationService) : base(container)
         {
-            this.Update<UserProfileViewModel>(_navigationService, nameof(_navigationService));
+            DisplayName = "Welcome";
+            _navigationService = navigationService;
+            this.ShareForWithName(_navigationService, nameof(_navigationService));
         }
+
+        public void Login() => _navigationService.NavigateToViewModel<UserProfileViewModel>();
     }
 }
