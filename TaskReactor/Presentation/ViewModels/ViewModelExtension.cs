@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
@@ -16,7 +17,8 @@ namespace Presentation.ViewModels
         internal static Type Initialize([NotNull] this IViewModel viewModel) => viewModel.GetType();
 
         /// <summary>
-        /// Extension for view model to share variable
+        /// Extension for view model to share variable.
+        /// If the specified variable exists, new value will overwrite it.  
         /// </summary>
         /// <param name="viewModel"> View model to share </param>
         /// <param name="value"> The variable to shared </param>
@@ -28,8 +30,20 @@ namespace Presentation.ViewModels
         )
         {
             var container = viewModel.Container;
-            if(contractName is null) container.ComposeExportedValue(value);
-            else container.ComposeExportedValue(contractName, value);
+            var batch = new CompositionBatch();
+            var part = contractName is null ? batch.AddExportedValue(value) : batch.AddExportedValue(contractName, value);
+
+            var partsDictionary = viewModel.VariableParts;
+            var partKey = (typeof(TVariable), contractName);
+
+            if(partsDictionary.ContainsKey(partKey))
+            {
+                batch.RemovePart(partsDictionary[partKey]!);
+                partsDictionary[partKey] = part;
+            }
+            else partsDictionary.Add(partKey, part);
+
+            container.Compose(batch);
         }
 
         /// <summary>

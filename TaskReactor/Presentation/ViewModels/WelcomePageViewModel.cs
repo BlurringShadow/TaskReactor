@@ -1,7 +1,10 @@
 ﻿#pragma warning disable 649
 
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
@@ -21,10 +24,11 @@ namespace Presentation.ViewModels
         public string UserPassword { get => _userPassword; set => Set(ref _userPassword, value); }
 
         [ImportingConstructor]
-        public WelcomePageViewModel(
-            [NotNull] CompositionContainer container,
+        public WelcomePageViewModel([NotNull] CompositionContainer container,
             [NotNull, Import(nameof(_navigationService) + ":" + nameof(MainScreenViewModel))]
-            INavigationService navigationService) : base(container)
+            INavigationService navigationService,
+            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts
+        ) : base(container, variableParts)
         {
             DisplayName = "Welcome";
             _navigationService = navigationService;

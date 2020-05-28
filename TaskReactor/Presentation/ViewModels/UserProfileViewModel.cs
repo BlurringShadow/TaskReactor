@@ -1,7 +1,10 @@
 ﻿#pragma warning disable 649
 
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
 using ApplicationDomain.Models.Database.Entity;
 using Caliburn.Micro;
 using JetBrains.Annotations;
@@ -19,10 +22,11 @@ namespace Presentation.ViewModels
         [ImportingConstructor]
         public UserProfileViewModel([NotNull] CompositionContainer container,
             [NotNull, Import(nameof(CurrentUser) + ":" + nameof(WelcomePageViewModel))]
-            User currentUser, 
+            User currentUser,
             [NotNull, Import(nameof(_navigationService) + ":" + nameof(WelcomePageViewModel))]
-            INavigationService navigationService
-        ) : base(container)
+            INavigationService navigationService,
+            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts
+        ) : base(container, variableParts)
         {
             CurrentUser = currentUser;
             _navigationService = navigationService;

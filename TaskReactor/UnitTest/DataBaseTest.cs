@@ -7,7 +7,7 @@ using ApplicationDomain.Models.Database.Entity;
 using ApplicationDomain.Models.Database.Repository;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using Presentation.ViewModels;
+using Presentation;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -20,7 +20,7 @@ namespace UnitTest
         [NotNull] private readonly CompositionContainer _container = new CompositionContainer(
             new AggregateCatalog(
                 new AssemblyCatalog(Assembly.GetAssembly(typeof(TaskReactorDbContext))!),
-                new AssemblyCatalog(Assembly.GetAssembly(typeof(IViewModel))!)
+                new AssemblyCatalog(Assembly.GetAssembly(typeof(App))!)
             )
         );
 
