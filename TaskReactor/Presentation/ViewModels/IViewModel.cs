@@ -10,7 +10,7 @@ namespace Presentation.ViewModels
     /// <summary>
     /// Interface for view model
     /// </summary>
-    public interface IViewModel : INotifyPropertyChangedEx
+    internal interface IViewModel : INotifyPropertyChangedEx
     {
         /// <summary>
         /// Container to store shared variable.

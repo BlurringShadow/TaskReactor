@@ -11,8 +11,6 @@ using JetBrains.Annotations;
 
 namespace Presentation.ViewModels
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized"),
-     System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "UnassignedReadonlyField")]
     public sealed class UserProfileViewModel : ScreenViewModel
     {
         [NotNull] private readonly INavigationService _navigationService;

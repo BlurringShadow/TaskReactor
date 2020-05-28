@@ -5,6 +5,7 @@ namespace Presentation.ViewModels
 {
     internal class ShareVariableNameBuilder
     {
+        [NotNull]
         public static ShareVariableNameBuilder CreateFrom(Type fromViewModelType) =>
             new ShareVariableNameBuilder(fromViewModelType);
 

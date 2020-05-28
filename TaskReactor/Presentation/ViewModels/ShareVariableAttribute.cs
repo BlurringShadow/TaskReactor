@@ -3,6 +3,9 @@ using System.ComponentModel.Composition;
 
 namespace Presentation.ViewModels
 {
+    /// <summary>
+    /// Use MEF to import the share variable
+    /// </summary>
     internal class ShareVariableAttribute : ImportAttribute
     {
         /// <summary>
