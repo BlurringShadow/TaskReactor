@@ -5,11 +5,13 @@ namespace Presentation.ViewModels
 {
     internal class ShareVariableAttribute : ImportAttribute
     {
-        public ShareVariableAttribute(Type contractType) : base(contractType) => AllowRecomposition = true;
-
-        public ShareVariableAttribute(string contractName) : base(contractName) => AllowRecomposition = true;
-
-        public ShareVariableAttribute(string contractName, Type contractType) : base(contractName, contractType) =>
+        /// <summary>
+        /// Create the attribute with variable name and type
+        /// </summary>
+        /// <param name="variableName"></param>
+        /// <param name="fromType"></param>
+        public ShareVariableAttribute(string variableName, Type fromType) :
+            base(ShareVariableNameBuilder.CreateFrom(fromType).WithName(variableName).ContractName) =>
             AllowRecomposition = true;
     }
 }

@@ -5,11 +5,14 @@ namespace Presentation.ViewModels
 {
     internal class ShareVariableNameBuilder
     {
+        public static ShareVariableNameBuilder CreateFrom(Type fromViewModelType) =>
+            new ShareVariableNameBuilder(fromViewModelType);
+
         public Type FromViewModelType { get; }
         public string VariableName { get; private set; }
         public string ContractName => $"{VariableName ?? ""}:{FromViewModelType?.Name ?? ""}";
 
-        public ShareVariableNameBuilder(Type fromViewModelType) => FromViewModelType = fromViewModelType;
+        private ShareVariableNameBuilder(Type fromViewModelType) => FromViewModelType = fromViewModelType;
 
         [NotNull]
         public ShareVariableNameBuilder WithName(string variableName)

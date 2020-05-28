@@ -26,7 +26,7 @@ namespace Presentation.ViewModels
         [ImportingConstructor]
         public WelcomePageViewModel(
             [NotNull] CompositionContainer container,
-            [NotNull, ShareVariable(nameof(_navigationService) + ":" + nameof(MainScreenViewModel))]
+            [NotNull, ShareVariable(nameof(_navigationService), typeof(MainScreenViewModel))]
             INavigationService navigationService,
             [NotNull] IDictionary<(Type, string), ComposablePart> variableParts
         ) : base(container, variableParts)

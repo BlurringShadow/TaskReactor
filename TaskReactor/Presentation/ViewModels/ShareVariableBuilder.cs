@@ -15,7 +15,7 @@ namespace Presentation.ViewModels
         {
             ViewModel = viewModel;
             Variable = variable;
-            NameBuilder = new ShareVariableNameBuilder(viewModel.InstanceType);
+            NameBuilder = ShareVariableNameBuilder.CreateFrom(viewModel.InstanceType);
         }
 
         /// <summary>
