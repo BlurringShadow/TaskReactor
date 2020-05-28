@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
@@ -6,14 +9,20 @@ namespace Presentation.ViewModels
 {
     public abstract class ScreenViewModel : Screen, IViewModel
     {
-        public ArgsHelper ArgsHelper { get; }
+        public CompositionContainer Container { get; }
 
         public Type InstanceType { get; }
 
-        protected ScreenViewModel([NotNull] ArgsHelper argsArgsHelper, bool includeNonPublic = false)
+        public IDictionary<(Type, string), ComposablePart> VariableParts { get; }
+
+        protected ScreenViewModel(
+            [NotNull] CompositionContainer container, 
+            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts
+        )
         {
-            ArgsHelper = argsArgsHelper;
-            InstanceType = this.Initialize(includeNonPublic);
+            Container = container;
+            VariableParts = variableParts;
+            InstanceType = this.Initialize();
         }
     }
 }

@@ -1,19 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
 namespace Presentation.ViewModels
 {
+    /// <summary>
+    /// Implementation for <see cref="Conductor{T}.Collection.AllActive"/> and <see cref="IViewModel"/>
+    /// </summary>
     public abstract class ConductorAllActiveViewModel<T> : Conductor<T>.Collection.AllActive, IViewModel where T : class
     {
-        public ArgsHelper ArgsHelper { get; }
+        public CompositionContainer Container { get; }
 
         public Type InstanceType { get; }
 
-        protected ConductorAllActiveViewModel([NotNull] ArgsHelper argsArgsHelper, bool includeNonPublic = false)
+        public IDictionary<(Type, string), ComposablePart> VariableParts { get; }
+
+        protected ConductorAllActiveViewModel(
+            [NotNull] CompositionContainer container, 
+            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts
+        )
         {
-            ArgsHelper = argsArgsHelper;
-            InstanceType = this.Initialize(includeNonPublic);
+            Container = container;
+            VariableParts = variableParts;
+            InstanceType = this.Initialize();
         }
     }
 }

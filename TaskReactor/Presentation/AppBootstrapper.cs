@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
@@ -23,7 +25,7 @@ namespace Presentation
             _container = new CompositionContainer(
                 new AggregateCatalog(
                     new AssemblyCatalog(Assembly.GetAssembly(typeof(TaskReactorDbContext))!),
-                    new AssemblyCatalog(Assembly.GetAssembly(typeof(ArgsHelper))!)
+                    new AssemblyCatalog(Assembly.GetAssembly(typeof(IViewModel))!)
                 )
             );
             Initialize();
@@ -36,6 +38,14 @@ namespace Presentation
             // Instances for Caliburn.Micro 
             batch.AddExportedValue<IWindowManager>(new WindowManager());
             batch.AddExportedValue<IEventAggregator>(new EventAggregator());
+
+            // Add container itself
+            batch.AddExportedValue(_container);
+
+            // For view model share variable extension
+            batch.AddExportedValue<IDictionary<(Type, string), ComposablePart>>(
+                new ConcurrentDictionary<(Type, string), ComposablePart>()
+            );
 
             _container.Compose(batch);
         }
