@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using ApplicationDomain.Models.Database;
 using ApplicationDomain.Models.Database.Entity;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
@@ -31,6 +32,8 @@ namespace ApplicationDomain.Repository
         public void Remove([NotNull] params TDataBaseModel[] models) => Remove((IEnumerable<TDataBaseModel>)models);
 
         public void Remove([NotNull] IEnumerable<TDataBaseModel> models) => DbSet.RemoveRange(models);
+
+        public async Task RemoveAll() => await Context.DeleteTableFromDbSetAsync<TDataBaseModel>();
 
         public void Update([NotNull] params TDataBaseModel[] models) => Update((IEnumerable<TDataBaseModel>)models);
 

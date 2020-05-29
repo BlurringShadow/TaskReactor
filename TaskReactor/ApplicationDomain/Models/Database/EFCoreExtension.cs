@@ -30,75 +30,81 @@ namespace ApplicationDomain.Models.Database
 
         #region DbContext Extension
 
-        public static void TruncateTable(
+        public static string GetEntityTableName<TEntity>([NotNull] this DbContext context) where TEntity : class =>
+            context.Model!.FindEntityType<TEntity>()!.GetTableName();
+
+        [NotNull]
+        public static string TruncateSqlStr([NotNull] string tableName) => $"TRUNCATE TABLE {tableName}";
+
+        public static int TruncateTable(
             [NotNull] this DbContext context,
             [NotNull, ItemNotNull] IEnumerable<string> tableNames
-        )
-        {
-            foreach (var tableName in tableNames) context.Database!.ExecuteSqlRaw($"TRUNCATE TABLE {tableName}");
-        }
+        ) => tableNames.Sum(tableName => context.Database!.ExecuteSqlRaw(TruncateSqlStr(tableName)));
 
-        public static void TruncateTable(
+        public static int TruncateTable(
             [NotNull] this DbContext context,
             [NotNull, ItemNotNull] params string[] tableNames
         ) => context.TruncateTable((IEnumerable<string>)tableNames);
 
-        public static async Task TruncateTableAsync(
+        public static async Task<int> TruncateTableAsync(
             [NotNull] this DbContext context,
             [NotNull, ItemNotNull] IEnumerable<string> tableNames
-        )
-        {
-            foreach (var tableName in tableNames)
-                await context.Database!.ExecuteSqlRawAsync($"TRUNCATE TABLE {tableName}")!;
-        }
+        ) => await Task.Run(
+            async () => (await Task.WhenAll(
+                tableNames
+                    .Select(tableName => context.Database!.ExecuteSqlRawAsync(TruncateSqlStr(tableName))!)
+                    .ToList()
+            )).Sum()
+        );
 
-        public static async Task TruncateTableAsync(
+        public static async Task<int> TruncateTableAsync(
             [NotNull] this DbContext context,
             [NotNull, ItemNotNull] params string[] tableNames
         ) => await context.TruncateTableAsync((IEnumerable<string>)tableNames);
 
-        public static async Task TruncateTableFromDbSetAsync<TEntity>(
+        public static async Task<int> TruncateTableFromDbSetAsync<TEntity>(
             [NotNull] this DbContext context
-        ) where TEntity : class =>
-            await context.TruncateTableAsync(context.Model!.FindEntityType<TEntity>()!.GetTableName()!)!;
+        ) where TEntity : class => await context.TruncateTableAsync(context.GetEntityTableName<TEntity>()!);
 
-        public static void TruncateTableFromDbSet<TEntity>(
+        public static int TruncateTableFromDbSet<TEntity>(
             [NotNull] this DbContext context
-        ) where TEntity : class => context.TruncateTable(context.Model!.FindEntityType<TEntity>()!.GetTableName()!);
+        ) where TEntity : class => context.TruncateTable(context.GetEntityTableName<TEntity>()!);
 
-        public static void DeleteTable(
+        [NotNull]
+        public static string DeleteTableSqlStr(string tableName) => $"DELETE FROM {tableName}";
+
+        public static int DeleteTable(
             [NotNull] this DbContext context,
             [NotNull, ItemNotNull] IEnumerable<string> tableNames
-        )
-        {
-            foreach (var tableName in tableNames) context.Database!.ExecuteSqlRaw($"DELETE FROM {tableName}");
-        }
+        ) => tableNames.Sum(tableName => context.Database!.ExecuteSqlRaw(DeleteTableSqlStr(tableName)));
 
-        public static void DeleteTable(
+        public static int DeleteTable(
             [NotNull] this DbContext context,
             [NotNull, ItemNotNull] params string[] tableNames
         ) => context.DeleteTable((IEnumerable<string>)tableNames);
 
-        public static async Task DeleteTableAsync(
+        public static async Task<int> DeleteTableAsync(
             [NotNull] this DbContext context,
             [NotNull, ItemNotNull] IEnumerable<string> tableNames
-        )
-        {
-            foreach (var tableName in tableNames)
-                await context.Database!.ExecuteSqlRawAsync($"DELETE FROM {tableName}")!;
-        }
+        ) => await Task.Run(
+            async () => (await Task.WhenAll(
+                tableNames
+                    .Select(tableName => context.Database!.ExecuteSqlRawAsync(DeleteTableSqlStr(tableName))!)
+                    .ToList()
+            )).Sum()
+        );
 
-        public static async Task DeleteTableAsync(
+        public static async Task<int> DeleteTableAsync(
             [NotNull] this DbContext context,
             [NotNull, ItemNotNull] params string[] tableNames
         ) => await context.DeleteTableAsync((IEnumerable<string>)tableNames);
 
-        public static async Task DeleteTableFromDbSetAsync<TEntity>([NotNull] this DbContext context)
+        public static async Task<int> DeleteTableFromDbSetAsync<TEntity>([NotNull] this DbContext context)
             where TEntity : class =>
-            await context.DeleteTableAsync(context.Model!.FindEntityType<TEntity>()!.GetTableName()!)!;
+            await context.DeleteTableAsync(context.GetEntityTableName<TEntity>()!);
 
-        public static void DeleteTableFromDbSet<TEntity>([NotNull] this DbContext context) where TEntity : class =>
-            context.DeleteTable(context.Model!.FindEntityType<TEntity>()!.GetTableName()!);
+        public static int DeleteTableFromDbSet<TEntity>([NotNull] this DbContext context) where TEntity : class =>
+            context.DeleteTable(context.GetEntityTableName<TEntity>()!);
 
         #endregion
     }
