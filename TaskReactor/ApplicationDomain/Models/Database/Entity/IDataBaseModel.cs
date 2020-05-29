@@ -3,7 +3,7 @@
     /// <summary>
     /// Internally be used For data base entity type
     /// </summary>
-    public interface IDataBaseModel
+    public interface IDatabaseModel
     {
     }
 }

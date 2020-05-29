@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ApplicationDomain.Repository
 {
     public abstract class Repository<TDataBaseModel, TDbContext> where TDbContext : DbContext
-        where TDataBaseModel : DataBaseModel
+        where TDataBaseModel : DatabaseModel
     {
         [NotNull] public readonly TDbContext Context;
 

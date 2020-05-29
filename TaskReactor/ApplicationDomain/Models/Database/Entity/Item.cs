@@ -10,7 +10,7 @@ namespace ApplicationDomain.Models.Database.Entity
     /// Single time event
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-    public abstract class Item : DataBaseModel
+    public abstract class Item : DatabaseModel
     {
         [Required, NotNull] public string Title { get; set; }
 

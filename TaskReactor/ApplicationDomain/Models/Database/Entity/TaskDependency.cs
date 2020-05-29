@@ -7,7 +7,7 @@ namespace ApplicationDomain.Models.Database.Entity
     /// Item for task dependency
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-    public class TaskDependency : DataBaseModel
+    public class TaskDependency : DatabaseModel
     {
         [Required, NotNull] public UserTask Target { get; set; }
 

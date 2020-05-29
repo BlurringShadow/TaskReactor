@@ -2,7 +2,7 @@
 
 namespace ApplicationDomain.Models
 {
-    public static class DateTimeExtension
+    internal static class DateTimeExtension
     {
         public static DateTime AddWeeks(this DateTime dateTime, double value) => dateTime.AddDays(7 * value);
 

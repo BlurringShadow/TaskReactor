@@ -9,7 +9,7 @@ namespace ApplicationDomain.Models
     /// </summary>
     /// <typeparam name="TDataBaseModel"> Data base entity </typeparam>
     public abstract class Model<TDataBaseModel> : PropertyChangedBase, IModel
-        where TDataBaseModel : IDataBaseModel, new()
+        where TDataBaseModel : IDatabaseModel, new()
     {
         /// <summary>
         /// Create a default model instance with  <see cref="TDataBaseModel"/> default paramless constructor.
