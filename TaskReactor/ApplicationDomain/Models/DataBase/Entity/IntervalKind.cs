@@ -1,5 +1,8 @@
 ﻿namespace ApplicationDomain.Models.Database.Entity
 {
+    /// <summary>
+    /// Repetition mode
+    /// </summary>
     public enum IntervalKind : byte
     {
         YearByWeek,

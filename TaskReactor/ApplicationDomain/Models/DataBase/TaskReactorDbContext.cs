@@ -17,7 +17,6 @@ namespace ApplicationDomain.Models.Database
         /// Create the db file and tables if not exists.
         /// </summary>
         // ReSharper disable once NotNullMemberIsNotInitialized
-        [ImportingConstructor]
         public TaskReactorDbContext()
         {
             if(Database is null) throw new NullReferenceException();

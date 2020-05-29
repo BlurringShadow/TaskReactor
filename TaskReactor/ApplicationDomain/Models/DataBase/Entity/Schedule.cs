@@ -7,11 +7,14 @@ using Microsoft.Data.Sqlite;
 namespace ApplicationDomain.Models.Database.Entity
 {
     /// <summary>
-    /// Design for repetition.
+    /// Design for repeated event.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public class Schedule : Item
     {
+        /// <summary>
+        /// The time it cost to finish
+        /// </summary>
         [Required, Column(TypeName = nameof(SqliteType.Integer))]
         public TimeSpan DurationOfOneTime { get; set; }
 

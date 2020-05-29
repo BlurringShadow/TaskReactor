@@ -17,9 +17,9 @@ namespace ApplicationDomain.Models.Database.Repository
 
         public void Register([NotNull] User user) => Update(user);
 
-        public async Task<User> LogIn([NotNull] User user) => await LogIn(user, CancellationToken.None);
+        public async Task<User> LogInAsync([NotNull] User user) => await LogInAsync(user, CancellationToken.None);
 
-        public async Task<User> LogIn([NotNull] User user, CancellationToken token)
+        public async Task<User> LogInAsync([NotNull] User user, CancellationToken token)
         {
             var found = await DbSet.FindAsync(new object[] {user.Id}, token);
             return found?.Password == user.Password ? found : null;

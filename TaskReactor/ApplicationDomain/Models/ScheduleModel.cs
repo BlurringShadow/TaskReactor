@@ -45,7 +45,8 @@ namespace ApplicationDomain.Models
         }
 
         /// <summary>
-        /// Get the date time using specified interval count
+        /// Get the date time using specified interval count.
+        /// Implementation for <see cref="Database.Entity.Interval"/>
         /// </summary>
         /// <param name="count">Interval count</param>
         /// <returns></returns>

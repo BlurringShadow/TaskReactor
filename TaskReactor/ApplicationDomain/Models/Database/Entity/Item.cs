@@ -16,9 +16,15 @@ namespace ApplicationDomain.Models.Database.Entity
 
         public string Description { get; set; }
 
+        /// <summary>
+        /// Time when it first start
+        /// </summary>
         [Required, Column(TypeName = nameof(SqliteType.Integer))]
         public DateTime StartTime { get; set; }
 
+        /// <summary>
+        /// Time when it end
+        /// </summary>
         [Required, Column(TypeName = nameof(SqliteType.Integer))]
         public DateTime EndTime { get; set; }
     }

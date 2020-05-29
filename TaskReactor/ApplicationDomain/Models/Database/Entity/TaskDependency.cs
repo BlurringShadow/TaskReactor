@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 namespace ApplicationDomain.Models.Database.Entity
 {
     /// <summary>
-    /// Item for task dependency
+    /// Design for task dependency
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public class TaskDependency : DatabaseModel
