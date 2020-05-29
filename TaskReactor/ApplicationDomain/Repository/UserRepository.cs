@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
+using ApplicationDomain.Models.Database;
 using ApplicationDomain.Models.Database.Entity;
-using ApplicationDomain.Repository;
 using JetBrains.Annotations;
 
-namespace ApplicationDomain.Models.Database.Repository
+namespace ApplicationDomain.Repository
 {
     [Export]
     public sealed class UserRepository : Repository<User, TaskReactorDbContext>

@@ -4,12 +4,12 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ApplicationDomain.Models.Database;
 using ApplicationDomain.Models.Database.Entity;
-using ApplicationDomain.Repository;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApplicationDomain.Models.Database.Repository
+namespace ApplicationDomain.Repository
 {
     [Export]
     public class UserTaskRepository : Repository<UserTask, TaskReactorDbContext>

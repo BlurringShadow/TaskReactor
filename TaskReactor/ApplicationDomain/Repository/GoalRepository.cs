@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.Composition;
+using ApplicationDomain.Models.Database;
 using ApplicationDomain.Models.Database.Entity;
-using ApplicationDomain.Repository;
 using JetBrains.Annotations;
 
-namespace ApplicationDomain.Models.Database.Repository
+namespace ApplicationDomain.Repository
 {
     [Export]
     public class GoalRepository : Repository<Goal, TaskReactorDbContext>
