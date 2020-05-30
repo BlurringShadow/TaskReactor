@@ -1,6 +1,7 @@
 language: csharp
 mono: none
 os: windows
+solution: TaskReactor/TaskReactor.sln
 
 script:
   - choco install dotnetcore-sdk
