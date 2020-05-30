@@ -1,6 +1,5 @@
 language: csharp
 solution: TaskReactor/TaskReactor.sln
 dotnet: 3.1
-os: windows
 install:
-  - dotnet build  -c Release TaskReactor/TaskReactor.sln
+  - dotnet build -c Release TaskReactor/TaskReactor.sln
