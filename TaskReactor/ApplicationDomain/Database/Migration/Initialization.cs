@@ -10,12 +10,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.EntityFrameworkCore.Migrations.Operations.Builders;
 
-namespace ApplicationDomain.Database.Migrations
+namespace ApplicationDomain.Database.Migration
 {
     [DbContext(typeof(TaskReactorDbContext)),
      Migration("Initialization"),
      System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "InconsistentNaming")]
-    public class Initialization : Migration
+    public class Initialization : Microsoft.EntityFrameworkCore.Migrations.Migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder) =>
             TaskReactorDbContext.BuildEntity(modelBuilder);

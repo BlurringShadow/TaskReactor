@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Database\Converters\" />
+    <Folder Include="Database\Converter\" />
     <Folder Include="Service\" />
   </ItemGroup>
 
