@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ApplicationDomain.Database.Entity;
-using ApplicationDomain.Repository;
+using ApplicationDomain.DataRepository;
 using JetBrains.Annotations;
 using Xunit;
 using Xunit.Abstractions;

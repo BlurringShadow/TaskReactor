@@ -6,7 +6,7 @@ using ApplicationDomain.Database.Entity;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApplicationDomain.Repository
+namespace ApplicationDomain.DataRepository
 {
     internal interface IRepository<TDataBaseModel, out TDbContext>
         where TDataBaseModel : DatabaseModel where TDbContext : DbContext

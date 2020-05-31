@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.Json;
 using ApplicationDomain.Database;
 using ApplicationDomain.Database.Entity;
-using ApplicationDomain.Repository;
+using ApplicationDomain.DataRepository;
 using JetBrains.Annotations;
 using Presentation;
 using Xunit.Abstractions;

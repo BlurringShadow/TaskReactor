@@ -5,7 +5,7 @@ using ApplicationDomain.Database;
 using ApplicationDomain.Database.Entity;
 using JetBrains.Annotations;
 
-namespace ApplicationDomain.Repository
+namespace ApplicationDomain.DataRepository
 {
     [Export]
     public sealed class UserRepository : Repository<User, TaskReactorDbContext>

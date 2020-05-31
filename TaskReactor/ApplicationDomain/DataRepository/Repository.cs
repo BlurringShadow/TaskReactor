@@ -7,7 +7,7 @@ using ApplicationDomain.Database.Entity;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApplicationDomain.Repository
+namespace ApplicationDomain.DataRepository
 {
     public abstract class Repository<TDataBaseModel, TDbContext> : IRepository<TDataBaseModel, TDbContext>
         where TDbContext : DbContext

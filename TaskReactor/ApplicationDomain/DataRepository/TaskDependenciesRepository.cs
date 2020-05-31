@@ -9,7 +9,7 @@ using ApplicationDomain.Database.Entity;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApplicationDomain.Repository
+namespace ApplicationDomain.DataRepository
 {
     [Export]
     public class TaskDependenciesRepository : Repository<TaskDependency, TaskReactorDbContext>

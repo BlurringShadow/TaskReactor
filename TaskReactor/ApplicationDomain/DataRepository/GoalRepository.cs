@@ -3,7 +3,7 @@ using ApplicationDomain.Database;
 using ApplicationDomain.Database.Entity;
 using JetBrains.Annotations;
 
-namespace ApplicationDomain.Repository
+namespace ApplicationDomain.DataRepository
 {
     [Export]
     public class GoalRepository : Repository<Goal, TaskReactorDbContext>

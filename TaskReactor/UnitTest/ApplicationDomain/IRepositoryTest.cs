@@ -2,7 +2,7 @@ using System.ComponentModel.Composition.Hosting;
 using System.Text.Json;
 using ApplicationDomain.Database;
 using ApplicationDomain.Database.Entity;
-using ApplicationDomain.Repository;
+using ApplicationDomain.DataRepository;
 using Xunit.Abstractions;
 
 namespace UnitTest.ApplicationDomain
