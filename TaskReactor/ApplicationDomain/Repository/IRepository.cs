@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using ApplicationDomain.Models.Database.Entity;
+using ApplicationDomain.Database.Entity;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
@@ -74,12 +74,12 @@ namespace ApplicationDomain.Repository
         /// <summary>
         /// Update the entities
         /// </summary>
-        void Update([NotNull] params TDataBaseModel[] models);
+        void Update([NotNull, ItemNotNull] params TDataBaseModel[] models);
 
         /// <summary>
         /// Update the entities
         /// </summary>
-        void Update([NotNull] IEnumerable<TDataBaseModel> models);
+        void Update([NotNull, ItemNotNull] IEnumerable<TDataBaseModel> models);
 
 
         /// <summary>

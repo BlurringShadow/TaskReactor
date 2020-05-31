@@ -2,7 +2,7 @@
 
 namespace ApplicationDomain.Models
 {
-    public interface IModel : INotifyPropertyChangedEx
+    interface IModel : INotifyPropertyChangedEx
     {
     }
 }

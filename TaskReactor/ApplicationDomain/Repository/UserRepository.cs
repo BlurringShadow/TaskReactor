@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-using ApplicationDomain.Models.Database;
-using ApplicationDomain.Models.Database.Entity;
+using ApplicationDomain.Database;
+using ApplicationDomain.Database.Entity;
 using JetBrains.Annotations;
 
 namespace ApplicationDomain.Repository
@@ -15,6 +15,10 @@ namespace ApplicationDomain.Repository
         {
         }
 
+        /// <summary>
+        /// Register a uer
+        /// </summary>
+        /// <param name="user"> Id will be reassigned after finishing update </param>
         public void Register([NotNull] User user) => Update(user);
 
         public async Task<User> LogInAsync([NotNull] User user) => await LogInAsync(user, CancellationToken.None);

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using JetBrains.Annotations;
 
-namespace ApplicationDomain.Models.Database.Entity
+namespace ApplicationDomain.Database.Entity
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public class User : DatabaseModel, IIdentityKey

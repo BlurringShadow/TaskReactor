@@ -4,8 +4,8 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ApplicationDomain.Models.Database;
-using ApplicationDomain.Models.Database.Entity;
+using ApplicationDomain.Database;
+using ApplicationDomain.Database.Entity;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 

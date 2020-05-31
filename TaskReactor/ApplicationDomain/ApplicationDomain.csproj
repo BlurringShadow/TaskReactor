@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Converters\" />
+    <Folder Include="Database\Converters\" />
+    <Folder Include="Models\Database\Entity\" />
+    <Folder Include="Models\Database\Migrations\" />
   </ItemGroup>
 
   <ItemGroup>

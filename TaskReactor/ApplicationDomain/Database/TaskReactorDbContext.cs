@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.IO;
-using ApplicationDomain.Models.Database.Entity;
+using ApplicationDomain.Database.Entity;
 using JetBrains.Annotations;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApplicationDomain.Models.Database
+namespace ApplicationDomain.Database
 {
     [Export]
     public sealed class TaskReactorDbContext : DbContext

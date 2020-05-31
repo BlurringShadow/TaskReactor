@@ -7,7 +7,7 @@ using System.ComponentModel.Composition.Primitives;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Threading;
-using ApplicationDomain.Models.Database;
+using ApplicationDomain.Database;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 using Presentation.ViewModels;

@@ -1,4 +1,4 @@
-﻿namespace ApplicationDomain.Models.Database.Entity
+﻿namespace ApplicationDomain.Database.Entity
 {
     public interface IIdentityKey : IDatabaseModel
     {

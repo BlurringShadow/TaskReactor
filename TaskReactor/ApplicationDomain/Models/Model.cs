@@ -1,11 +1,11 @@
-﻿using ApplicationDomain.Models.Database.Entity;
+﻿using ApplicationDomain.Database.Entity;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
 namespace ApplicationDomain.Models
 {
     /// <summary>
-    /// Model view of the entity type
+    /// Model data view of the entity type
     /// </summary>
     /// <typeparam name="TDataBaseModel"> Data base entity </typeparam>
     public abstract class Model<TDataBaseModel> : PropertyChangedBase, IModel
@@ -20,6 +20,6 @@ namespace ApplicationDomain.Models
 
         protected Model([NotNull] TDataBaseModel dataBaseModel) => _dataBaseModel = dataBaseModel;
 
-        [NotNull] protected internal TDataBaseModel _dataBaseModel { get; }
+        [NotNull] protected internal readonly TDataBaseModel _dataBaseModel;
     }
 }

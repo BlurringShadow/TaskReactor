@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using JetBrains.Annotations;
 using Microsoft.Data.Sqlite;
 
-namespace ApplicationDomain.Models.Database.Entity
+namespace ApplicationDomain.Database.Entity
 {
     /// <summary>
     /// Single time event

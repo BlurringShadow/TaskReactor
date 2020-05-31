@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ApplicationDomain.Models.Database.Entity
+namespace ApplicationDomain.Database.Entity
 {
     /// <summary>
     /// <para> Design for schedule repetition. </para>

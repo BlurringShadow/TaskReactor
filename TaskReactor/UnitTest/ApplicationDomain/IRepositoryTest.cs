@@ -1,7 +1,7 @@
 using System.ComponentModel.Composition.Hosting;
 using System.Text.Json;
-using ApplicationDomain.Models.Database;
-using ApplicationDomain.Models.Database.Entity;
+using ApplicationDomain.Database;
+using ApplicationDomain.Database.Entity;
 using ApplicationDomain.Repository;
 using Xunit.Abstractions;
 

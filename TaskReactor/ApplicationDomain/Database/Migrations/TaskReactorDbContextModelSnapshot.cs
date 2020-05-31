@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace ApplicationDomain.Models.Database.Migrations
+namespace ApplicationDomain.Database.Migrations
 {
     [DbContext(typeof(TaskReactorDbContext))]
     class TaskReactorDbContextModelSnapshot : ModelSnapshot

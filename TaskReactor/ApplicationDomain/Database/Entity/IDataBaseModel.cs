@@ -1,4 +1,4 @@
-﻿namespace ApplicationDomain.Models.Database.Entity
+﻿namespace ApplicationDomain.Database.Entity
 {
     /// <summary>
     /// Internally be used For data base entity type

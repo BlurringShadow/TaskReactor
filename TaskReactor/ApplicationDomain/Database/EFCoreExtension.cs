@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ApplicationDomain.Models.Database
+namespace ApplicationDomain.Database
 {
     public static class EFCoreExtension
     {

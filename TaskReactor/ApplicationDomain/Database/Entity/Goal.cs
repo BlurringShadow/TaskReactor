@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using JetBrains.Annotations;
 
-namespace ApplicationDomain.Models.Database.Entity
+namespace ApplicationDomain.Database.Entity
 {
     /// <summary>
     /// Each task contains several goals to complete

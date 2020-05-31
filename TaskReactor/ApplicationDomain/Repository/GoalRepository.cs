@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.Composition;
-using ApplicationDomain.Models.Database;
-using ApplicationDomain.Models.Database.Entity;
+using ApplicationDomain.Database;
+using ApplicationDomain.Database.Entity;
 using JetBrains.Annotations;
 
 namespace ApplicationDomain.Repository

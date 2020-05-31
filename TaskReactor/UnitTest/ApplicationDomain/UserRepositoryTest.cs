@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using ApplicationDomain.Models.Database.Entity;
+using ApplicationDomain.Database.Entity;
 using ApplicationDomain.Repository;
 using JetBrains.Annotations;
 using Xunit;
