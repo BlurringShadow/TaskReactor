@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace ApplicationDomain.DataModel
 {
-    public abstract class ScheduleModel<T> : ItemModel<T> where T : Schedule, new()
+    public abstract class ScheduleModel<T> : ItemModel<T> where T : class, ISchedule, new()
     {
         public override DateTime StartTime
         {

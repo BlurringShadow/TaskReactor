@@ -6,10 +6,8 @@ using JetBrains.Annotations;
 namespace ApplicationDomain.Database.Entity
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-    public class User : DatabaseModel, IIdentityKey
+    public class User : KeyedEntity<int>
     {
-        public int Id { get; set; }
-
         [Required, NotNull] public string Name { get; set; }
 
         [Required, NotNull] public string Password { get; set; }

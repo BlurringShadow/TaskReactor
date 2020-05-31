@@ -10,22 +10,22 @@ namespace ApplicationDomain.Database.Entity
     /// Single time event
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-    public abstract class Item : DatabaseModel
+    public interface IItem : IDatabaseModel
     {
-        [Required, NotNull] public string Title { get; set; }
+        [Required, NotNull] string Title { get; set; }
 
-        public string Description { get; set; }
+        string Description { get; set; }
 
         /// <summary>
         /// Time when it first start
         /// </summary>
         [Required, Column(TypeName = nameof(SqliteType.Integer))]
-        public DateTime StartTime { get; set; }
+        DateTime StartTime { get; set; }
 
         /// <summary>
         /// Time when it end
         /// </summary>
         [Required, Column(TypeName = nameof(SqliteType.Integer))]
-        public DateTime EndTime { get; set; }
+        DateTime EndTime { get; set; }
     }
 }

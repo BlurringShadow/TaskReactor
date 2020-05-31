@@ -1,7 +1,12 @@
 ﻿namespace ApplicationDomain.Database.Entity
 {
-    public interface IIdentityKey : IDatabaseModel
+    interface IIdentityKey : IDatabaseModel
     {
-        int Id { get; set; }
+        object Id { get; }
+    }
+
+    interface IIdentityKey<T> : IIdentityKey
+    {
+        new T Id { get; set; }
     }
 }

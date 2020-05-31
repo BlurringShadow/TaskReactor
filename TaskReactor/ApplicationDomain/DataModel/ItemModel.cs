@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace ApplicationDomain.DataModel
 {
-    public abstract class ItemModel<TItem> : Model<TItem> where TItem : Item, new()
+    public abstract class ItemModel<TItem> : Model<TItem> where TItem : class, IItem, new()
     {
         protected ItemModel([NotNull] TItem item) : base(item)
         {

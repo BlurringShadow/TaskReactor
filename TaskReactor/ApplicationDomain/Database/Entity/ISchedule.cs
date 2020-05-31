@@ -10,14 +10,14 @@ namespace ApplicationDomain.Database.Entity
     /// Design for repeated event.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-    public class Schedule : Item
+    public interface ISchedule : IItem
     {
         /// <summary>
         /// The time it cost to finish
         /// </summary>
         [Required, Column(TypeName = nameof(SqliteType.Integer))]
-        public TimeSpan DurationOfOneTime { get; set; }
+        TimeSpan DurationOfOneTime { get; set; }
 
-        [Required, NotNull] public Interval Interval { get; set; }
+        [Required, NotNull] Interval Interval { get; set; }
     }
 }
