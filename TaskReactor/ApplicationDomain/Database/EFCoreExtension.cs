@@ -12,7 +12,7 @@ namespace ApplicationDomain.Database
     public static class EFCoreExtension
     {
         public static IEntityType FindEntityType<TEntity>(
-            [NotNull] this Microsoft.EntityFrameworkCore.Metadata.IModel model
+            [NotNull] this IModel model
         ) where TEntity : class => model.FindEntityType(typeof(TEntity));
 
         [NotNull]
