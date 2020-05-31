@@ -1,7 +1,7 @@
 ﻿using ApplicationDomain.Database.Entity;
 using JetBrains.Annotations;
 
-namespace ApplicationDomain.Models
+namespace ApplicationDomain.DataModel
 {
     public class UserTaskModel : ItemModel<UserTask>
     {

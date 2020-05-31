@@ -2,7 +2,7 @@
 using ApplicationDomain.Database.Entity;
 using JetBrains.Annotations;
 
-namespace ApplicationDomain.Models
+namespace ApplicationDomain.DataModel
 {
     public abstract class ItemModel<TItem> : Model<TItem> where TItem : Item, new()
     {

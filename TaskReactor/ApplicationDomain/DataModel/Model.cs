@@ -2,7 +2,7 @@
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
-namespace ApplicationDomain.Models
+namespace ApplicationDomain.DataModel
 {
     /// <summary>
     /// Model data view of the entity type

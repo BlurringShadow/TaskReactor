@@ -3,7 +3,7 @@ using System.ComponentModel;
 using ApplicationDomain.Database.Entity;
 using JetBrains.Annotations;
 
-namespace ApplicationDomain.Models
+namespace ApplicationDomain.DataModel
 {
     public abstract class ScheduleModel<T> : ItemModel<T> where T : Schedule, new()
     {

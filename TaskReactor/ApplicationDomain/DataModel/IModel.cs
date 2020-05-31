@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
 
-namespace ApplicationDomain.Models
+namespace ApplicationDomain.DataModel
 {
     interface IModel : INotifyPropertyChangedEx
     {
