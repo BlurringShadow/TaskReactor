@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Database\Converter\" />
-    <Folder Include="ModelService\" />
   </ItemGroup>
 
   <ItemGroup>

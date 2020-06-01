@@ -9,13 +9,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationDomain.DataRepository
 {
-    public abstract class Repository<TDataBaseModel, TDbContext> : IRepository<TDataBaseModel, TDbContext>
+    public abstract class Repository<TDatabaseModel, TDbContext> : IRepository<TDatabaseModel, TDbContext>
         where TDbContext : DbContext
-        where TDataBaseModel : DatabaseModel
+        where TDatabaseModel : DatabaseModel
     {
         public TDbContext Context { get; }
 
-        public DbSet<TDataBaseModel> DbSet => Context.Set<TDataBaseModel>()!;
+        public DbSet<TDatabaseModel> DbSet => Context.Set<TDatabaseModel>()!;
 
         protected Repository([NotNull] TDbContext context) => Context = context;
 
@@ -24,21 +24,21 @@ namespace ApplicationDomain.DataRepository
         public async Task<bool> ContainsByKeyAsync(IEnumerable keys, CancellationToken token) =>
             !(await FindByKeys(keys, token) is null);
 
-        public async ValueTask<TDataBaseModel> FindByKeys(IEnumerable keys) =>
+        public async ValueTask<TDatabaseModel> FindByKeys(IEnumerable keys) =>
             await FindByKeys(keys, CancellationToken.None);
 
-        public async ValueTask<TDataBaseModel> FindByKeys(IEnumerable keys, CancellationToken token) =>
+        public async ValueTask<TDatabaseModel> FindByKeys(IEnumerable keys, CancellationToken token) =>
             (await DbSet.FindAsync(keys, token))!;
 
-        public void Remove(params TDataBaseModel[] models) => Remove((IEnumerable<TDataBaseModel>)models);
+        public void Remove(params TDatabaseModel[] models) => Remove((IEnumerable<TDatabaseModel>)models);
 
-        public void Remove(IEnumerable<TDataBaseModel> models) => DbSet.RemoveRange(models);
+        public void Remove(IEnumerable<TDatabaseModel> models) => DbSet.RemoveRange(models);
 
-        public async Task RemoveAllAsync() => await Context.DeleteTableFromDbSetAsync<TDataBaseModel>();
+        public async Task RemoveAllAsync() => await Context.DeleteTableFromDbSetAsync<TDatabaseModel>();
 
-        public void Update(params TDataBaseModel[] models) => Update((IEnumerable<TDataBaseModel>)models);
+        public void Update(params TDatabaseModel[] models) => Update((IEnumerable<TDatabaseModel>)models);
 
-        public void Update(IEnumerable<TDataBaseModel> models) => DbSet.UpdateRange(models);
+        public void Update(IEnumerable<TDatabaseModel> models) => DbSet.UpdateRange(models);
 
         public async Task<int> DbSync() => await DbSync(CancellationToken.None);
 

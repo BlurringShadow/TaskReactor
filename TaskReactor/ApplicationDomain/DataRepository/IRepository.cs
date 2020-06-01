@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationDomain.DataRepository
 {
-    internal interface IRepository<TDataBaseModel, out TDbContext>
+    public interface IRepository<TDataBaseModel, out TDbContext>
         where TDataBaseModel : DatabaseModel where TDbContext : DbContext
 
     {
