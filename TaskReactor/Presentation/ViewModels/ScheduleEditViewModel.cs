@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
-using ApplicationDomain.Models.Database.Entity;
+using ApplicationDomain.Database.Entity;
 using JetBrains.Annotations;
 
 namespace Presentation.ViewModels

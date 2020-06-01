@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Converters\" />
+    <Folder Include="Database\Converter\" />
   </ItemGroup>
 
   <ItemGroup>
