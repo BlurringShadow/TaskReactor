@@ -26,7 +26,7 @@ namespace ApplicationDomain.DataRepository
             await GetAllFromUserAsync(user, CancellationToken.None);
 
         public async Task<List<UserTask>> GetAllFromUserAsync(User user, CancellationToken token) =>
-            await _getAllFromUserQuery(Context, user, token)!;
+            (await _getAllFromUserQuery(Context, user, token)!)!;
 
         public void AddToUser(User user, params UserTask[] userTasks) => 
             AddToUser(user, (IEnumerable<UserTask>)userTasks);
