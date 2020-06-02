@@ -8,6 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationDomain.DataRepository
 {
+    /// <summary>
+    /// Provide basic data operation
+    /// </summary>
+    /// <typeparam name="TDataBaseModel"> database entity model </typeparam>
+    /// <typeparam name="TDbContext"> database context </typeparam>
     public interface IRepository<TDataBaseModel, out TDbContext>
         where TDataBaseModel : DatabaseModel where TDbContext : DbContext
 
