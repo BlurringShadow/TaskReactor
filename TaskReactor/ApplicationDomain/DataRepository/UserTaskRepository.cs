@@ -11,21 +11,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationDomain.DataRepository
 {
-    [Export]
-    public class UserTaskRepository : Repository<UserTask, TaskReactorDbContext>
+    sealed class UserTaskRepository : Repository<UserTask, TaskReactorDbContext>, IUserTaskRepository
     {
         [NotNull] private readonly Func<DbContext, User, CancellationToken, Task<List<UserTask>>> _getAllFromUserQuery;
 
         [ImportingConstructor]
-        public UserTaskRepository([NotNull] TaskReactorDbContext context) : base(context)
-        {
+        public UserTaskRepository([NotNull] TaskReactorDbContext context) : base(context) =>
             _getAllFromUserQuery = EF.CompileAsyncQuery(
                 (DbContext ctx, User user, CancellationToken token) =>
                     ctx.Set<UserTask>()!.Where(task => task.OwnerUser.Id == user.Id).ToList()
             )!;
-        }
 
-        public async Task<List<UserTask>> GetAllFromUserAsync([NotNull] User user, CancellationToken token) =>
+        public async Task<List<UserTask>> GetAllFromUserAsync(User user) =>
+            await _getAllFromUserQuery(Context, user, CancellationToken.None)!;
+
+        public async Task<List<UserTask>> GetAllFromUserAsync(User user, CancellationToken token) =>
             await _getAllFromUserQuery(Context, user, token)!;
     }
 }
