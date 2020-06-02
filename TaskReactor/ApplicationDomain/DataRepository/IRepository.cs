@@ -78,12 +78,12 @@ namespace ApplicationDomain.DataRepository
         Task RemoveAllAsync();
 
         /// <summary>
-        /// Update the entities
+        /// Update or add the entities
         /// </summary>
         void Update([NotNull, ItemNotNull] params TDataBaseModel[] models);
 
         /// <summary>
-        /// Update the entities
+        /// Update or add the entities
         /// </summary>
         void Update([NotNull, ItemNotNull] IEnumerable<TDataBaseModel> models);
 
