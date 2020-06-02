@@ -22,12 +22,12 @@ namespace ApplicationDomain.DataRepository
         public async Task<bool> ContainsByKeyAsync(IEnumerable keys) => await ContainsByKeyAsync(keys, CancellationToken.None);
 
         public async Task<bool> ContainsByKeyAsync(IEnumerable keys, CancellationToken token) =>
-            !(await FindByKeys(keys, token) is null);
+            !(await FindByKeysAsync(keys, token) is null);
 
-        public async ValueTask<TDatabaseModel> FindByKeys(IEnumerable keys) =>
-            await FindByKeys(keys, CancellationToken.None);
+        public async ValueTask<TDatabaseModel> FindByKeysAsync(IEnumerable keys) =>
+            await FindByKeysAsync(keys, CancellationToken.None);
 
-        public async ValueTask<TDatabaseModel> FindByKeys(IEnumerable keys, CancellationToken token) =>
+        public async ValueTask<TDatabaseModel> FindByKeysAsync(IEnumerable keys, CancellationToken token) =>
             (await DbSet.FindAsync(keys, token))!;
 
         public void Remove(params TDatabaseModel[] models) => Remove((IEnumerable<TDatabaseModel>)models);
@@ -42,7 +42,6 @@ namespace ApplicationDomain.DataRepository
 
         public async Task<int> DbSync() => await DbSync(CancellationToken.None);
 
-        public async Task<int> DbSync(CancellationToken token) =>
-            await Context.SaveChangesAsync(token)!;
+        public async Task<int> DbSync(CancellationToken token) => await Context.SaveChangesAsync(token)!;
     }
 }

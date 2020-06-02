@@ -44,7 +44,7 @@ namespace ApplicationDomain.DataRepository
         /// </summary>
         /// <param name="keys"> input keys </param>
         /// <returns> Return an async task with finding result. </returns>
-        ValueTask<TDataBaseModel> FindByKeys(IEnumerable keys);
+        ValueTask<TDataBaseModel> FindByKeysAsync(IEnumerable keys);
 
         /// <summary>
         /// Find with keys
@@ -52,7 +52,7 @@ namespace ApplicationDomain.DataRepository
         /// <param name="keys"> input keys </param>
         /// <param name="token"> <see cref="CancellationToken"/> </param>
         /// <returns> Return an async task with finding result. </returns>
-        ValueTask<TDataBaseModel> FindByKeys(IEnumerable keys, CancellationToken token);
+        ValueTask<TDataBaseModel> FindByKeysAsync(IEnumerable keys, CancellationToken token);
 
         /// <summary>
         /// Remove the entities
