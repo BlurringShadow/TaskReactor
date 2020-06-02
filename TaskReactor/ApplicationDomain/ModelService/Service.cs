@@ -12,13 +12,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationDomain.ModelService
 {
-    public abstract class Service<TDatabaseModel, TDbContext, TRepository, TModel> : 
-        IService<TDatabaseModel, TDbContext, TRepository, TModel> 
+    public abstract class Service<TDatabaseModel, TDbContext, TRepository, TModel> :
+        IService<TDatabaseModel, TDbContext, TRepository, TModel>
         where TDatabaseModel : DatabaseModel, new()
         where TDbContext : DbContext
         where TRepository : IRepository<TDatabaseModel, TDbContext>
         where TModel : Model<TDatabaseModel>, new()
     {
+        [NotNull]
+        protected static TModel CreateModelInstance([NotNull] TDatabaseModel databaseModel) =>
+            ModelConstructionProvider<TModel, TDatabaseModel>.CreateModelInstance(databaseModel);
+
         public TRepository Repository { get; }
 
         protected Service([NotNull] TRepository repository) => Repository = repository;
@@ -32,10 +36,11 @@ namespace ApplicationDomain.ModelService
         public async ValueTask<TModel> FindByKeysAsync(IEnumerable keys) =>
             await FindByKeysAsync(keys, CancellationToken.None);
 
-        public async ValueTask<TModel> FindByKeysAsync(IEnumerable keys, CancellationToken token) =>
-            ModelConstructionProvider<TModel, TDatabaseModel>.CreateModelInstance(
-                await Repository.FindByKeysAsync(keys, token)
-            );
+        public async ValueTask<TModel> FindByKeysAsync(IEnumerable keys, CancellationToken token)
+        {
+            var result = await Repository.FindByKeysAsync(keys, token);
+            return result is null ? null : CreateModelInstance(result);
+        }
 
         public void Remove(params TModel[] models) => Remove((IEnumerable<TModel>)models);
 
