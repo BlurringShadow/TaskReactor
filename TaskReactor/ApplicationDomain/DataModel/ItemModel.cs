@@ -10,7 +10,7 @@ namespace ApplicationDomain.DataModel
         {
         }
 
-        protected ItemModel()
+        protected ItemModel() : base(new TItem {StartTime = DateTime.Now, EndTime = DateTime.Now})
         {
         }
 
