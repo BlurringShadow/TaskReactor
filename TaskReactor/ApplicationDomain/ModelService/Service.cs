@@ -12,7 +12,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationDomain.ModelService
 {
-    public abstract class Service<TDatabaseModel, TDbContext, TRepository, TModel> : IService<TDatabaseModel, TDbContext, TRepository, TModel> where TDatabaseModel : DatabaseModel, new()
+    public abstract class Service<TDatabaseModel, TDbContext, TRepository, TModel> : 
+        IService<TDatabaseModel, TDbContext, TRepository, TModel> 
+        where TDatabaseModel : DatabaseModel, new()
         where TDbContext : DbContext
         where TRepository : IRepository<TDatabaseModel, TDbContext>
         where TModel : Model<TDatabaseModel>, new()
@@ -44,7 +46,8 @@ namespace ApplicationDomain.ModelService
 
         public void Update(params TModel[] models) => Update((IEnumerable<TModel>)models);
 
-        public void Update(IEnumerable<TModel> models) => Repository.Update(from model in models select model._dataBaseModel);
+        public void Update(IEnumerable<TModel> models) =>
+            Repository.Update(from model in models select model._dataBaseModel);
 
         public async Task<int> DbSync() => await DbSync(CancellationToken.None);
 

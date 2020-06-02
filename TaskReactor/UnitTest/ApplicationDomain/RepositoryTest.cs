@@ -14,7 +14,7 @@ namespace UnitTest.ApplicationDomain
 {
     public abstract class RepositoryTest<TDatabaseModel, TRepository> : IRepositoryTest<TDatabaseModel, TRepository>
         where TDatabaseModel : DatabaseModel
-        where TRepository : Repository<TDatabaseModel, TaskReactorDbContext>
+        where TRepository : IRepository<TDatabaseModel, TaskReactorDbContext>
     {
         /// <summary>
         /// Output message helper <see cref="ITestOutputHelper"/>

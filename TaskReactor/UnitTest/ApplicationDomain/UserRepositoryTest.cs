@@ -11,7 +11,7 @@ using Xunit.Priority;
 namespace UnitTest.ApplicationDomain
 {
     [TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
-    public sealed class UserRepositoryTest : RepositoryTest<User, UserRepository>
+    public sealed class UserRepositoryTest : RepositoryTest<User, IUserRepository>
     {
         [NotNull] internal static readonly User[] TestEntities =
         {

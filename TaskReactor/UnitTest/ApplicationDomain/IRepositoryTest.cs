@@ -9,7 +9,7 @@ namespace UnitTest.ApplicationDomain
 {
     interface IRepositoryTest<TDatabaseModel, out TRepository>
         where TDatabaseModel : DatabaseModel 
-        where TRepository : Repository<TDatabaseModel, TaskReactorDbContext>
+        where TRepository : IRepository<TDatabaseModel, TaskReactorDbContext>
     {
         ITestOutputHelper TestOutputHelper { get; }
         CompositionContainer Container { get; }
