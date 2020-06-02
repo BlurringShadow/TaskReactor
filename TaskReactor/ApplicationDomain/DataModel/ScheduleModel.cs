@@ -73,5 +73,9 @@ namespace ApplicationDomain.DataModel
         protected ScheduleModel([NotNull] T item) : base(item)
         {
         }
+
+        protected ScheduleModel()
+        {
+        }
     }
 }

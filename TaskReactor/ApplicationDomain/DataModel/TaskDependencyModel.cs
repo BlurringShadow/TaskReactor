@@ -5,6 +5,14 @@ namespace ApplicationDomain.DataModel
 {
     public sealed class TaskDependencyModel : Model<TaskDependency>
     {
+        public TaskDependencyModel()
+        {
+        }
+
+        internal TaskDependencyModel([NotNull] TaskDependency taskDependency) : base(taskDependency)
+        {
+        }
+
         [NotNull] public UserTaskModel Target
         {
             get => new UserTaskModel(_dataBaseModel.Target);

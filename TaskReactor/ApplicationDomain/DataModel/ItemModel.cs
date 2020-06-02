@@ -10,6 +10,10 @@ namespace ApplicationDomain.DataModel
         {
         }
 
+        protected ItemModel()
+        {
+        }
+
         [NotNull] public virtual string Title
         {
             get => _dataBaseModel.Title;

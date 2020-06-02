@@ -5,6 +5,10 @@ namespace ApplicationDomain.DataModel
 {
     public class UserTaskModel : ItemModel<UserTask>
     {
+        public UserTaskModel()
+        {
+        }
+
         internal UserTaskModel([NotNull] UserTask userTask) : base(userTask)
         {
         }
