@@ -23,7 +23,7 @@ namespace ApplicationDomain.DataRepository
             )!;
 
         public async Task<List<UserTask>> GetAllFromUserAsync(User user) =>
-            await _getAllFromUserQuery(Context, user, CancellationToken.None)!;
+            await GetAllFromUserAsync(user, CancellationToken.None);
 
         public async Task<List<UserTask>> GetAllFromUserAsync(User user, CancellationToken token) =>
             await _getAllFromUserQuery(Context, user, token)!;
