@@ -1,4 +1,5 @@
-﻿using ApplicationDomain.Database.Entity;
+﻿using System;
+using ApplicationDomain.Database.Entity;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
@@ -11,6 +12,10 @@ namespace ApplicationDomain.DataModel
     public abstract class Model<TDataBaseModel> : PropertyChangedBase, IModel
         where TDataBaseModel : class, IDatabaseModel, new()
     {
+        [NotNull] protected internal readonly TDataBaseModel _dataBaseModel;
+
+        [NotNull] public Type InstanceType { get; }
+
         /// <summary>
         /// Create a default model instance with  <see cref="TDataBaseModel"/> default paramless constructor.
         /// </summary>
@@ -18,8 +23,10 @@ namespace ApplicationDomain.DataModel
         {
         }
 
-        protected Model([NotNull] TDataBaseModel dataBaseModel) => _dataBaseModel = dataBaseModel;
-
-        [NotNull] protected internal readonly TDataBaseModel _dataBaseModel;
+        internal Model([NotNull] TDataBaseModel dataBaseModel)
+        {
+            _dataBaseModel = dataBaseModel;
+            InstanceType = GetType();
+        }
     }
 }
