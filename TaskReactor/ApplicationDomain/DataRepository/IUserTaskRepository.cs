@@ -16,7 +16,7 @@ namespace ApplicationDomain.DataRepository
         /// </summary>
         /// <param name="user"> The user </param>
         /// <returns> Async result contains list of <see cref="UserTask"/> </returns>
-        [NotNull]
+        [NotNull, ItemNotNull]
         Task<List<UserTask>> GetAllFromUserAsync([NotNull] User user);
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace ApplicationDomain.DataRepository
         /// <param name="user"> The user </param>
         /// <param name="token"> <see cref="CancellationToken"/> </param>
         /// <returns> Async result contains list of <see cref="UserTask"/> </returns>
-        [NotNull]
+        [NotNull, ItemNotNull]
         Task<List<UserTask>> GetAllFromUserAsync([NotNull] User user, CancellationToken token);
 
         /// <summary>
