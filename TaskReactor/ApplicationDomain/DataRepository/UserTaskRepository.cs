@@ -27,5 +27,17 @@ namespace ApplicationDomain.DataRepository
 
         public async Task<List<UserTask>> GetAllFromUserAsync(User user, CancellationToken token) =>
             await _getAllFromUserQuery(Context, user, token)!;
+
+        public void AddToUser(User user, params UserTask[] userTasks) => 
+            AddToUser(user, (IEnumerable<UserTask>)userTasks);
+
+        public void AddToUser(User user, IEnumerable<UserTask> userTasks)
+        {
+            foreach (var userTask in userTasks)
+            {
+                userTask.OwnerUser = user;
+                Update(userTask);
+            }
+        }
     }
 }

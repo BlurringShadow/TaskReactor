@@ -29,5 +29,15 @@ namespace ApplicationDomain.ModelService
         /// <returns> Async result contains list of <see cref="UserTask"/> </returns>
         [NotNull]
         Task<List<UserTask>> GetAllFromUserAsync([NotNull] UserModel user, CancellationToken token);
+
+        /// <summary>
+        /// Add tasks to user
+        /// </summary>
+        void AddToUser([NotNull] UserModel user, [NotNull, ItemNotNull] params UserTaskModel[] userTasks);
+
+        /// <summary>
+        /// Add tasks to user
+        /// </summary>
+        void AddToUser([NotNull] UserModel user, [NotNull, ItemNotNull] IEnumerable<UserTaskModel> userTasks);
     }
 }

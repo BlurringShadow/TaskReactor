@@ -27,5 +27,15 @@ namespace ApplicationDomain.DataRepository
         /// <returns> Async result contains list of <see cref="UserTask"/> </returns>
         [NotNull]
         Task<List<UserTask>> GetAllFromUserAsync([NotNull] User user, CancellationToken token);
+
+        /// <summary>
+        /// Add tasks to user
+        /// </summary>
+        void AddToUser([NotNull] User user, [NotNull, ItemNotNull] params UserTask[] userTasks);
+
+        /// <summary>
+        /// Add tasks to user
+        /// </summary>
+        void AddToUser([NotNull] User user, [NotNull, ItemNotNull] IEnumerable<UserTask> userTasks);
     }
 }
