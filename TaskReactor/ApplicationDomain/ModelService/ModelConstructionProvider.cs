@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace ApplicationDomain.ModelService
 {
-    internal static class ModelConstructionProvider<TModel, TDatabaseModel>
+    static class ModelConstructionProvider<TModel, TDatabaseModel>
         where TDatabaseModel : DatabaseModel, new()
         where TModel : Model<TDatabaseModel>, new()
     {
