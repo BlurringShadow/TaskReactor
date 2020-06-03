@@ -18,14 +18,17 @@ namespace ApplicationDomain.DataRepository
         {
         }
 
-        public async Task<List<TaskDependency>> GetDependenciesAsync(UserTask task) =>
+        public async Task<IList<TaskDependency>> GetDependenciesAsync(UserTask task) =>
             await GetDependenciesAsync(task, CancellationToken.None)!;
 
-        public async Task<List<TaskDependency>> GetDependenciesAsync(UserTask task, CancellationToken token) =>
-            (await Context.Set<TaskDependency>()!
-                        .Include(d => d.Target)!
-                    .Include(d => d.Dependency)!
-                .Where(dependency => dependency.Target.Id == task.Id).ToListAsync(token)!)!;
+        public async Task<IList<TaskDependency>> GetDependenciesAsync(UserTask task, CancellationToken token) =>
+            (await Task.Run(
+                () => Context.Set<TaskDependency>()!
+                            .Include(d => d.Target)!
+                        .Include(d => d.Dependency)!
+                    .Where(dependency => dependency.Target.Id == task.Id).ToList()!
+                , token
+            ))!;
 
         public IList<TaskDependency> AddDependencies(
             UserTask target,

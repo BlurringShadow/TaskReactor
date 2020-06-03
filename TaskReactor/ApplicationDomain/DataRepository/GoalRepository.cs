@@ -35,11 +35,15 @@ namespace ApplicationDomain.DataRepository
 
         public void AddToTask(UserTask userTask, IEnumerable<Goal> goals)
         {
+            userTask.Goals ??= new List<Goal>();
             foreach (var goal in goals)
             {
+                // ReSharper disable once PossibleNullReferenceException
                 goal.FromTask = userTask;
-                Update(goal);
+                userTask.Goals.Add(goal);
             }
+
+            lock (Context) Context.Update(userTask);
         }
     }
 }

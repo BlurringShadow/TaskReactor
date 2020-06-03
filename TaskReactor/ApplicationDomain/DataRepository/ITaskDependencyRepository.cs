@@ -15,13 +15,13 @@ namespace ApplicationDomain.DataRepository
         /// Get task dependencies
         /// </summary>
         [NotNull, ItemNotNull]
-        Task<List<TaskDependency>> GetDependenciesAsync([NotNull] UserTask task);
+        Task<IList<TaskDependency>> GetDependenciesAsync([NotNull] UserTask task);
 
         /// <summary>
         /// Get task dependencies
         /// </summary>
         [NotNull, ItemNotNull]
-        Task<List<TaskDependency>> GetDependenciesAsync([NotNull] UserTask task, CancellationToken token);
+        Task<IList<TaskDependency>> GetDependenciesAsync([NotNull] UserTask task, CancellationToken token);
 
         /// <summary>
         /// Add task dependencies to task

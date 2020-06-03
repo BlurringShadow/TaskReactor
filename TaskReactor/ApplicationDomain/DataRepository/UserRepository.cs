@@ -20,7 +20,7 @@ namespace ApplicationDomain.DataRepository
 
         public async Task<User> LogInAsync(User user, CancellationToken token)
         {
-            var found = await DbSet.FindAsync(new object[] {user.Id}, token);
+            var found = await FindByKeysAsync(new object[] {user.Id}, token);
             return found?.Password == user.Password ? found : null;
         }
 

@@ -22,9 +22,11 @@ namespace ApplicationDomain.DataRepository
 
         public async Task<IList<UserTask>> GetAllFromUserAsync(User user, CancellationToken token) =>
             (await Task.Run(
-                () => Context.Set<User>()!
-                        .Include(u => u.Tasks)!
-                    .First(u => u.Id == user.Id)!.Tasks, token
+                () =>
+                {
+                    lock (Context)
+                        return Context.Set<User>()!.Include(u => u.Tasks)!.First(u => u.Id == user.Id)!.Tasks;
+                }, token
             ))!;
 
         public void AddToUser(User user, params UserTask[] userTasks) =>
@@ -32,18 +34,16 @@ namespace ApplicationDomain.DataRepository
 
         public void AddToUser(User user, IEnumerable<UserTask> userTasks)
         {
-            var enumerable = userTasks as UserTask[] ?? userTasks.ToArray();
+            user.Tasks ??= new List<UserTask>();
 
-            user.Tasks ??= new List<UserTask>(enumerable.Length);
-
-            foreach (var userTask in enumerable)
+            foreach (var userTask in userTasks)
             {
                 // ReSharper disable once PossibleNullReferenceException
                 userTask.OwnerUser = user;
                 user.Tasks.Add(userTask);
             }
 
-            Context.Update(user);
+            lock (Context) Context.Update(user);
         }
     }
 }

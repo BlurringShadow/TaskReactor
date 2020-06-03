@@ -50,7 +50,8 @@ namespace ApplicationDomain.DataRepository
         /// </summary>
         /// <param name="keys"> input keys </param>
         /// <returns> Return an async task with finding result. </returns>
-        ValueTask<TDataBaseModel> FindByKeysAsync(IEnumerable keys);
+        [NotNull]
+        Task<TDataBaseModel> FindByKeysAsync(IEnumerable keys);
 
         /// <summary>
         /// Find with keys
@@ -58,7 +59,8 @@ namespace ApplicationDomain.DataRepository
         /// <param name="keys"> input keys </param>
         /// <param name="token"> <see cref="CancellationToken"/> </param>
         /// <returns> Return an async task with finding result. </returns>
-        ValueTask<TDataBaseModel> FindByKeysAsync(IEnumerable keys, CancellationToken token);
+        [NotNull]
+        Task<TDataBaseModel> FindByKeysAsync(IEnumerable keys, CancellationToken token);
 
         /// <summary>
         /// Remove the entities
@@ -73,9 +75,10 @@ namespace ApplicationDomain.DataRepository
         /// <summary>
         /// Remove all the entities
         /// </summary>
+        /// <param name="token"></param>
         /// <returns> Async running task </returns>
         [NotNull]
-        Task RemoveAllAsync();
+        Task RemoveAllAsync(CancellationToken token);
 
         /// <summary>
         /// Update or add the entities
@@ -87,14 +90,12 @@ namespace ApplicationDomain.DataRepository
         /// </summary>
         void Update([NotNull, ItemNotNull] IEnumerable<TDataBaseModel> models);
 
-
         /// <summary>
         /// Sync changes into database
         /// </summary>
         /// <returns> Async task with affected rows </returns>
         [NotNull]
         Task<int> DbSync();
-
 
         /// <summary>
         /// Sync changes into database
@@ -103,5 +104,7 @@ namespace ApplicationDomain.DataRepository
         /// <returns> Async task with affected rows </returns>
         [NotNull]
         Task<int> DbSync(CancellationToken token);
+
+        Task RemoveAllAsync();
     }
 }
