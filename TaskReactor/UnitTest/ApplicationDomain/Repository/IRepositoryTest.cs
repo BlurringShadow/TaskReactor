@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.Composition.Hosting;
 using System.Text.Json;
 using ApplicationDomain.Database;
@@ -5,9 +6,9 @@ using ApplicationDomain.Database.Entity;
 using ApplicationDomain.DataRepository;
 using Xunit.Abstractions;
 
-namespace UnitTest.ApplicationDomain
+namespace UnitTest.ApplicationDomain.Repository
 {
-    interface IRepositoryTest<TDatabaseModel, out TRepository>
+    interface IRepositoryTest<TDatabaseModel, out TRepository> : IDisposable
         where TDatabaseModel : DatabaseModel 
         where TRepository : IRepository<TDatabaseModel, TaskReactorDbContext>
     {

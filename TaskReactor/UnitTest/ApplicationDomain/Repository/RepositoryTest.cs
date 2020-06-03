@@ -10,12 +10,15 @@ using JetBrains.Annotations;
 using Presentation;
 using Xunit.Abstractions;
 
-namespace UnitTest.ApplicationDomain
+namespace UnitTest.ApplicationDomain.Repository
 {
-    public abstract class RepositoryTest<TDatabaseModel, TRepository> : IRepositoryTest<TDatabaseModel, TRepository>
+    public abstract class RepositoryTest<TDatabaseModel, TRepository> :
+        IRepositoryTest<TDatabaseModel, TRepository>
         where TDatabaseModel : DatabaseModel
         where TRepository : IRepository<TDatabaseModel, TaskReactorDbContext>
     {
+        private bool _disposed;
+
         /// <summary>
         /// Output message helper <see cref="ITestOutputHelper"/>
         /// </summary>
@@ -31,16 +34,15 @@ namespace UnitTest.ApplicationDomain
             [NotNull, ItemNotNull] IEnumerable<TDatabaseModel> testEntities
         ) => testEntities.Select(entity => new[] {entity}).ToList();
 
-        static RepositoryTest()
-        {
-            // Delete the db file before test
-            if(Directory.Exists(Path.GetDirectoryName(TaskReactorDbContext.DbPath)) &&
-               File.Exists(TaskReactorDbContext.DbPath))
-                File.Delete(TaskReactorDbContext.DbPath);
-        }
-
         protected RepositoryTest([NotNull] ITestOutputHelper testOutputHelper)
         {
+            // Delete the db file before test
+            {
+                var dbPath = TaskReactorDbContext.DbPath;
+                if(Directory.Exists(Path.GetDirectoryName(dbPath)) && File.Exists(dbPath))
+                    File.Delete(dbPath);
+            }
+
             TestOutputHelper = testOutputHelper;
 
             Container = GetContainer();
@@ -56,5 +58,14 @@ namespace UnitTest.ApplicationDomain
                     new AssemblyCatalog(typeof(App).Assembly!)
                 )
             );
+
+        public void Dispose() => Dispose(true);
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(_disposed || !disposing) return;
+            Container.Dispose();
+            _disposed = true;
+        }
     }
 }
