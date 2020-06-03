@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ApplicationDomain.Database.Entity;
@@ -12,9 +11,9 @@ namespace UnitTest.ApplicationDomain.Repository
 {
     public sealed class UserTaskRepositoryTest : RepositoryTest<UserTask, IUserTaskRepository>
     {
-        [NotNull] internal static readonly User TestUser = UserRepositoryTest.TestEntities[0];
+        [NotNull] readonly User _testUser = UserRepositoryTest.TestEntities[0];
 
-        [NotNull, ItemNotNull] internal static readonly UserTask[] TestEntities =
+        [NotNull, ItemNotNull] internal static UserTask[] TestEntities => new[]
         {
             new UserTask
             {
@@ -39,28 +38,26 @@ namespace UnitTest.ApplicationDomain.Repository
             }
         };
 
-        public static IEnumerable<object[]> GetTestData() => GetTestData(TestEntities);
-
         public UserTaskRepositoryTest([NotNull] ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
-            Container.GetExportedValue<IUserRepository>().Register(TestUser);
+            Container.GetExportedValue<IUserRepository>().Register(_testUser);
             Task.WaitAll(Repository.DbSync());
         }
 
         async Task AddToUser([NotNull] UserTask task)
         {
-            Repository.AddToUser(TestUser, task);
+            Repository.AddToUser(_testUser, task);
             await Repository.DbSync();
             TestOutputHelper.WriteLine(
                 $"Successfully add task {JsonSerializer.Serialize(task, SerializerOptions)} " +
-                $"\nto user {JsonSerializer.Serialize(TestUser, SerializerOptions)}\n"
+                $"\nto user {JsonSerializer.Serialize(_testUser, SerializerOptions)}\n"
             );
         }
 
         async Task GetAllTest() =>
             TestOutputHelper.WriteLine(
-                $"All task from user {JsonSerializer.Serialize(TestUser, SerializerOptions)}:\n" + 
-                JsonSerializer.Serialize(await Repository.GetAllFromUserAsync(TestUser), SerializerOptions)
+                $"All task from user {JsonSerializer.Serialize(_testUser, SerializerOptions)}:\n" + 
+                JsonSerializer.Serialize(await Repository.GetAllFromUserAsync(_testUser), SerializerOptions)
             );
 
         [Fact]

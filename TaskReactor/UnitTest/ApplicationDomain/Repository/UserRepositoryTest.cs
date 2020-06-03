@@ -11,7 +11,7 @@ namespace UnitTest.ApplicationDomain.Repository
 {
     public sealed class UserRepositoryTest : RepositoryTest<User, IUserRepository>
     {
-        [NotNull, ItemNotNull] internal static readonly User[] TestEntities =
+        [NotNull, ItemNotNull] internal static User[] TestEntities => new[]
         {
             new User
             {
