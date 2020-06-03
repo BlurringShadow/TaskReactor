@@ -23,11 +23,14 @@ namespace ApplicationDomain.DataRepository
 
         public async Task<IList<TaskDependency>> GetDependenciesAsync(UserTask task, CancellationToken token) =>
             (await Task.Run(
-                () => Context.Set<TaskDependency>()!
-                            .Include(d => d.Target)!
-                        .Include(d => d.Dependency)!
-                    .Where(dependency => dependency.Target.Id == task.Id).ToList()!
-                , token
+                () =>
+                {
+                    lock(Context)
+                        return Context.Set<TaskDependency>()!
+                                    .Include(d => d.Target)!
+                                .Include(d => d.Dependency)!
+                            .Where(dependency => dependency.Target.Id == task.Id).ToList()!;
+                }, token
             ))!;
 
         public IList<TaskDependency> AddDependencies(

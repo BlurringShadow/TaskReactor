@@ -20,13 +20,15 @@ namespace ApplicationDomain.DataRepository
     {
         /// <summary>
         /// Database context <see cref="DbContext"/>
+        ///  Be aware to use it in multi-threading code context.
+        /// <para> Use <code>lock(Context)</code> to prevent concurrency problems </para>
         /// </summary>
-        [NotNull] DbSet<TDataBaseModel> DbSet { get; }
+        [NotNull] TDbContext Context { get; }
 
         /// <summary>
         /// Entity set <see cref="DbSet{T}"/>
         /// </summary>
-        [NotNull] TDbContext Context { get; }
+        [NotNull] DbSet<TDataBaseModel> DbSet { get; }
 
         /// <summary>
         /// Find if table contains the key.
@@ -61,6 +63,23 @@ namespace ApplicationDomain.DataRepository
         /// <returns> Return an async task with finding result. </returns>
         [NotNull]
         Task<TDataBaseModel> FindByKeysAsync(IEnumerable keys, CancellationToken token);
+
+        /// <summary>
+        /// Find with keys
+        /// </summary>
+        /// <param name="keys"> input keys </param>
+        /// <returns> Return an async task with finding result. </returns>
+        [NotNull]
+        Task<TDataBaseModel> FindByKeysAsync([NotNull, ItemNotNull] params object[] keys);
+
+        /// <summary>
+        /// Find with keys
+        /// </summary>
+        /// <param name="keys"> input keys </param>
+        /// <param name="token"> <see cref="CancellationToken"/> </param>
+        /// <returns> Return an async task with finding result. </returns>
+        [NotNull]
+        Task<TDataBaseModel> FindByKeysAsync(CancellationToken token, [NotNull, ItemNotNull] params object[] keys);
 
         /// <summary>
         /// Remove the entities

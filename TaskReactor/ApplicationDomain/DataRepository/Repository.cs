@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationDomain.DataRepository
 {
-    public abstract class Repository<TDatabaseModel, TDbContext> : IRepository<TDatabaseModel, TDbContext>
+    abstract class Repository<TDatabaseModel, TDbContext> : IRepository<TDatabaseModel, TDbContext>
         where TDbContext : DbContext
         where TDatabaseModel : DatabaseModel
     {
@@ -25,6 +25,9 @@ namespace ApplicationDomain.DataRepository
         public async Task<bool> ContainsByKeyAsync(IEnumerable keys, CancellationToken token) =>
             !(await FindByKeysAsync(keys, token) is null);
 
+        public async Task<TDatabaseModel> FindByKeysAsync(params object[] keys) =>
+            await FindByKeysAsync(keys, CancellationToken.None);
+
         public async Task<TDatabaseModel> FindByKeysAsync(IEnumerable keys) =>
             await FindByKeysAsync(keys, CancellationToken.None);
 
@@ -32,7 +35,15 @@ namespace ApplicationDomain.DataRepository
             await Task.Run(
                 () =>
                 {
-                    lock (Context) return DbSet.Find(keys)!;
+                    lock(Context) return DbSet.Find(keys)!;
+                }, token
+            );
+
+        public async Task<TDatabaseModel> FindByKeysAsync(CancellationToken token, params object[] keys) =>
+            await Task.Run(
+                () =>
+                {
+                    lock(Context) return DbSet.Find(keys)!;
                 }, token
             );
 
@@ -40,7 +51,7 @@ namespace ApplicationDomain.DataRepository
 
         public void Remove(IEnumerable<TDatabaseModel> models)
         {
-            lock (Context) DbSet.RemoveRange(models);
+            lock(Context) DbSet.RemoveRange(models);
         }
 
         public async Task RemoveAllAsync() => await RemoveAllAsync(CancellationToken.None);
@@ -49,7 +60,7 @@ namespace ApplicationDomain.DataRepository
             await Task.Run(
                 () =>
                 {
-                    lock (Context) Context.DeleteTableFromDbSet<TDatabaseModel>();
+                    lock(Context) Context.DeleteTableFromDbSet<TDatabaseModel>();
                 }, token
             );
 
@@ -57,7 +68,7 @@ namespace ApplicationDomain.DataRepository
 
         public void Update(IEnumerable<TDatabaseModel> models)
         {
-            lock (Context) DbSet.UpdateRange(models);
+            lock(Context) DbSet.UpdateRange(models);
         }
 
         public async Task<int> DbSync() => await DbSync(CancellationToken.None);
@@ -66,7 +77,7 @@ namespace ApplicationDomain.DataRepository
             await Task.Run(
                 () =>
                 {
-                    lock (Context) return Context.SaveChanges()!;
+                    lock(Context) return Context.SaveChanges()!;
                 }, token
             );
     }
