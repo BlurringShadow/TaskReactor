@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 namespace ApplicationDomain.DataRepository
 {
     [InheritedExport]
-    public interface ITaskDependenciesRepository : IRepository<TaskDependency, TaskReactorDbContext>
+    public interface ITaskDependencyRepository : IRepository<TaskDependency, TaskReactorDbContext>
     {
         /// <summary>
         /// Get task dependencies
@@ -26,12 +26,14 @@ namespace ApplicationDomain.DataRepository
         /// <summary>
         /// Add task dependencies to task
         /// </summary>
+        [NotNull, ItemNotNull]
         IList<TaskDependency> AddDependencies([NotNull] UserTask target,
             [NotNull, ItemNotNull] params UserTask[] userTasks);
 
         /// <summary>
         /// Add task dependencies to task
         /// </summary>
+        [NotNull, ItemNotNull]
         IList<TaskDependency> AddDependencies(
             [NotNull] UserTask target,
             [NotNull, ItemNotNull] IEnumerable<UserTask> userTasks

@@ -10,12 +10,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationDomain.DataRepository
 {
-    [Export]
-    public class TaskDependenciesRepository : Repository<TaskDependency, TaskReactorDbContext>,
-        ITaskDependenciesRepository
+    sealed class TaskDependencyRepository : Repository<TaskDependency, TaskReactorDbContext>,
+        ITaskDependencyRepository
     {
         [ImportingConstructor]
-        public TaskDependenciesRepository([NotNull] TaskReactorDbContext context) : base(context)
+        public TaskDependencyRepository([NotNull] TaskReactorDbContext context) : base(context)
         {
         }
 
