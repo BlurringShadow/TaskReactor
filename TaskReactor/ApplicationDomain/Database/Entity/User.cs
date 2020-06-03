@@ -12,7 +12,7 @@ namespace ApplicationDomain.Database.Entity
 
         [Required, NotNull] public string Password { get; set; }
 
-        [InverseProperty(nameof(UserTask.OwnerUser))]
+        [InverseProperty(nameof(UserTask.OwnerUser)), ItemNotNull]
         public IList<UserTask> Tasks { get; set; }
     }
 }
