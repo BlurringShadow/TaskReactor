@@ -10,43 +10,7 @@ using JetBrains.Annotations;
 
 namespace ApplicationDomain.ModelService
 {
-    public interface ITaskDependencyService
-    {
-        /// <summary>
-        /// Get task dependencies
-        /// </summary>
-        [NotNull, ItemNotNull]
-        Task<List<TaskDependencyModel>> GetDependenciesAsync([NotNull] UserTaskModel task);
-
-        /// <summary>
-        /// Get task dependencies
-        /// </summary>
-        [NotNull, ItemNotNull]
-        Task<List<TaskDependencyModel>> GetDependenciesAsync(
-            [NotNull] UserTaskModel task,
-            CancellationToken token
-        );
-
-        /// <summary>
-        /// Add task dependencies to task
-        /// </summary>
-        [NotNull, ItemNotNull]
-        IList<TaskDependencyModel> AddDependencies(
-            [NotNull] UserTaskModel target,
-            [NotNull, ItemNotNull] params UserTaskModel[] userTasks
-        );
-
-        /// <summary>
-        /// Add task dependencies to task
-        /// </summary>
-        [NotNull, ItemNotNull]
-        IList<TaskDependencyModel> AddDependencies(
-            [NotNull] UserTaskModel target,
-            [NotNull, ItemNotNull] IEnumerable<UserTaskModel> userTasks
-        );
-    }
-
-    public class TaskDependencyService : Service<TaskDependency, TaskReactorDbContext, ITaskDependencyRepository,
+    sealed class TaskDependencyService : Service<TaskDependency, TaskReactorDbContext, ITaskDependencyRepository,
         TaskDependencyModel>, ITaskDependencyService
     {
         public TaskDependencyService([NotNull] ITaskDependencyRepository repository) : base(repository)
