@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ApplicationDomain.Database.Entity;
@@ -56,7 +57,7 @@ namespace UnitTest.ApplicationDomain.Repository
 
         async Task GetAllTest() =>
             TestOutputHelper.WriteLine(
-                $"All task from user {JsonSerializer.Serialize(_testUser, SerializerOptions)}:\n" + 
+                $"All task from user {JsonSerializer.Serialize(_testUser, SerializerOptions)}:\n" +
                 JsonSerializer.Serialize(await Repository.GetAllFromUserAsync(_testUser), SerializerOptions)
             );
 
