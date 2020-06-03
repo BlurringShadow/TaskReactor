@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
@@ -13,31 +12,38 @@ namespace ApplicationDomain.DataRepository
 {
     sealed class UserTaskRepository : Repository<UserTask, TaskReactorDbContext>, IUserTaskRepository
     {
-        [NotNull] private readonly Func<DbContext, User, CancellationToken, Task<List<UserTask>>> _getAllFromUserQuery;
-
         [ImportingConstructor]
-        public UserTaskRepository([NotNull] TaskReactorDbContext context) : base(context) =>
-            _getAllFromUserQuery = EF.CompileAsyncQuery(
-                (DbContext ctx, User user, CancellationToken token) =>
-                    ctx.Set<UserTask>()!.Where(task => task.OwnerUser.Id == user.Id).ToList()
-            )!;
+        public UserTaskRepository([NotNull] TaskReactorDbContext context) : base(context)
+        {
+        }
 
-        public async Task<List<UserTask>> GetAllFromUserAsync(User user) =>
+        public async Task<IList<UserTask>> GetAllFromUserAsync(User user) =>
             await GetAllFromUserAsync(user, CancellationToken.None);
 
-        public async Task<List<UserTask>> GetAllFromUserAsync(User user, CancellationToken token) =>
-            (await _getAllFromUserQuery(Context, user, token)!)!;
+        public async Task<IList<UserTask>> GetAllFromUserAsync(User user, CancellationToken token) =>
+            (await Task.Run(
+                () => Context.Set<User>()!
+                        .Include(u => u.Tasks)!
+                    .First(u => u.Id == user.Id)!.Tasks, token
+            ))!;
 
-        public void AddToUser(User user, params UserTask[] userTasks) => 
+        public void AddToUser(User user, params UserTask[] userTasks) =>
             AddToUser(user, (IEnumerable<UserTask>)userTasks);
 
         public void AddToUser(User user, IEnumerable<UserTask> userTasks)
         {
-            foreach (var userTask in userTasks)
+            var enumerable = userTasks as UserTask[] ?? userTasks.ToArray();
+
+            user.Tasks ??= new List<UserTask>(enumerable.Length);
+
+            foreach (var userTask in enumerable)
             {
+                // ReSharper disable once PossibleNullReferenceException
                 userTask.OwnerUser = user;
-                Update(userTask);
+                user.Tasks.Add(userTask);
             }
+
+            Context.Update(user);
         }
     }
 }

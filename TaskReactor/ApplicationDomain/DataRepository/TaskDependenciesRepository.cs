@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
@@ -12,36 +11,37 @@ using Microsoft.EntityFrameworkCore;
 namespace ApplicationDomain.DataRepository
 {
     [Export]
-    public class TaskDependenciesRepository : Repository<TaskDependency, TaskReactorDbContext>
+    public class TaskDependenciesRepository : Repository<TaskDependency, TaskReactorDbContext>,
+        ITaskDependenciesRepository
     {
-        [NotNull] private readonly
-            Func<DbContext, UserTask, CancellationToken, Task<List<TaskDependency>>> _getDependenciesQuery;
-
         [ImportingConstructor]
         public TaskDependenciesRepository([NotNull] TaskReactorDbContext context) : base(context)
         {
-            _getDependenciesQuery = EF.CompileAsyncQuery(
-                (DbContext ctx, UserTask task, CancellationToken token) => ctx.Set<TaskDependency>()!
-                    .Where(dependency => dependency.Target.Id == task.Id).ToListAsync(token).Result
-            )!;
         }
 
-        [NotNull]
-        public async Task<List<TaskDependency>> GetDependencies([NotNull] UserTask task) =>
-            await GetDependencies(task, CancellationToken.None)!;
+        public async Task<List<TaskDependency>> GetDependenciesAsync(UserTask task) =>
+            await GetDependenciesAsync(task, CancellationToken.None)!;
 
-        [NotNull]
-        public async Task<List<TaskDependency>> GetDependencies([NotNull] UserTask task, CancellationToken token) =>
-            await _getDependenciesQuery(Context, task, token)!;
+        public async Task<List<TaskDependency>> GetDependenciesAsync(UserTask task, CancellationToken token) =>
+            (await Context.Set<TaskDependency>()!
+                        .Include(d => d.Target)!
+                    .Include(d => d.Dependency)!
+                .Where(dependency => dependency.Target.Id == task.Id).ToListAsync(token)!)!;
 
-        public void AddDependencies(
-            [NotNull] UserTask target,
-            [NotNull, ItemNotNull] params UserTask[] userTasks
+        public IList<TaskDependency> AddDependencies(
+            UserTask target,
+            params UserTask[] userTasks
         ) => AddDependencies(target, (IEnumerable<UserTask>)userTasks);
 
-        public void AddDependencies(
-            [NotNull] UserTask target,
-            [NotNull, ItemNotNull] IEnumerable<UserTask> userTasks
-        ) => Update(from task in userTasks select new TaskDependency {Target = target, Dependency = task});
+        public IList<TaskDependency> AddDependencies(
+            UserTask target,
+            IEnumerable<UserTask> userTasks
+        )
+        {
+            var taskDependencies =
+                (from task in userTasks select new TaskDependency {Target = target, Dependency = task}).ToList();
+            Update(taskDependencies);
+            return taskDependencies;
+        }
     }
 }
