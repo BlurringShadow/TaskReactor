@@ -11,7 +11,7 @@ namespace UnitTest.ApplicationDomain.Repository
 {
     public sealed class UserRepositoryTest : RepositoryTest<User, IUserRepository>
     {
-        [NotNull, ItemNotNull] internal static User[] TestEntities => new[]
+        [NotNull, ItemNotNull] static readonly IEnumerable<User> _testEntities = new[]
         {
             new User
             {
@@ -30,7 +30,7 @@ namespace UnitTest.ApplicationDomain.Repository
             }
         };
 
-        public static IEnumerable<object[]> GetTestData() => GetTestData(TestEntities);
+        public static IEnumerable<object[]> GetTestData() => GetTestData(_testEntities);
 
         public UserRepositoryTest([NotNull] ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
@@ -38,8 +38,16 @@ namespace UnitTest.ApplicationDomain.Repository
 
         async Task UserRegisterTest([NotNull] User user)
         {
-            Repository.Register(user);
-            await Repository.DbSync();
+            await Task.Run(
+                () =>
+                {
+                    lock(Repository.Context)
+                    {
+                        Repository.Register(user);
+                        Task.WaitAll(Repository.DbSync());
+                    }
+                }
+            );
             TestOutputHelper.WriteLine(
                 $"Successfully register user {JsonSerializer.Serialize(user, SerializerOptions)}"
             );
@@ -55,8 +63,16 @@ namespace UnitTest.ApplicationDomain.Repository
 
         async Task UserLogOffTest([NotNull] User user)
         {
-            Repository.LogOff(user);
-            await Repository.DbSync();
+            await Task.Run(
+                () =>
+                {
+                    lock(Repository.Context)
+                    {
+                        Repository.LogOff(user);
+                        Task.WaitAll(Repository.DbSync());
+                    }
+                }
+            );
             Assert.Null(await Repository.LogInAsync(user));
             TestOutputHelper.WriteLine(
                 $"Successfully log off user {JsonSerializer.Serialize(user, SerializerOptions)}"

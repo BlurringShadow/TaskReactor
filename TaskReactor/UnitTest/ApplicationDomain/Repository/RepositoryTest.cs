@@ -31,7 +31,6 @@ namespace UnitTest.ApplicationDomain.Repository
         {
             TestOutputHelper = testOutputHelper;
             Repository = Container.GetExportedValue<TRepository>();
-            lock(Repository.Context) Repository.Context.DeleteTableFromDbSet<User>();
             SerializerOptions = new JsonSerializerOptions {WriteIndented = true};
         }
     }

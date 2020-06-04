@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ApplicationDomain.Database.Entity;
@@ -10,11 +9,27 @@ using Xunit.Abstractions;
 
 namespace UnitTest.ApplicationDomain.Repository
 {
-    public sealed class GoalRepositoryTest : RepositoryTest<Goal, IGoalRepository>
+    public sealed class GoalRepositoryTest : RepositoryTest<Goal, IGoalRepository>, IDisposable
     {
-        [NotNull] readonly User _testUser = UserRepositoryTest.TestEntities[0];
+        bool _disposed;
 
-        [NotNull] readonly UserTask _testTask = UserTaskRepositoryTest.TestEntities[0];
+        [NotNull] readonly User _testUser = new User
+        {
+            Name = "first", Password = "123", Tasks = new[]
+            {
+                new UserTask
+                {
+                    Title = "Finish Homework",
+                    Description = "Cooperation",
+                    StartTime = DateTime.Now,
+                    EndTime = DateTime.Now + TimeSpan.FromDays(2)
+                }
+            }
+        };
+
+        [NotNull] UserTask _testTask => _testUser.Tasks![0];
+
+        [NotNull] readonly IUserRepository _userRepository;
 
         [NotNull, ItemNotNull] internal static Goal[] TestEntities => new[]
         {
@@ -49,15 +64,26 @@ namespace UnitTest.ApplicationDomain.Repository
 
         public GoalRepositoryTest([NotNull] ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
-            _testUser.Tasks = new List<UserTask> {_testTask};
-            Container.GetExportedValue<IUserRepository>().Register(_testUser);
-            Task.WaitAll(Repository.DbSync());
+            _userRepository = Container.GetExportedValue<IUserRepository>();
+            lock(Repository.Context)
+            {
+                _userRepository.Register(_testUser);
+                Task.WaitAll(Repository.DbSync());
+            }
         }
 
         async Task AddToTask([NotNull] Goal goal)
         {
-            Repository.AddToTask(_testTask, goal);
-            await Repository.DbSync();
+            await Task.Run(
+                () =>
+                {
+                    lock(Repository.Context)
+                    {
+                        Repository.AddToTask(_testTask, goal);
+                        Task.WaitAll(Repository.DbSync());
+                    }
+                }
+            );
             TestOutputHelper.WriteLine(
                 $"Successfully add goal {JsonSerializer.Serialize(goal, SerializerOptions)} " +
                 $"\nto task {JsonSerializer.Serialize(_testTask, SerializerOptions)}\n"
@@ -76,5 +102,25 @@ namespace UnitTest.ApplicationDomain.Repository
             foreach (var goal in TestEntities) await AddToTask(goal);
             await GetAllTest();
         }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        void Dispose(bool disposing)
+        {
+            if(_disposed || !disposing) return;
+            lock(Repository.Context)
+            {
+                _userRepository.LogOff(_testUser);
+                Task.WaitAll(Repository.DbSync());
+            }
+
+            _disposed = true;
+        }
+
+        ~GoalRepositoryTest() => Dispose(false);
     }
 }
