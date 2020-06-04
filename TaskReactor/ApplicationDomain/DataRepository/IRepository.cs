@@ -10,6 +10,8 @@ namespace ApplicationDomain.DataRepository
 {
     /// <summary>
     /// Provide basic data operation
+    /// <para/> Modifier database data actions are not immediately complete
+    /// <para/> Use <code>lock(Context)</code> to prevent concurrency problems
     /// </summary>
     /// <typeparam name="TDataBaseModel"> database entity model </typeparam>
     /// <typeparam name="TDbContext"> database context </typeparam>
@@ -20,8 +22,8 @@ namespace ApplicationDomain.DataRepository
     {
         /// <summary>
         /// Database context <see cref="DbContext"/>
-        ///  Be aware to use it in multi-threading code context.
-        /// <para> Use <code>lock(Context)</code> to prevent concurrency problems </para>
+        /// <para/> Be aware of using it in multi-threading code context.
+        /// <para/> Use <code>lock(Context)</code> to prevent concurrency problems
         /// </summary>
         [NotNull] TDbContext Context { get; }
 
@@ -94,6 +96,13 @@ namespace ApplicationDomain.DataRepository
         /// <summary>
         /// Remove all the entities
         /// </summary>
+        /// <returns> Async running task </returns>
+        [NotNull]
+        Task RemoveAllAsync();
+
+        /// <summary>
+        /// Remove all the entities
+        /// </summary>
         /// <param name="token"></param>
         /// <returns> Async running task </returns>
         [NotNull]
@@ -111,19 +120,21 @@ namespace ApplicationDomain.DataRepository
 
         /// <summary>
         /// Sync changes into database
+        /// <para> Be aware of using it in multi-threading code context. </para>
+        /// <para> Use <code>lock(Context)</code> to prevent concurrency problems </para>
         /// </summary>
         /// <returns> Async task with affected rows </returns>
         [NotNull]
         Task<int> DbSync();
 
         /// <summary>
-        /// Sync changes into database
+        /// Sync changes into database.
+        /// <para> Be aware of using it in multi-threading code context. </para>
+        /// <para> Use <code>lock(Context)</code> to prevent concurrency problems </para>
         /// </summary>
         /// <param name="token"> <see cref="CancellationToken"/> </param>
         /// <returns> Async task with affected rows </returns>
         [NotNull]
         Task<int> DbSync(CancellationToken token);
-
-        Task RemoveAllAsync();
     }
 }

@@ -43,7 +43,7 @@ namespace ApplicationDomain.DataRepository
                 user.Tasks.Add(userTask);
             }
 
-            lock(Context) Context.Update(user);
+            Context.Update(user);
         }
     }
 }

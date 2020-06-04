@@ -49,10 +49,7 @@ namespace ApplicationDomain.DataRepository
 
         public void Remove(params TDatabaseModel[] models) => Remove((IEnumerable<TDatabaseModel>)models);
 
-        public void Remove(IEnumerable<TDatabaseModel> models)
-        {
-            lock(Context) DbSet.RemoveRange(models);
-        }
+        public void Remove(IEnumerable<TDatabaseModel> models) => DbSet.RemoveRange(models);
 
         public async Task RemoveAllAsync() => await RemoveAllAsync(CancellationToken.None);
 
@@ -66,19 +63,11 @@ namespace ApplicationDomain.DataRepository
 
         public void Update(params TDatabaseModel[] models) => Update((IEnumerable<TDatabaseModel>)models);
 
-        public void Update(IEnumerable<TDatabaseModel> models)
-        {
-            lock(Context) DbSet.UpdateRange(models);
-        }
+        public void Update(IEnumerable<TDatabaseModel> models) => DbSet.UpdateRange(models);
 
         public async Task<int> DbSync() => await DbSync(CancellationToken.None);
 
         public async Task<int> DbSync(CancellationToken token) =>
-            await Task.Run(
-                () =>
-                {
-                    lock(Context) return Context.SaveChanges()!;
-                }, token
-            );
+            await Context.SaveChangesAsync(token)!;
     }
 }
