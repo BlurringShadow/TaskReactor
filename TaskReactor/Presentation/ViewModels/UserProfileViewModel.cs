@@ -32,6 +32,6 @@ namespace Presentation.ViewModels
             this.ForVariable(_navigationService).WithName(nameof(_navigationService)).Share();
         }
 
-        public void AddSchedule() => _navigationService.NavigateToViewModel<ScheduleEditViewModel>();
+        public void AddSchedule() => _navigationService.NavigateToViewModel<GoalEditViewModel>();
     }
 }

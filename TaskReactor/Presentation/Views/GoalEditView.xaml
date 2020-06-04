@@ -1,4 +1,4 @@
-﻿<Page x:Class="Presentation.Views.ScheduleEditView"
+﻿<Page x:Class="Presentation.Views.GoalEditView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,9 +10,9 @@
       mc:Ignorable="d"
       Title="ScheduleEdit" Height="721" Width="1204"
       cm:Bind.AtDesignTime="True"
-      d:DataContext="{d:DesignInstance viewModels:ScheduleEditViewModel}">
+      d:DataContext="{d:DesignInstance viewModels:GoalEditViewModel}">
 
-    <Grid>
+    <Grid d:DataContext="{Binding GoalModel, Mode=OneWay}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -28,8 +28,14 @@
         <Grid Background="#FAFAFA" Grid.Row="1">
             <Label Content="计划名称：" HorizontalAlignment="Left" Margin="50,5,0,0" VerticalAlignment="Top" FontSize="24" />
 
-            <TextBox HorizontalAlignment="Left" Margin="185,12,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top"
-                     FontSize="23" Width="276" Height="35">
+            <TextBox HorizontalAlignment="Left" 
+                     Margin="185,12,0,0" Text="" 
+                     TextWrapping="Wrap" 
+                     VerticalAlignment="Top"
+                     FontSize="23" 
+                     Width="276" 
+                     Height="35"
+                     x:Name="Title">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="6" />
@@ -42,13 +48,14 @@
         <Grid Background="#FAFAFA" Grid.Row="2">
             <Label Content="计划详情：" HorizontalAlignment="Left" Margin="50,0,0,0" VerticalAlignment="Top" FontSize="24" />
 
-            <TextBox HorizontalAlignment="Left" 
-                     Margin="185,7,0,0" 
-                     TextWrapping="Wrap" 
+            <TextBox HorizontalAlignment="Left"
+                     Margin="185,7,0,0"
+                     TextWrapping="Wrap"
                      VerticalAlignment="Top"
-                     FontSize="24" 
-                     Width="666" 
-                     Height="167">
+                     FontSize="24"
+                     Width="666"
+                     Height="167"
+                     x:Name="Description">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="6" />
@@ -61,48 +68,51 @@
         <Grid Background="#FAFAFA" Grid.Row="3">
             <Label Content="截至日期：" HorizontalAlignment="Left" Margin="50,5,0,0" VerticalAlignment="Top" FontSize="24" />
 
-            <Calendar HorizontalAlignment="Left" Margin="185,5,0,0" VerticalAlignment="Top" />
+            <Calendar HorizontalAlignment="Left" Margin="185,5,0,0" VerticalAlignment="Top" DisplayDate="{Binding EndTime}" />
         </Grid>
 
         <Grid Background="#FAFAFA" Grid.Row="4">
-            <Button Content="取消" 
-                    HorizontalAlignment="Right" 
-                    Margin="0,0,100,0" 
+            <Button Content="取消"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,100,0"
                     VerticalAlignment="Center"
-                    FontSize="24" 
-                    Width="76" 
+                    FontSize="24"
+                    Width="76"
                     Foreground="White"
-                    Background="#FFDB3162" Height="58">
+                    Background="#FFDB3162" 
+                    Height="58"
+                    x:Name="Cancel">
                 <Button.Template>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border BorderBrush="{TemplateBinding Control.BorderBrush}" 
+                        <Border BorderBrush="{TemplateBinding Control.BorderBrush}"
                                 BorderThickness="1"
-                                CornerRadius="4,4,4,4" 
-                                Height="36" 
+                                CornerRadius="4,4,4,4"
+                                Height="36"
                                 Background="#FFDB3162">
                             <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
-                                              HorizontalAlignment="Center" 
+                                              HorizontalAlignment="Center"
                                               VerticalAlignment="Top" />
                         </Border>
                     </ControlTemplate>
                 </Button.Template>
             </Button>
 
-            <Button Content="确定" 
-                    HorizontalAlignment="Right" 
-                    Margin="0,0,200,0" 
+            <Button Content="确定"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,200,0"
                     VerticalAlignment="Center"
                     FontSize="24"
                     Width="76"
-                    Foreground="White" 
+                    Foreground="White"
                     Background="#FF2555CB"
-                    Height="58">
+                    Height="58"
+                    x:Name="Confirm">
                 <Button.Template>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Border BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="1" 
+                                BorderThickness="1"
                                 CornerRadius="4,4,4,4"
-                                Height="36" 
+                                Height="36"
                                 Background="#FF3765D6">
                             <ContentPresenter Content="{TemplateBinding Content}"
                                               HorizontalAlignment="Center"
