@@ -10,6 +10,10 @@ namespace ApplicationDomain.DataModel
         {
         }
 
+        protected ItemModel() : base(new TItem {StartTime = DateTime.Now, EndTime = DateTime.Now})
+        {
+        }
+
         [NotNull] public virtual string Title
         {
             get => _dataBaseModel.Title;

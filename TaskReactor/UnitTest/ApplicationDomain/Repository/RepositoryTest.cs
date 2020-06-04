@@ -1,27 +1,23 @@
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
-using System.IO;
 using System.Linq;
 using System.Text.Json;
 using ApplicationDomain.Database;
 using ApplicationDomain.Database.Entity;
 using ApplicationDomain.DataRepository;
 using JetBrains.Annotations;
-using Presentation;
 using Xunit.Abstractions;
 
-namespace UnitTest.ApplicationDomain
+namespace UnitTest.ApplicationDomain.Repository
 {
-    public abstract class RepositoryTest<TDatabaseModel, TRepository> : IRepositoryTest<TDatabaseModel, TRepository>
+    public abstract class RepositoryTest<TDatabaseModel, TRepository> :
+        RepositoryTestBase, IRepositoryTest<TDatabaseModel, TRepository, TaskReactorDbContext>
         where TDatabaseModel : DatabaseModel
-        where TRepository : Repository<TDatabaseModel, TaskReactorDbContext>
+        where TRepository : IRepository<TDatabaseModel, TaskReactorDbContext>
     {
         /// <summary>
         /// Output message helper <see cref="ITestOutputHelper"/>
         /// </summary>
         [NotNull] public ITestOutputHelper TestOutputHelper { get; }
-
-        [NotNull] public CompositionContainer Container { get; }
 
         [NotNull] public JsonSerializerOptions SerializerOptions { get; }
 
@@ -31,30 +27,11 @@ namespace UnitTest.ApplicationDomain
             [NotNull, ItemNotNull] IEnumerable<TDatabaseModel> testEntities
         ) => testEntities.Select(entity => new[] {entity}).ToList();
 
-        static RepositoryTest()
-        {
-            // Delete the db file before test
-            if(Directory.Exists(Path.GetDirectoryName(TaskReactorDbContext.DbPath)) &&
-               File.Exists(TaskReactorDbContext.DbPath))
-                File.Delete(TaskReactorDbContext.DbPath);
-        }
-
         protected RepositoryTest([NotNull] ITestOutputHelper testOutputHelper)
         {
             TestOutputHelper = testOutputHelper;
-
-            Container = GetContainer();
             Repository = Container.GetExportedValue<TRepository>();
             SerializerOptions = new JsonSerializerOptions {WriteIndented = true};
         }
-
-        [NotNull]
-        static CompositionContainer GetContainer() =>
-            new CompositionContainer(
-                new AggregateCatalog(
-                    new AssemblyCatalog(typeof(IDatabaseModel).Assembly!),
-                    new AssemblyCatalog(typeof(App).Assembly!)
-                )
-            );
     }
 }

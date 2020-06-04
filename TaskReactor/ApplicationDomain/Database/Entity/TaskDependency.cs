@@ -9,8 +9,10 @@ namespace ApplicationDomain.Database.Entity
     [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public class TaskDependency : DatabaseModel
     {
-        [Required, NotNull] public UserTask Target { get; set; }
+        [Required] public int TargetId { get; set; }
+        [Required] public UserTask Target { get; set; }
 
-        [Required, NotNull] public UserTask Dependency { get; set; }
+        [Required] public int DependencyId { get; set; }
+        [Required] public UserTask Dependency { get; set; }
     }
 }
