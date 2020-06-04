@@ -8,19 +8,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationDomain.DataRepository
 {
+    /// <summary>
+    /// Provide basic data operation
+    /// <para/> Modifier database data actions are not immediately complete
+    /// <para/> Use <code>lock(Context)</code> to prevent concurrency problems
+    /// </summary>
+    /// <typeparam name="TDataBaseModel"> database entity model </typeparam>
+    /// <typeparam name="TDbContext"> database context </typeparam>
     public interface IRepository<TDataBaseModel, out TDbContext>
-        where TDataBaseModel : DatabaseModel where TDbContext : DbContext
+        where TDataBaseModel : DatabaseModel 
+        where TDbContext : DbContext
 
     {
         /// <summary>
         /// Database context <see cref="DbContext"/>
+        /// <para/> Be aware of using it in multi-threading code context.
+        /// <para/> Use <code>lock(Context)</code> to prevent concurrency problems
         /// </summary>
-        [NotNull] DbSet<TDataBaseModel> DbSet { get; }
+        [NotNull] TDbContext Context { get; }
 
         /// <summary>
         /// Entity set <see cref="DbSet{T}"/>
         /// </summary>
-        [NotNull] TDbContext Context { get; }
+        [NotNull] DbSet<TDataBaseModel> DbSet { get; }
 
         /// <summary>
         /// Find if table contains the key.
@@ -44,7 +54,8 @@ namespace ApplicationDomain.DataRepository
         /// </summary>
         /// <param name="keys"> input keys </param>
         /// <returns> Return an async task with finding result. </returns>
-        ValueTask<TDataBaseModel> FindByKeys(IEnumerable keys);
+        [NotNull]
+        Task<TDataBaseModel> FindByKeysAsync(IEnumerable keys);
 
         /// <summary>
         /// Find with keys
@@ -52,7 +63,25 @@ namespace ApplicationDomain.DataRepository
         /// <param name="keys"> input keys </param>
         /// <param name="token"> <see cref="CancellationToken"/> </param>
         /// <returns> Return an async task with finding result. </returns>
-        ValueTask<TDataBaseModel> FindByKeys(IEnumerable keys, CancellationToken token);
+        [NotNull]
+        Task<TDataBaseModel> FindByKeysAsync(IEnumerable keys, CancellationToken token);
+
+        /// <summary>
+        /// Find with keys
+        /// </summary>
+        /// <param name="keys"> input keys </param>
+        /// <returns> Return an async task with finding result. </returns>
+        [NotNull]
+        Task<TDataBaseModel> FindByKeysAsync([NotNull, ItemNotNull] params object[] keys);
+
+        /// <summary>
+        /// Find with keys
+        /// </summary>
+        /// <param name="keys"> input keys </param>
+        /// <param name="token"> <see cref="CancellationToken"/> </param>
+        /// <returns> Return an async task with finding result. </returns>
+        [NotNull]
+        Task<TDataBaseModel> FindByKeysAsync(CancellationToken token, [NotNull, ItemNotNull] params object[] keys);
 
         /// <summary>
         /// Remove the entities
@@ -72,26 +101,36 @@ namespace ApplicationDomain.DataRepository
         Task RemoveAllAsync();
 
         /// <summary>
-        /// Update the entities
+        /// Remove all the entities
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns> Async running task </returns>
+        [NotNull]
+        Task RemoveAllAsync(CancellationToken token);
+
+        /// <summary>
+        /// Update or add the entities
         /// </summary>
         void Update([NotNull, ItemNotNull] params TDataBaseModel[] models);
 
         /// <summary>
-        /// Update the entities
+        /// Update or add the entities
         /// </summary>
         void Update([NotNull, ItemNotNull] IEnumerable<TDataBaseModel> models);
 
-
         /// <summary>
         /// Sync changes into database
+        /// <para> Be aware of using it in multi-threading code context. </para>
+        /// <para> Use <code>lock(Context)</code> to prevent concurrency problems </para>
         /// </summary>
         /// <returns> Async task with affected rows </returns>
         [NotNull]
         Task<int> DbSync();
 
-
         /// <summary>
-        /// Sync changes into database
+        /// Sync changes into database.
+        /// <para> Be aware of using it in multi-threading code context. </para>
+        /// <para> Use <code>lock(Context)</code> to prevent concurrency problems </para>
         /// </summary>
         /// <param name="token"> <see cref="CancellationToken"/> </param>
         /// <returns> Async task with affected rows </returns>

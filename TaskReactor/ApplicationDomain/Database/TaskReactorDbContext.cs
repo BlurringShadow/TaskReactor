@@ -51,12 +51,9 @@ namespace ApplicationDomain.Database
             modelBuilder.Entity<TaskDependency>(
                 buildAction =>
                 {
-                    var targetForeignKey = $"{nameof(TaskDependency.Target)}Id";
-                    var dependencyForeignKey = $"{nameof(TaskDependency.Dependency)}Id";
-
-                    buildAction!.HasOne(t => t.Target)!.WithMany()!.HasForeignKey(targetForeignKey);
-                    buildAction.HasOne(t => t.Dependency)!.WithMany()!.HasForeignKey(dependencyForeignKey);
-                    buildAction.HasKey(targetForeignKey, dependencyForeignKey);
+                    buildAction!.HasOne(d => d.Target)!.WithMany()!.HasForeignKey(d => d.TargetId);
+                    buildAction.HasOne(d => d.Dependency)!.WithMany()!.HasForeignKey(d => d.DependencyId);
+                    buildAction.HasKey(d => new {d.TargetId, d.DependencyId});
                 }
             );
         }

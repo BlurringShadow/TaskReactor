@@ -4,5 +4,6 @@ os: windows
 
 script:
   - choco install dotnetcore-sdk
+  - dotnet restore TaskReactor/TaskReactor.sln
   - dotnet build TaskReactor/TaskReactor.sln
   - dotnet test TaskReactor/TaskReactor.sln
