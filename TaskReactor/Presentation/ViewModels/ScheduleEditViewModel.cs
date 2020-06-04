@@ -1,17 +1,26 @@
-﻿using System.ComponentModel.Composition;
-using ApplicationDomain.Models.Database.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
+using ApplicationDomain.Database.Entity;
 using JetBrains.Annotations;
 
 namespace Presentation.ViewModels
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "UnassignedReadonlyField")]
     public sealed class ScheduleEditViewModel : ScreenViewModel
     {
-        [Args(typeof(WelcomePageViewModel))] public readonly User CurrentUser;
+        public readonly User CurrentUser;
 
         [ImportingConstructor]
-        public ScheduleEditViewModel([NotNull] ArgsHelper argsArgsHelper) : base(argsArgsHelper)
+        public ScheduleEditViewModel(
+            [NotNull] CompositionContainer container,
+            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts,
+            [NotNull, Import(nameof(CurrentUser) + ":" + nameof(WelcomePageViewModel))]
+            User currentUser
+        ) : base(container, variableParts)
         {
+            CurrentUser = currentUser;
         }
     }
 }
