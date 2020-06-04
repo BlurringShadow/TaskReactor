@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
@@ -105,6 +107,27 @@ namespace ApplicationDomain.Database
 
         public static int DeleteTableFromDbSet<TEntity>([NotNull] this DbContext context) where TEntity : class =>
             context.DeleteTable(context.GetEntityTableName<TEntity>()!);
+
+        public static async Task<int> TransactionAsync<TDbContext>(
+            [NotNull] this TDbContext context,
+            [NotNull] Action<TDbContext> action,
+            CancellationToken token
+        ) where TDbContext : DbContext => await Task.Run(
+            () =>
+            {
+                lock(context)
+                {
+                    using var transaction = context.Database!.BeginTransaction();
+
+                    action(context);
+
+                    var i = context.SaveChanges();
+                    transaction!.Commit();
+                    return i;
+                }
+            },
+            token
+        );
 
         #endregion
     }
