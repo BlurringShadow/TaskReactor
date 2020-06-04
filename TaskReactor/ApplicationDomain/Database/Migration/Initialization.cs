@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Migrations.Operations.Builders;
 namespace ApplicationDomain.Database.Migration
 {
     [DbContext(typeof(TaskReactorDbContext)),
-     Migration("Initialization"),
+     Migration(nameof(Initialization)),
      System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "InconsistentNaming")]
     public class Initialization : Microsoft.EntityFrameworkCore.Migrations.Migration
     {
@@ -175,24 +175,6 @@ namespace ApplicationDomain.Database.Migration
                         onDelete: ReferentialAction.Cascade
                     );
                 }
-            );
-
-            migrationBuilder.CreateIndex(
-                $"IX_{nameof(Goal)}_{nameof(Goal.FromTask)}Id",
-                nameof(Goal),
-                $"{nameof(Goal.FromTask)}Id"
-            );
-
-            migrationBuilder.CreateIndex(
-                $"IX_{nameof(TaskDependency)}_{nameof(TaskDependency.Dependency)}Id",
-                nameof(TaskDependency),
-                $"{nameof(TaskDependency.Dependency)}Id"
-            );
-
-            migrationBuilder.CreateIndex(
-                $"IX_{nameof(UserTask)}_{nameof(UserTask.OwnerUser)}Id",
-                nameof(UserTask),
-                $"{nameof(UserTask.OwnerUser)}Id"
             );
         }
     }
