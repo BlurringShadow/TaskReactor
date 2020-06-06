@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text.Json;
 using System.Threading.Tasks;
-using ApplicationDomain.Database;
 using ApplicationDomain.Database.Entity;
 using ApplicationDomain.DataRepository;
 using JetBrains.Annotations;

@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 
 namespace Presentation.ViewModels
 {
+    [Export]
     public sealed class GoalEditViewModel : ScreenViewModel
     {
         [NotNull] public UserTaskModel CurrentUserTask
@@ -22,7 +23,7 @@ namespace Presentation.ViewModels
         public GoalEditViewModel(
             [NotNull] CompositionContainer container,
             [NotNull] IDictionary<(Type, string), ComposablePart> variableParts,
-            [NotNull, Import(nameof(CurrentUserTask) + ":" + nameof(WelcomePageViewModel))]
+            [NotNull, ShareVariable(nameof(CurrentUserTask), typeof(UserTaskModel))]
             UserTaskModel currentUserTask
         ) : base(container, variableParts)
         {

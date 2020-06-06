@@ -8,7 +8,9 @@
       xmlns:local="clr-namespace:Presentation.Views"
       xmlns:viewModels="clr-namespace:Presentation.ViewModels"
       mc:Ignorable="d"
-      Title="ScheduleEdit" Height="721" Width="1204"
+      Title="ScheduleEdit" 
+      Height="721"
+      Width="1204"
       cm:Bind.AtDesignTime="True"
       d:DataContext="{d:DesignInstance viewModels:GoalEditViewModel}">
 
@@ -29,13 +31,13 @@
             <Label Content="计划名称：" HorizontalAlignment="Left" Margin="50,5,0,0" VerticalAlignment="Top" FontSize="24" />
 
             <TextBox HorizontalAlignment="Left" 
-                     Margin="185,12,0,0" Text="" 
+                     Margin="185,12,0,0"
                      TextWrapping="Wrap" 
                      VerticalAlignment="Top"
                      FontSize="23" 
                      Width="276" 
                      Height="35"
-                     x:Name="Title">
+                     Text="{Binding Title}">
                 <TextBox.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="6" />
