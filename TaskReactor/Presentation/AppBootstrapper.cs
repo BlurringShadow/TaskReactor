@@ -26,7 +26,8 @@ namespace Presentation
                 new AggregateCatalog(
                     new AssemblyCatalog(Assembly.GetAssembly(typeof(TaskReactorDbContext))!),
                     new AssemblyCatalog(Assembly.GetAssembly(typeof(IViewModel))!)
-                )
+                ), 
+                true
             );
             Initialize();
         }

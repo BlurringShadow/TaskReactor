@@ -16,6 +16,11 @@
                     <presentation:AppBootstrapper x:Key="Bootstrapper"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type Border}">
+                <Setter Property="CornerRadius" Value="6" />
+                <Setter Property="BorderBrush" Value="#c1d0dc" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -15,6 +15,10 @@ namespace ApplicationDomain.DataModel
             }
         }
 
+        public GoalModel()
+        {
+        }
+
         internal GoalModel([NotNull] Goal item) : base(item)
         {
         }

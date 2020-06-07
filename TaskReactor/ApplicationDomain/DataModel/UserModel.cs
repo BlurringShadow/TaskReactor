@@ -5,6 +5,10 @@ namespace ApplicationDomain.DataModel
 {
     public class UserModel : Model<User>
     {
+        public UserModel()
+        {
+        }
+
         internal UserModel([NotNull] User dataBaseModel) : base(dataBaseModel)
         {
         }

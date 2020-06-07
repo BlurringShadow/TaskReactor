@@ -6,14 +6,12 @@ using ApplicationDomain.DataRepository;
 using JetBrains.Annotations;
 using Xunit;
 using Xunit.Abstractions;
-using Xunit.Priority;
 
-namespace UnitTest.ApplicationDomain
+namespace UnitTest.ApplicationDomain.Repository
 {
-    [TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
-    public sealed class UserRepositoryTest : RepositoryTest<User, UserRepository>
+    public sealed class UserRepositoryTest : RepositoryTest<User, IUserRepository>
     {
-        [NotNull] internal static readonly User[] TestEntities =
+        [NotNull, ItemNotNull] static readonly IEnumerable<User> _testEntities = new[]
         {
             new User
             {
@@ -32,24 +30,30 @@ namespace UnitTest.ApplicationDomain
             }
         };
 
+        public static IEnumerable<object[]> GetTestData() => GetTestData(_testEntities);
+
         public UserRepositoryTest([NotNull] ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
         }
 
-        public static IEnumerable<object[]> GetTestData() => GetTestData(TestEntities);
-
-        [Theory, MemberData(nameof(GetTestData)), Priority(0)]
-        public async Task UserRegisterTest([NotNull] User user)
+        async Task UserRegisterTest([NotNull] User user)
         {
-            Repository.Register(user);
-            await Repository.DbSync();
+            await Task.Run(
+                () =>
+                {
+                    lock(Repository.Context)
+                    {
+                        Repository.Register(user);
+                        Task.WaitAll(Repository.DbSync());
+                    }
+                }
+            );
             TestOutputHelper.WriteLine(
                 $"Successfully register user {JsonSerializer.Serialize(user, SerializerOptions)}"
             );
         }
 
-        [Theory, MemberData(nameof(GetTestData)), Priority(1)]
-        public async Task UserLogInTest([NotNull] User user)
+        async Task UserLogInTest([NotNull] User user)
         {
             Assert.NotNull(await Repository.LogInAsync(user));
             TestOutputHelper.WriteLine(
@@ -57,15 +61,30 @@ namespace UnitTest.ApplicationDomain
             );
         }
 
-        [Theory, MemberData(nameof(GetTestData)), Priority(2)]
-        public async Task UserLogOffTest([NotNull] User user)
+        async Task UserLogOffTest([NotNull] User user)
         {
-            Repository.LogOff(user);
-            await Repository.DbSync();
+            await Task.Run(
+                () =>
+                {
+                    lock(Repository.Context)
+                    {
+                        Repository.LogOff(user);
+                        Task.WaitAll(Repository.DbSync());
+                    }
+                }
+            );
             Assert.Null(await Repository.LogInAsync(user));
             TestOutputHelper.WriteLine(
                 $"Successfully log off user {JsonSerializer.Serialize(user, SerializerOptions)}"
             );
+        }
+
+        [Theory, MemberData(nameof(GetTestData))]
+        async Task Test([NotNull] User user)
+        {
+            await UserRegisterTest(user);
+            await UserLogInTest(user);
+            await UserLogOffTest(user);
         }
     }
 }

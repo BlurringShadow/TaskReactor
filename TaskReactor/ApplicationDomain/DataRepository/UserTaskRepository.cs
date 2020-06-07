@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
@@ -11,21 +10,40 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationDomain.DataRepository
 {
-    [Export]
-    public class UserTaskRepository : Repository<UserTask, TaskReactorDbContext>
+    sealed class UserTaskRepository : Repository<UserTask, TaskReactorDbContext>, IUserTaskRepository
     {
-        [NotNull] private readonly Func<DbContext, User, CancellationToken, Task<List<UserTask>>> _getAllFromUserQuery;
-
         [ImportingConstructor]
         public UserTaskRepository([NotNull] TaskReactorDbContext context) : base(context)
         {
-            _getAllFromUserQuery = EF.CompileAsyncQuery(
-                (DbContext ctx, User user, CancellationToken token) =>
-                    ctx.Set<UserTask>()!.Where(task => task.OwnerUser.Id == user.Id).ToList()
-            )!;
         }
 
-        public async Task<List<UserTask>> GetAllFromUserAsync([NotNull] User user, CancellationToken token) =>
-            await _getAllFromUserQuery(Context, user, token)!;
+        public async Task<IList<UserTask>> GetAllFromUserAsync(User user) =>
+            await GetAllFromUserAsync(user, CancellationToken.None);
+
+        public async Task<IList<UserTask>> GetAllFromUserAsync(User user, CancellationToken token) =>
+            (await Task.Run(
+                () =>
+                {
+                    lock(Context)
+                        return Context.Set<User>()!.Include(u => u.Tasks)!.First(u => u.Id == user.Id)!.Tasks;
+                }, token
+            ))!;
+
+        public void AddToUser(User user, params UserTask[] userTasks) =>
+            AddToUser(user, (IEnumerable<UserTask>)userTasks);
+
+        public void AddToUser(User user, IEnumerable<UserTask> userTasks)
+        {
+            user.Tasks ??= new List<UserTask>();
+
+            foreach (var userTask in userTasks)
+            {
+                // ReSharper disable once PossibleNullReferenceException
+                userTask.OwnerUser = user;
+                user.Tasks.Add(userTask);
+            }
+
+            Context.Update(user);
+        }
     }
 }

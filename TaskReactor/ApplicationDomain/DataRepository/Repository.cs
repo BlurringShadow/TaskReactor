@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationDomain.DataRepository
 {
-    public abstract class Repository<TDatabaseModel, TDbContext> : IRepository<TDatabaseModel, TDbContext>
+    abstract class Repository<TDatabaseModel, TDbContext> : IRepository<TDatabaseModel, TDbContext>
         where TDbContext : DbContext
         where TDatabaseModel : DatabaseModel
     {
@@ -19,22 +19,47 @@ namespace ApplicationDomain.DataRepository
 
         protected Repository([NotNull] TDbContext context) => Context = context;
 
-        public async Task<bool> ContainsByKeyAsync(IEnumerable keys) => await ContainsByKeyAsync(keys, CancellationToken.None);
+        public async Task<bool> ContainsByKeyAsync(IEnumerable keys) =>
+            await ContainsByKeyAsync(keys, CancellationToken.None);
 
         public async Task<bool> ContainsByKeyAsync(IEnumerable keys, CancellationToken token) =>
-            !(await FindByKeys(keys, token) is null);
+            !(await FindByKeysAsync(keys, token) is null);
 
-        public async ValueTask<TDatabaseModel> FindByKeys(IEnumerable keys) =>
-            await FindByKeys(keys, CancellationToken.None);
+        public async Task<TDatabaseModel> FindByKeysAsync(params object[] keys) =>
+            await FindByKeysAsync(keys, CancellationToken.None);
 
-        public async ValueTask<TDatabaseModel> FindByKeys(IEnumerable keys, CancellationToken token) =>
-            (await DbSet.FindAsync(keys, token))!;
+        public async Task<TDatabaseModel> FindByKeysAsync(IEnumerable keys) =>
+            await FindByKeysAsync(keys, CancellationToken.None);
+
+        public async Task<TDatabaseModel> FindByKeysAsync(IEnumerable keys, CancellationToken token) =>
+            await Task.Run(
+                () =>
+                {
+                    lock(Context) return DbSet.Find(keys)!;
+                }, token
+            );
+
+        public async Task<TDatabaseModel> FindByKeysAsync(CancellationToken token, params object[] keys) =>
+            await Task.Run(
+                () =>
+                {
+                    lock(Context) return DbSet.Find(keys)!;
+                }, token
+            );
 
         public void Remove(params TDatabaseModel[] models) => Remove((IEnumerable<TDatabaseModel>)models);
 
         public void Remove(IEnumerable<TDatabaseModel> models) => DbSet.RemoveRange(models);
 
-        public async Task RemoveAllAsync() => await Context.DeleteTableFromDbSetAsync<TDatabaseModel>();
+        public async Task RemoveAllAsync() => await RemoveAllAsync(CancellationToken.None);
+
+        public async Task RemoveAllAsync(CancellationToken token) =>
+            await Task.Run(
+                () =>
+                {
+                    lock(Context) Context.DeleteTableFromDbSet<TDatabaseModel>();
+                }, token
+            );
 
         public void Update(params TDatabaseModel[] models) => Update((IEnumerable<TDatabaseModel>)models);
 
