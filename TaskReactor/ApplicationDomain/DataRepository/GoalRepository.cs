@@ -27,7 +27,7 @@ namespace ApplicationDomain.DataRepository
                     lock(Context)
                         return DbSet!.Include(goal => goal.FromTask)!
                             .Where(goal => task.Id == goal.FromTask.Id).ToList()!;
-                }, 
+                },
                 token
             ))!;
 
@@ -37,7 +37,7 @@ namespace ApplicationDomain.DataRepository
         public void AddToTask(UserTask userTask, IEnumerable<Goal> goals)
         {
             userTask.Goals ??= new List<Goal>();
-            foreach (var goal in goals)
+            foreach(var goal in goals)
             {
                 // ReSharper disable once PossibleNullReferenceException
                 goal.FromTask = userTask;

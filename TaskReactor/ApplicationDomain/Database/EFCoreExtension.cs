@@ -23,7 +23,7 @@ namespace ApplicationDomain.Database
             [NotNull] ValueConverter converter
         )
         {
-            foreach (var property in builder.Metadata!.ClrType!.GetProperties()
+            foreach(var property in builder.Metadata!.ClrType!.GetProperties()
                 .Where(p => p.PropertyType == converter.ModelClrType))
                 builder.Property(property!.Name)!.HasConversion(converter);
 

@@ -99,7 +99,7 @@ namespace UnitTest.ApplicationDomain.Repository
         [Fact]
         async Task Test()
         {
-            foreach (var goal in TestEntities) await AddToTask(goal);
+            foreach(var goal in TestEntities) await AddToTask(goal);
             await GetAllTest();
         }
 

@@ -80,7 +80,7 @@ namespace UnitTest.ApplicationDomain.Repository
         [Fact]
         async Task Test()
         {
-            foreach (var task in TestEntities) await AddToUser(task);
+            foreach(var task in TestEntities) await AddToUser(task);
             await GetAllTest();
         }
 

@@ -36,7 +36,7 @@ namespace ApplicationDomain.DataRepository
         {
             user.Tasks ??= new List<UserTask>();
 
-            foreach (var userTask in userTasks)
+            foreach(var userTask in userTasks)
             {
                 // ReSharper disable once PossibleNullReferenceException
                 userTask.OwnerUser = user;
