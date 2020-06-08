@@ -1,8 +1,7 @@
 ﻿using System;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using Utilities;
 
 namespace Presentation.ViewModels
 {
@@ -30,20 +29,7 @@ namespace Presentation.ViewModels
         )
         {
             var container = viewModel.Container;
-            var batch = new CompositionBatch();
-            var part = contractName is null ? batch.AddExportedValue(value) : batch.AddExportedValue(contractName, value);
-
-            var partsDictionary = viewModel.VariableParts;
-            var partKey = (typeof(TVariable), contractName);
-
-            if(partsDictionary.ContainsKey(partKey))
-            {
-                batch.RemovePart(partsDictionary[partKey]!);
-                partsDictionary[partKey] = part;
-            }
-            else partsDictionary.Add(partKey, part);
-
-            container.Compose(batch);
+            container.UpdateExportedValue(value, definition => definition?.ContractName == contractName);
         }
 
         /// <summary>

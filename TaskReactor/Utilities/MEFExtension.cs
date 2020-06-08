@@ -1,5 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace Utilities
@@ -8,6 +11,28 @@ namespace Utilities
     {
         [NotNull]
         public static string GetMEFContractName([NotNull] this Type type) =>
-            AttributedModelServices.GetContractName(type) ?? throw new InvalidOperationException("Cannot get the contract name of the type");
+            AttributedModelServices.GetContractName(type) ??
+            throw new InvalidOperationException("Cannot get the contract name of the type");
+
+        public static void UpdateExportedValue<T>(
+            [NotNull] this CompositionContainer container,
+            T value,
+            [NotNull] Func<ExportDefinition, bool> predicate
+        )
+        {
+            var batch = new CompositionBatch();
+
+            batch.AddExportedValue(value);
+
+            // enumerate the parts
+            foreach(var partDefinition in from partDefinition in container.Catalog!.Parts!
+                where partDefinition != null &&
+                      partDefinition.ExportDefinitions != null &&
+                      partDefinition.ExportDefinitions.Any(predicate)
+                // ReSharper disable once PossibleNullReferenceException
+                select partDefinition) batch.RemovePart(partDefinition.CreatePart());
+
+            container.Compose(batch);
+        }
     }
 }

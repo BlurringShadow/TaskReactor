@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
 using ApplicationDomain.DataModel;
 using JetBrains.Annotations;
 
@@ -22,10 +20,9 @@ namespace Presentation.ViewModels
         [ImportingConstructor]
         public GoalEditViewModel(
             [NotNull] CompositionContainer container,
-            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts,
             [NotNull, ShareVariable(nameof(CurrentUserTask), typeof(UserTaskModel))]
             UserTaskModel currentUserTask
-        ) : base(container, variableParts)
+        ) : base(container)
         {
             GoalModel = new GoalModel();
             CurrentUserTask = currentUserTask;

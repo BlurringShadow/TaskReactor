@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
 using System.Threading.Tasks;
 using ApplicationDomain.ModelService;
 using Caliburn.Micro;
@@ -24,11 +21,10 @@ namespace Presentation.ViewModels
         [ImportingConstructor]
         public LogInViewModel(
             [NotNull] CompositionContainer container,
-            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts,
             [NotNull] IUserService userService,
             [NotNull, ShareVariable(nameof(_navigationService), typeof(WelcomePageViewModel))]
             INavigationService navigationService
-        ) : base(container, variableParts)
+        ) : base(container)
         {
             _userService = userService;
             _navigationService = navigationService;

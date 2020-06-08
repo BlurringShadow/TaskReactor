@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
 using ApplicationDomain.DataModel;
 using Caliburn.Micro;
 using JetBrains.Annotations;
@@ -17,13 +15,12 @@ namespace Presentation.ViewModels
 
         [ImportingConstructor]
         public UserTaskEditViewModel(
-            [NotNull] CompositionContainer container, 
-            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts,
+            [NotNull] CompositionContainer container,
             [NotNull, ShareVariable(nameof(TaskModel), typeof(UserTaskModel))]
             UserTaskModel taskModel,
             [NotNull, ShareVariable(nameof(_navigationService), typeof(WelcomePageViewModel))]
             INavigationService navigationService
-        ) : base(container, variableParts)
+        ) : base(container)
         {
             _navigationService = navigationService;
             TaskModel = taskModel;

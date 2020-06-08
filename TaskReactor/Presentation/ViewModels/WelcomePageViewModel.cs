@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
@@ -17,10 +14,9 @@ namespace Presentation.ViewModels
         [ImportingConstructor]
         public WelcomePageViewModel(
             [NotNull] CompositionContainer container,
-            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts,
             [NotNull, ShareVariable(nameof(_navigationService), typeof(MainScreenViewModel))]
             INavigationService navigationService
-        ) : base(container, variableParts)
+        ) : base(container)
         {
             DisplayName = "Welcome";
             _navigationService = navigationService;

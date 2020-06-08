@@ -19,7 +19,7 @@ namespace Presentation.ViewModels
         public MainScreenViewModel(
             [NotNull] CompositionContainer container,
             [NotNull] IDictionary<(Type, string), ComposablePart> variableParts
-        ) : base(container, variableParts) => DisplayName = "Task Reactor";
+        ) : base(container) => DisplayName = "Task Reactor";
 
         /// <summary> Initialize the frame navigation service </summary>
         public void RegisterFrame([NotNull] Frame frame)

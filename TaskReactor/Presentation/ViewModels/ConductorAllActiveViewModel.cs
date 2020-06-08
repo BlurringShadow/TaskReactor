@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
@@ -16,15 +14,9 @@ namespace Presentation.ViewModels
 
         public Type InstanceType { get; }
 
-        public IDictionary<(Type, string), ComposablePart> VariableParts { get; }
-
-        protected ConductorAllActiveViewModel(
-            [NotNull] CompositionContainer container, 
-            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts
-        )
+        protected ConductorAllActiveViewModel([NotNull] CompositionContainer container)
         {
             Container = container;
-            VariableParts = variableParts;
             InstanceType = this.Initialize();
         }
     }

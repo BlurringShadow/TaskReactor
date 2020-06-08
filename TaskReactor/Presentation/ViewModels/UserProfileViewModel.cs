@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
 using ApplicationDomain.DataModel;
 using Caliburn.Micro;
 using JetBrains.Annotations;
@@ -17,13 +14,13 @@ namespace Presentation.ViewModels
         [NotNull] public readonly UserModel CurrentUser;
 
         [ImportingConstructor]
-        public UserProfileViewModel([NotNull] CompositionContainer container,
+        public UserProfileViewModel(
+            [NotNull] CompositionContainer container,
             [NotNull, ShareVariable(nameof(CurrentUser), typeof(WelcomePageViewModel))]
             UserModel currentUser,
-            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts,
             [NotNull, ShareVariable(nameof(_navigationService), typeof(WelcomePageViewModel))]
             INavigationService navigationService
-        ) : base(container, variableParts)
+        ) : base(container)
         {
             CurrentUser = currentUser;
             _navigationService = navigationService;

@@ -27,7 +27,7 @@ namespace Presentation.ViewModels
             [NotNull] CompositionContainer container,
             [NotNull] IDictionary<(Type, string), ComposablePart> variableParts,
             [NotNull] IUserService userService
-        ) : base(container, variableParts) => _userService = userService;
+        ) : base(container) => _userService = userService;
 
         public bool CanRegister => !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password);
 
@@ -39,7 +39,7 @@ namespace Presentation.ViewModels
 
             await _userService.DbSync();
 
-            RegisteredId = $"×¢²á³É¹¦£¬IdÎª{user.Identity}";
+            RegisteredId = $"×¢ï¿½ï¿½É¹ï¿½ï¿½ï¿½IdÎª{user.Identity}";
         }
     }
 }
