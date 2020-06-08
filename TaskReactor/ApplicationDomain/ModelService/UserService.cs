@@ -18,11 +18,15 @@ namespace ApplicationDomain.ModelService
 
         public void Register(UserModel user) => Repository.Register(user._dataBaseModel);
 
-        public async Task<User> LogInAsync(UserModel user) =>
-            await Repository.LogInAsync(user._dataBaseModel, CancellationToken.None);
+        public async Task<UserModel> LogInAsync(int userId, string userPassword) =>
+            await LogInAsync(userId, userPassword, CancellationToken.None);
 
-        public async Task<User> LogInAsync(UserModel user, CancellationToken token) =>
-            await Repository.LogInAsync(user._dataBaseModel, token);
+        public async Task<UserModel> LogInAsync(int userId, string userPassword, CancellationToken token) =>
+            CreateModelInstance(
+                (await Repository.LogInAsync(
+                    new User {Id = userId, Password = userPassword}, CancellationToken.None
+                ))!
+            );
 
         public void LogOff(UserModel user) => Repository.LogOff(user._dataBaseModel);
     }
