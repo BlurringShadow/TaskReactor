@@ -23,14 +23,14 @@ namespace ApplicationDomain.ModelService
         /// </summary>
         /// <returns> User model which matched input user's id and password </returns>
         [NotNull]
-        Task<User> LogInAsync([NotNull] UserModel user);
+        Task<UserModel> LogInAsync(int userId, [NotNull] string userPassword);
 
         /// <summary>
         /// User log in
         /// </summary>
         /// <returns> User model which matched input user's id and password </returns>
         [NotNull]
-        Task<User> LogInAsync([NotNull] UserModel user, CancellationToken token);
+        Task<UserModel> LogInAsync(int userId, [NotNull] string userPassword, CancellationToken token);
 
         /// <summary>
         /// Delete the user model

@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="Presentation.Views.RegisterView"
+             x:Name="RegisterControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Presentation.Views"
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:viewModels="clr-namespace:Presentation.ViewModels"
+             xmlns:cm="http://caliburnmicro.com"
+             d:DesignWidth="800"
+             d:DesignHeight="600"
+             mc:Ignorable="d"
+             cm:Bind.AtDesignTime="True"
+             d:DataContext="{d:DesignInstance viewModels:RegisterViewModel}">
+    <StackPanel HorizontalAlignment="Stretch"
+                VerticalAlignment="Center">
+        <StackPanel.Resources>
+            <Thickness x:Key="Margin"> 10 </Thickness>
+        </StackPanel.Resources>
+
+        <DockPanel>
+            <Label DockPanel.Dock="Left" Content="用户名：" Margin="{StaticResource Margin}"/>
+
+            <TextBox DockPanel.Dock="Right" Margin="{StaticResource Margin}" x:Name="UserName"/>
+        </DockPanel>
+
+        <DockPanel>
+            <Label DockPanel.Dock="Left" Content="密码：" Margin="{StaticResource Margin}"/>
+
+            <PasswordBox DockPanel.Dock="Right" Margin="{StaticResource Margin}"/>
+        </DockPanel>
+
+        <Label HorizontalAlignment="Center" x:Name="RegisteredId"/>
+
+        <Button HorizontalAlignment="Center"
+                x:Name="Register"
+                Content="注册"
+                Margin="{StaticResource Margin}"
+                Width="150"
+                Height="30"/>
+    </StackPanel>
+</UserControl>

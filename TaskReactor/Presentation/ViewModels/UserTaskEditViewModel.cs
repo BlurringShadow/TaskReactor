@@ -10,32 +10,33 @@ using JetBrains.Annotations;
 namespace Presentation.ViewModels
 {
     [Export]
-    public sealed class UserProfileViewModel : ScreenViewModel
+    public sealed class UserTaskEditViewModel : ScreenViewModel
     {
         [NotNull] private readonly INavigationService _navigationService;
-
-        [NotNull] public readonly UserModel CurrentUser;
+        [NotNull] public UserTaskModel TaskModel { get; }
 
         [ImportingConstructor]
-        public UserProfileViewModel([NotNull] CompositionContainer container,
-            [NotNull, ShareVariable(nameof(CurrentUser), typeof(WelcomePageViewModel))]
-            UserModel currentUser,
+        public UserTaskEditViewModel(
+            [NotNull] CompositionContainer container, 
             [NotNull] IDictionary<(Type, string), ComposablePart> variableParts,
+            [NotNull, ShareVariable(nameof(TaskModel), typeof(UserTaskModel))]
+            UserTaskModel taskModel,
             [NotNull, ShareVariable(nameof(_navigationService), typeof(WelcomePageViewModel))]
             INavigationService navigationService
         ) : base(container, variableParts)
         {
-            CurrentUser = currentUser;
             _navigationService = navigationService;
+            TaskModel = taskModel;
         }
 
-        /// <summary>
-        /// TODO: add task list to select
-        /// </summary>
-        public void AddTask()
+        public void Confirm()
         {
-            this.ShareWithName(_navigationService, nameof(_navigationService));
-            _navigationService.NavigateToViewModel<GoalEditViewModel>();
+            this.ShareWithName(TaskModel, nameof(GoalEditViewModel.CurrentUserTask));
+        }
+
+        public void Cancel()
+        {
+            throw new NotImplementedException();
         }
     }
 }

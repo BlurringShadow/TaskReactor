@@ -1,25 +1,23 @@
-﻿<Page x:Class="Presentation.Views.WelcomePageView"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:cm="http://caliburnmicro.com"
-      xmlns:viewModels="clr-namespace:Presentation.ViewModels"
-      mc:Ignorable="d"
-      d:DesignHeight="450"
-      d:DesignWidth="800"
-      cm:Bind.AtDesignTime="True"
-      d:DataContext="{d:DesignInstance viewModels:WelcomePageViewModel}">
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBox x:Name="DisplayName"
-                 Height="30"
-                 Width="200"
-                 Style="{DynamicResource MahApps.Styles.TextBox.Button}"/>
+﻿<UserControl x:Class="Presentation.Views.WelcomePageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cm="http://caliburnmicro.com"
+             xmlns:viewModels="clr-namespace:Presentation.ViewModels"
+             xmlns:matro="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d"
+             d:DesignHeight="600"
+             d:DesignWidth="800"
+             cm:Bind.AtDesignTime="True"
+             d:DataContext="{d:DesignInstance viewModels:WelcomePageViewModel}">
+    <DockPanel>
+        <matro:ToggleSwitch DockPanel.Dock="Bottom" HorizontalAlignment="Center" OffContent="登录" OnContent="注册" IsOn="{Binding Transition}"/>
 
-        <TextBlock
-            Text="{Binding DisplayName}"
-            Height="30"
-            Width="200"
-            Style="{DynamicResource MahApps.Styles.TextBlock}"/>
-    </StackPanel>
-</Page>
+        <matro:TransitioningContentControl
+            DockPanel.Dock="Top"
+            x:Name="TransitionControl"
+            Transition="Left"
+            cm:View.Model="{Binding ActiveItem, Mode=OneWay}"/>
+    </DockPanel>
+</UserControl>
