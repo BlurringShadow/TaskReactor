@@ -1,12 +1,11 @@
-﻿
-namespace Presentation.Views
+﻿namespace Presentation.Views
 {
     /// <summary>
-    /// LoginView.xaml 的交互逻辑
+    /// LogInView.xaml 的交互逻辑
     /// </summary>
-    public partial class LoginView
+    public partial class LogInView
     {
-        public LoginView()
+        public LogInView()
         {
             InitializeComponent();
         }

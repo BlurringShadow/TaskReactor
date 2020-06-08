@@ -3,36 +3,40 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
+using System.Threading;
+using ApplicationDomain.DataModel;
 using Caliburn.Micro;
 using JetBrains.Annotations;
+using MahApps.Metro.Controls;
 
 namespace Presentation.ViewModels
 {
     [Export]
-    public sealed class WelcomePageViewModel : ScreenViewModel
+    public sealed class WelcomePageViewModel : ConductorOneActiveViewModel<ScreenViewModel>
     {
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         [NotNull] private readonly INavigationService _navigationService;
-
-        private string _userName;
-
-        public string UserName { get => _userName; set => Set(ref _userName, value); }
-
-        private string _userPassword;
-
-        public string UserPassword { get => _userPassword; set => Set(ref _userPassword, value); }
 
         [ImportingConstructor]
         public WelcomePageViewModel(
             [NotNull] CompositionContainer container,
+            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts,
             [NotNull, ShareVariable(nameof(_navigationService), typeof(MainScreenViewModel))]
-            INavigationService navigationService,
-            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts
+            INavigationService navigationService
         ) : base(container, variableParts)
         {
             DisplayName = "Welcome";
             _navigationService = navigationService;
+            this.ShareWithName(_navigationService, nameof(_navigationService));
+            Transition = false;
         }
 
-        public void Login() => _navigationService.NavigateToViewModel<UserProfileViewModel>();
+        public bool Transition
+        {
+            get => ActiveItem!.InstanceType == typeof(RegisterViewModel);
+            set => ActiveItem = value ?
+                Container.GetExportedValue<RegisterViewModel>() :
+                (ScreenViewModel)Container.GetExportedValue<LogInViewModel>();
+        }
     }
 }
