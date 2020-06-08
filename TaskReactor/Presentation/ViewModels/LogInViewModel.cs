@@ -4,7 +4,6 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.Threading.Tasks;
-using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
 using Caliburn.Micro;
 using JetBrains.Annotations;

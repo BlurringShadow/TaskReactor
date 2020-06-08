@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
-using System.Threading;
-using ApplicationDomain.DataModel;
 using Caliburn.Micro;
 using JetBrains.Annotations;
-using MahApps.Metro.Controls;
 
 namespace Presentation.ViewModels
 {
