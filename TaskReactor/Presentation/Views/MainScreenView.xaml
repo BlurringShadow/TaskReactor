@@ -12,21 +12,9 @@
                    d:DesignWidth="800"
                    cm:Bind.AtDesignTime="True"
                    d:DataContext="{d:DesignInstance viewModels:MainScreenViewModel}">
-    <StackPanel Margin="20" Orientation="Horizontal">
-        <ListBox>
-            <Button x:Name="Navigate"
-                    Content="click me to continue"
-                    Height="50"
-                    Width="120"
-                    Style="{DynamicResource MahApps.Styles.Button.MetroSquare}"/>
-
-            <TextBox x:Name="DisplayName"/>
-        </ListBox>
-
-        <Frame cm:Message.Attach="RegisterFrame($source)"
-               HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Center"
-               VerticalAlignment="Stretch"
-               HorizontalAlignment="Stretch" Margin="10"/>
-    </StackPanel>
+    <Frame cm:Message.Attach="RegisterFrame($source)"
+           HorizontalContentAlignment="Center"
+           VerticalContentAlignment="Center"
+           VerticalAlignment="Stretch"
+           HorizontalAlignment="Stretch" Margin="10"/>
 </metro:MetroWindow>

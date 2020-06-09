@@ -21,6 +21,7 @@ namespace Presentation.ViewModels
         {
             _navigationService = new FrameAdapter(frame);
             this.ShareWithName(_navigationService, nameof(WelcomePageViewModel.NavigationService));
+            Navigate();
         }
 
         public void Navigate() => _navigationService.NavigateToViewModel<WelcomePageViewModel>();

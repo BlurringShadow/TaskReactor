@@ -8,6 +8,7 @@
                 <!--MahApps.Metro-->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/fonts.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml"/>
                 <ResourceDictionary
                     Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/light.blue.xaml"/>
                 <!--MahApps.Metro-->
@@ -18,8 +19,8 @@
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="{x:Type Border}">
-                <Setter Property="CornerRadius" Value="6" />
-                <Setter Property="BorderBrush" Value="#c1d0dc" />
+                <Setter Property="CornerRadius" Value="6"/>
+                <Setter Property="BorderBrush" Value="#c1d0dc"/>
             </Style>
         </ResourceDictionary>
     </Application.Resources>

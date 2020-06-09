@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:local="clr-namespace:Presentation.Views"
              mc:Ignorable="d"
              xmlns:viewModels="clr-namespace:Presentation.ViewModels"
              xmlns:cm="http://caliburnmicro.com"
@@ -14,6 +13,7 @@
              d:DataContext="{d:DesignInstance viewModels:UserProfileViewModel}">
     <DockPanel>
         <DockPanel DockPanel.Dock="Left">
+            <!--
             <DockPanel.Resources>
                 <Style x:Key="ButtonStyle" BasedOn="{StaticResource MahApps.Styles.Button}" TargetType="Button">
                     <Setter Property="Width" Value="200"/>
@@ -21,6 +21,7 @@
                     <Setter Property="Margin" Value="5"/>
                 </Style>
             </DockPanel.Resources>
+            -->
 
             <Button x:Name="OpenSetting"
                     Background="Transparent"
