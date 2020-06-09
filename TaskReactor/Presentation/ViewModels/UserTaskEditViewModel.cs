@@ -10,20 +10,16 @@ namespace Presentation.ViewModels
     [Export]
     public sealed class UserTaskEditViewModel : ScreenViewModel
     {
-        [NotNull] private readonly INavigationService _navigationService;
-        [NotNull] public UserTaskModel TaskModel { get; }
+        [NotNull, ShareVariable(nameof(NavigationService), typeof(WelcomePageViewModel))]
+        public INavigationService NavigationService { get; set; }
 
-        [ImportingConstructor]
-        public UserTaskEditViewModel(
-            [NotNull] CompositionContainer container,
-            [NotNull, ShareVariable(nameof(TaskModel), typeof(UserTaskModel))]
-            UserTaskModel taskModel,
-            [NotNull, ShareVariable(nameof(_navigationService), typeof(WelcomePageViewModel))]
-            INavigationService navigationService
-        ) : base(container)
+        [NotNull, ShareVariable(nameof(TaskModel), typeof(UserTaskModel))]
+        public UserTaskModel TaskModel { get; set; }
+
+        [ImportingConstructor,
+         System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
+        public UserTaskEditViewModel([NotNull] CompositionContainer container) : base(container)
         {
-            _navigationService = navigationService;
-            TaskModel = taskModel;
         }
 
         public void Confirm()

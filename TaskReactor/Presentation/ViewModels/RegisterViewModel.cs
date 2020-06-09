@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
 using System.Threading.Tasks;
 using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
@@ -23,14 +20,10 @@ namespace Presentation.ViewModels
 
 
         [ImportingConstructor]
-        public RegisterViewModel(
-            [NotNull] CompositionContainer container,
-            [NotNull] IDictionary<(Type, string), ComposablePart> variableParts,
-            [NotNull] IUserService userService
-        ) : base(container) => _userService = userService;
+        public RegisterViewModel([NotNull] CompositionContainer container, [NotNull] IUserService userService) :
+            base(container) => _userService = userService;
 
         public bool CanRegister => !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password);
-
 
         public async Task Register()
         {
@@ -39,7 +32,7 @@ namespace Presentation.ViewModels
 
             await _userService.DbSync();
 
-            RegisteredId = $"ע��ɹ���IdΪ{user.Identity}";
+            RegisteredId = $"注册成功，账户为{user.Identity}";
         }
     }
 }

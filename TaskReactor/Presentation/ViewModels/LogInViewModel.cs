@@ -7,10 +7,11 @@ using JetBrains.Annotations;
 
 namespace Presentation.ViewModels
 {
-    [Export]
+    [Export, System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public class LogInViewModel : ScreenViewModel
     {
-        [NotNull] private readonly INavigationService _navigationService;
+        [NotNull, ShareVariable(nameof(NavigationService), typeof(WelcomePageViewModel))]
+        public INavigationService NavigationService { get; set; }
 
         [NotNull] private readonly IUserService _userService;
 
@@ -19,16 +20,8 @@ namespace Presentation.ViewModels
         public string Identity { get; set; }
 
         [ImportingConstructor]
-        public LogInViewModel(
-            [NotNull] CompositionContainer container,
-            [NotNull] IUserService userService,
-            [NotNull, ShareVariable(nameof(_navigationService), typeof(WelcomePageViewModel))]
-            INavigationService navigationService
-        ) : base(container)
-        {
-            _userService = userService;
-            _navigationService = navigationService;
-        }
+        public LogInViewModel([NotNull] CompositionContainer container, [NotNull] IUserService userService) :
+            base(container) => _userService = userService;
 
         public bool CanLogin => int.TryParse(Identity, out _) && !string.IsNullOrEmpty(Password);
 
@@ -42,7 +35,7 @@ namespace Presentation.ViewModels
                     if(userModel is null) return;
 
                     this.ShareWithName(userModel, nameof(UserProfileViewModel.CurrentUser));
-                    _navigationService.NavigateToViewModel<UserProfileViewModel>();
+                    NavigationService.NavigateToViewModel<UserProfileViewModel>();
                 }
             );
     }

@@ -6,10 +6,11 @@ using JetBrains.Annotations;
 
 namespace Presentation.ViewModels
 {
-    [Export]
+    [Export, System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public sealed class GoalEditViewModel : ScreenViewModel
     {
-        [NotNull] public UserTaskModel CurrentUserTask
+        [NotNull, ShareVariable(nameof(CurrentUserTask), typeof(UserTaskModel))]
+        public UserTaskModel CurrentUserTask
         {
             get => GoalModel.FromTask;
             set => GoalModel.FromTask = value;
@@ -18,15 +19,7 @@ namespace Presentation.ViewModels
         [NotNull] public GoalModel GoalModel { get; }
 
         [ImportingConstructor]
-        public GoalEditViewModel(
-            [NotNull] CompositionContainer container,
-            [NotNull, ShareVariable(nameof(CurrentUserTask), typeof(UserTaskModel))]
-            UserTaskModel currentUserTask
-        ) : base(container)
-        {
-            GoalModel = new GoalModel();
-            CurrentUserTask = currentUserTask;
-        }
+        public GoalEditViewModel([NotNull] CompositionContainer container) : base(container) => GoalModel = new GoalModel();
 
         public void Confirm() => throw new NotImplementedException();
 

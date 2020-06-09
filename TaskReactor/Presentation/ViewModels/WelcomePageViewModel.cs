@@ -8,19 +8,14 @@ namespace Presentation.ViewModels
     [Export]
     public sealed class WelcomePageViewModel : ConductorOneActiveViewModel<ScreenViewModel>
     {
-        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
-        [NotNull] private readonly INavigationService _navigationService;
+        [NotNull, ShareVariable(nameof(NavigationService), typeof(MainScreenViewModel))] 
+        public INavigationService NavigationService { get; set; }
 
-        [ImportingConstructor]
-        public WelcomePageViewModel(
-            [NotNull] CompositionContainer container,
-            [NotNull, ShareVariable(nameof(_navigationService), typeof(MainScreenViewModel))]
-            INavigationService navigationService
-        ) : base(container)
+        [ImportingConstructor, System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
+        public WelcomePageViewModel([NotNull] CompositionContainer container) : base(container)
         {
             DisplayName = "Welcome";
-            _navigationService = navigationService;
-            this.ShareWithName(_navigationService, nameof(_navigationService));
+            this.ShareWithName(NavigationService, nameof(NavigationService));
             Transition = false;
         }
 
