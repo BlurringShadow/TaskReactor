@@ -14,15 +14,15 @@ namespace Utilities
             AttributedModelServices.GetContractName(type) ??
             throw new InvalidOperationException("Cannot get the contract name of the type");
 
-        public static void UpdateExportedValue<T>(
-            [NotNull] this CompositionContainer container,
+        public static void UpdateExportedValue<T>([NotNull] this CompositionContainer container,
             T value,
-            [NotNull] Func<ExportDefinition, bool> predicate
-        )
+            [NotNull] Func<ExportDefinition, bool> predicate,
+            string contractName = null)
         {
             var batch = new CompositionBatch();
 
-            batch.AddExportedValue(value);
+            if(contractName is null) batch.AddExportedValue(value);
+            else batch.AddExportedValue(contractName, value);
 
             // enumerate the parts
             foreach(var partDefinition in from partDefinition in container.Catalog!.Parts!

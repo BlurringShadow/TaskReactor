@@ -8,7 +8,6 @@
                 <!--MahApps.Metro-->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/fonts.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml"/>
                 <ResourceDictionary
                     Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/light.blue.xaml"/>
                 <!--MahApps.Metro-->
