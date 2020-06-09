@@ -36,6 +36,7 @@
         <Button HorizontalAlignment="Center"
                 x:Name="Register"
                 Content="注册"
+                Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
                 Margin="{StaticResource Margin}"
                 Width="150"
                 Height="30"/>
