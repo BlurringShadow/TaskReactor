@@ -8,121 +8,53 @@
       xmlns:local="clr-namespace:Presentation.Views"
       xmlns:viewModels="clr-namespace:Presentation.ViewModels"
       mc:Ignorable="d"
-      Title="ScheduleEdit" 
+      Title="ScheduleEdit"
       Height="721"
       Width="1204"
       cm:Bind.AtDesignTime="True"
       d:DataContext="{d:DesignInstance viewModels:GoalEditViewModel}">
 
-    <Grid d:DataContext="{Binding GoalModel, Mode=OneWay}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <Grid Background="#FAFAFA" Grid.Row="0">
-            <Label Content="添加计划" HorizontalAlignment="Left" Margin="49,0,0,0" VerticalAlignment="Center" FontSize="27" />
-        </Grid>
-
-        <Grid Background="#FAFAFA" Grid.Row="1">
-            <Label Content="计划名称：" HorizontalAlignment="Left" Margin="50,5,0,0" VerticalAlignment="Top" FontSize="24" />
-
-            <TextBox HorizontalAlignment="Left" 
-                     Margin="185,12,0,0"
-                     TextWrapping="Wrap" 
-                     VerticalAlignment="Top"
-                     FontSize="23" 
-                     Width="276" 
-                     Height="35"
-                     Text="{Binding Title}">
-                <TextBox.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="6" />
-                        <Setter Property="BorderBrush" Value="#c1d0dc" />
-                    </Style>
-                </TextBox.Resources>
-            </TextBox>
-        </Grid>
-
-        <Grid Background="#FAFAFA" Grid.Row="2">
-            <Label Content="计划详情：" HorizontalAlignment="Left" Margin="50,0,0,0" VerticalAlignment="Top" FontSize="24" />
-
-            <TextBox HorizontalAlignment="Left"
-                     Margin="185,7,0,0"
-                     TextWrapping="Wrap"
-                     VerticalAlignment="Top"
-                     FontSize="24"
-                     Width="666"
-                     Height="167"
-                     x:Name="Description">
-                <TextBox.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="6" />
-                        <Setter Property="BorderBrush" Value="#c1d0dc" />
-                    </Style>
-                </TextBox.Resources>
-            </TextBox>
-        </Grid>
-
-        <Grid Background="#FAFAFA" Grid.Row="3">
-            <Label Content="截至日期：" HorizontalAlignment="Left" Margin="50,5,0,0" VerticalAlignment="Top" FontSize="24" />
-
-            <Calendar HorizontalAlignment="Left" Margin="185,5,0,0" VerticalAlignment="Top" DisplayDate="{Binding EndTime}" />
-        </Grid>
-
-        <Grid Background="#FAFAFA" Grid.Row="4">
+    <DockPanel Margin="20,10">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" FlowDirection="RightToLeft">
+            <StackPanel.Resources>
+                <Style x:Key="ButtonStyle" BasedOn="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
+                       TargetType="Button">
+                    <Setter Property="FontSize" Value="30"/>
+                    <Setter Property="Width" Value="150"/>
+                    <Setter Property="Height" Value="50"/>
+                    <Setter Property="Margin" Value="20,0"/>
+                </Style>
+            </StackPanel.Resources>
             <Button Content="取消"
-                    HorizontalAlignment="Right"
-                    Margin="0,0,100,0"
-                    VerticalAlignment="Center"
-                    FontSize="24"
-                    Width="76"
-                    Foreground="White"
-                    Background="#FFDB3162" 
-                    Height="58"
-                    x:Name="Cancel">
-                <Button.Template>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border BorderBrush="{TemplateBinding Control.BorderBrush}"
-                                BorderThickness="1"
-                                CornerRadius="4,4,4,4"
-                                Height="36"
-                                Background="#FFDB3162">
-                            <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Top" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    Background="Crimson"
+                    Style="{StaticResource ButtonStyle}"
+                    x:Name="Cancel"/>
 
             <Button Content="确定"
-                    HorizontalAlignment="Right"
-                    Margin="0,0,200,0"
-                    VerticalAlignment="Center"
-                    FontSize="24"
-                    Width="76"
-                    Foreground="White"
-                    Background="#FF2555CB"
-                    Height="58"
-                    x:Name="Confirm">
-                <Button.Template>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="1"
-                                CornerRadius="4,4,4,4"
-                                Height="36"
-                                Background="#FF3765D6">
-                            <ContentPresenter Content="{TemplateBinding Content}"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Top" />
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-        </Grid>
-    </Grid>
+                    Style="{StaticResource ButtonStyle}"
+                    x:Name="Confirm"/>
+        </StackPanel>
+
+        <StackPanel d:DataContext="{Binding GoalModel, Mode=OneWay}">
+            <Label Margin="10" Content="添加计划" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="27"/>
+
+            <DockPanel Margin="10">
+                <Label Content="计划名称：" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24"/>
+
+                <TextBox TextWrapping="Wrap" x:Name="Title" Style="{StaticResource MahApps.Styles.TextBox.Button}"/>
+            </DockPanel>
+
+            <DockPanel Margin="10">
+                <Label Content="计划详情：" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24"/>
+
+                <TextBox TextWrapping="Wrap" x:Name="Description" Style="{StaticResource MahApps.Styles.TextBox.Button}"/>
+            </DockPanel>
+
+            <DockPanel Margin="10">
+                <Label Content="截至日期：" HorizontalAlignment="Left" FontSize="24"/>
+
+                <Calendar HorizontalAlignment="Left" VerticalAlignment="Top" DisplayDate="{Binding EndTime}"/>
+            </DockPanel>
+        </StackPanel>
+    </DockPanel>
 </Page>
