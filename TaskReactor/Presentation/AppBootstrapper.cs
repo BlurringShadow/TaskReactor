@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
-using System.Reflection;
+using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using ApplicationDomain.Database;
@@ -24,9 +24,9 @@ namespace Presentation
         {
             _container = new CompositionContainer(
                 new AggregateCatalog(
-                    new AssemblyCatalog(Assembly.GetAssembly(typeof(TaskReactorDbContext))!),
-                    new AssemblyCatalog(Assembly.GetAssembly(typeof(IViewModel))!)
-                ), 
+                    new AssemblyCatalog(typeof(TaskReactorDbContext).Assembly),
+                    new AssemblyCatalog(typeof(IViewModel).Assembly)
+                ),
                 true
             );
             Initialize();
@@ -51,10 +51,18 @@ namespace Presentation
             _container.Compose(batch);
         }
 
-        protected override object GetInstance([NotNull] Type serviceType, [NotNull] string contractName) =>
-            _container.GetExportedValue<object>(
-                (string.IsNullOrEmpty(contractName) ? serviceType.GetMEFContractName() : contractName)!
-            );
+        protected override object GetInstance([NotNull] Type serviceType, string contractName)
+        {
+            try
+            {
+                // ReSharper disable once AssignNullToNotNullAttribute
+                return _container.GetExports(serviceType, null, contractName).Single()!.Value;
+            }
+            catch (Exception e)
+            {
+                throw new NullReferenceException($"Can't export type:{serviceType.AssemblyQualifiedName}\n contract name:{contractName}", e);
+            }
+        }
 
         protected override IEnumerable<object> GetAllInstances([NotNull] Type serviceType) =>
             _container.GetExportedValues<object>(serviceType.GetMEFContractName()!);
@@ -66,7 +74,7 @@ namespace Presentation
             try
             {
                 _container.GetExportedValue<IWindowManager>()
-                    .ShowWindowAsync(_container.GetExportedValue<MainScreenViewModel>());
+                    .ShowWindowAsync(GetInstance(typeof(MainScreenViewModel), null));
             }
             catch (Exception e)
             {

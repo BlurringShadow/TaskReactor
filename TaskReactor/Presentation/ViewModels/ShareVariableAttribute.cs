@@ -10,8 +10,6 @@ namespace Presentation.ViewModels
         /// <summary>
         /// Create the attribute with variable name and type
         /// </summary>
-        /// <param name="variableName"></param>
-        /// <param name="fromType"></param>
         public ShareVariableAttribute(string variableName, Type fromType) :
             base(ShareVariableNameBuilder.CreateFrom(fromType).WithName(variableName).ContractName)
         {

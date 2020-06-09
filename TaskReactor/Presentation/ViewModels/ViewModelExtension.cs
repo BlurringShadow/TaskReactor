@@ -29,7 +29,7 @@ namespace Presentation.ViewModels
         )
         {
             var container = viewModel.Container;
-            container.UpdateExportedValue(value, definition => definition?.ContractName == contractName);
+            container.UpdateExportedValue(value, definition => definition?.ContractName == contractName, contractName);
         }
 
         /// <summary>
