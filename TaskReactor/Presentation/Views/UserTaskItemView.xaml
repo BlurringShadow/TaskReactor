@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="Presentation.Views.UserTaskItemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Presentation.ViewModels"
+             xmlns:cm="http://caliburnmicro.com"
+             mc:Ignorable="d"
+             cm:Bind.AtDesignTime="True"
+             d:DesignHeight="50"
+             d:DesignWidth="150"
+             d:DataContext="{d:DesignInstance viewModels:UserTaskItemViewModel}">
+    <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="5 0">
+            <StackPanel.Resources>
+                <Style x:Key="TextBoxStyle" TargetType="TextBox">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                </Style>
+            </StackPanel.Resources>
+
+            <TextBox x:Name="TaskTitle" FontSize="15" Text="今日日程1" Style="{StaticResource TextBoxStyle}"/>
+
+            <TextBox x:Name="TaskStartTime" FontSize="12" Text="Hello world" Style="{StaticResource TextBoxStyle}"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

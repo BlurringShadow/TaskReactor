@@ -9,21 +9,21 @@ namespace Presentation.ViewModels
     [Export]
     public sealed class UserProfileViewModel : ScreenViewModel
     {
-        [NotNull] private readonly INavigationService _navigationService;
+        [NotNull, ShareVariable(nameof(NavigationService), typeof(WelcomePageViewModel))]
+        public INavigationService NavigationService { get; set; }
 
-        [NotNull] public readonly UserModel CurrentUser;
+        [NotNull, ShareVariable(nameof(CurrentUser), typeof(WelcomePageViewModel))]
+        public UserModel CurrentUser { get; set; }
 
-        [ImportingConstructor]
-        public UserProfileViewModel(
-            [NotNull] CompositionContainer container,
-            [NotNull, ShareVariable(nameof(CurrentUser), typeof(WelcomePageViewModel))]
-            UserModel currentUser,
-            [NotNull, ShareVariable(nameof(_navigationService), typeof(WelcomePageViewModel))]
-            INavigationService navigationService
-        ) : base(container)
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public BindableCollection<UserTaskItemViewModel> UserTaskItems { get; set; }
+
+        [ImportingConstructor,
+         System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
+        public UserProfileViewModel([NotNull] CompositionContainer container) : base(container)
         {
-            CurrentUser = currentUser;
-            _navigationService = navigationService;
         }
 
         /// <summary>
@@ -31,8 +31,8 @@ namespace Presentation.ViewModels
         /// </summary>
         public void AddTask()
         {
-            this.ShareWithName(_navigationService, nameof(_navigationService));
-            _navigationService.NavigateToViewModel<GoalEditViewModel>();
+            this.ShareWithName(NavigationService, nameof(NavigationService));
+            NavigationService.NavigateToViewModel<GoalEditViewModel>();
         }
     }
 }
