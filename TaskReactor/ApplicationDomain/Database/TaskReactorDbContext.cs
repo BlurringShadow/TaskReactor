@@ -19,9 +19,9 @@ namespace ApplicationDomain.Database
         // ReSharper disable once NotNullMemberIsNotInitialized
         public TaskReactorDbContext()
         {
-            if(Database is null) throw new NullReferenceException();
+            if (Database is null) throw new NullReferenceException();
 
-            if(!Database.CanConnect())
+            if (!Database.CanConnect())
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(DbPath));
                 File.Create(DbPath)!.Dispose();
@@ -32,7 +32,7 @@ namespace ApplicationDomain.Database
 
         protected override void OnConfiguring([NotNull] DbContextOptionsBuilder optionsBuilder)
         {
-            if(optionsBuilder.IsConfigured) return;
+            if (optionsBuilder.IsConfigured) return;
 
             optionsBuilder.UseSqlite(
                 new SqliteConnectionStringBuilder
@@ -53,7 +53,7 @@ namespace ApplicationDomain.Database
                 {
                     buildAction!.HasOne(d => d.Target)!.WithMany()!.HasForeignKey(d => d.TargetId);
                     buildAction.HasOne(d => d.Dependency)!.WithMany()!.HasForeignKey(d => d.DependencyId);
-                    buildAction.HasKey(d => new {d.TargetId, d.DependencyId});
+                    buildAction.HasKey(d => new { d.TargetId, d.DependencyId });
                 }
             );
         }
