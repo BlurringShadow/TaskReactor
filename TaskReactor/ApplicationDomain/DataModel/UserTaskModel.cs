@@ -13,6 +13,14 @@ namespace ApplicationDomain.DataModel
         {
         }
 
-        [NotNull] public UserModel OwnerUserModel => new UserModel(_dataBaseModel.OwnerUser);
+        [NotNull] public UserModel OwnerUser
+        {
+            get => new UserModel(_dataBaseModel.OwnerUser);
+            set
+            {
+                _dataBaseModel.OwnerUser = value._dataBaseModel;
+                NotifyOfPropertyChange();
+            }
+        }
     }
 }
