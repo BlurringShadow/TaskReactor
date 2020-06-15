@@ -24,7 +24,7 @@ namespace ApplicationDomain.DataRepository
             (await Task.Run(
                 () =>
                 {
-                    lock(Context)
+                    lock (Context)
                         return Context.Set<User>()!.Include(u => u.Tasks)!.First(u => u.Id == user.Id)!.Tasks;
                 }, token
             ))!;

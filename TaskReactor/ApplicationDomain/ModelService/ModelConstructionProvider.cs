@@ -18,12 +18,12 @@ namespace ApplicationDomain.ModelService
         [NotNull] private static readonly ConstructorInfo _modelConstructor = _modelType.GetConstructor(
             BindingFlags.Instance | BindingFlags.NonPublic,
             null,
-            new[] {_dataBaseType},
+            new[] { _dataBaseType },
             null
         )!;
 
         [NotNull]
-        public static TModel CreateModelInstance(TDatabaseModel databaseModel) => 
-            databaseModel is null ? new TModel() : (TModel)_modelConstructor.Invoke(new object[] {databaseModel});
+        public static TModel CreateModelInstance(TDatabaseModel databaseModel) =>
+            databaseModel is null ? new TModel() : (TModel)_modelConstructor.Invoke(new object[] { databaseModel });
     }
 }
