@@ -19,16 +19,17 @@ namespace ApplicationDomain.ModelService
         {
         }
 
-        public async Task<IList<UserTask>> GetAllFromUserAsync(UserModel user) =>
+        public async Task<IList<UserTaskModel>> GetAllFromUserAsync(UserModel user) =>
             await GetAllFromUserAsync(user, CancellationToken.None);
 
-        public async Task<IList<UserTask>> GetAllFromUserAsync(UserModel user, CancellationToken token) =>
-            await Repository.GetAllFromUserAsync(user._dataBaseModel, token);
- 
-        public void AddToUser(UserModel user, params UserTaskModel[] userTasks) => 
+        public async Task<IList<UserTaskModel>> GetAllFromUserAsync(UserModel user, CancellationToken token) =>
+            (from userTask in await Repository.GetAllFromUserAsync(user._dataBaseModel, token)
+                select CreateModelInstance(userTask)).ToList();
+
+        public void AddToUser(UserModel user, params UserTaskModel[] userTasks) =>
             AddToUser(user, (IEnumerable<UserTaskModel>)userTasks);
 
-        public void AddToUser(UserModel user, IEnumerable<UserTaskModel> userTasks) => 
+        public void AddToUser(UserModel user, IEnumerable<UserTaskModel> userTasks) =>
             Repository.AddToUser(user._dataBaseModel, from userTask in userTasks select userTask._dataBaseModel);
     }
 }

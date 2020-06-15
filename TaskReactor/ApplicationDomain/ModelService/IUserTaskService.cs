@@ -19,7 +19,7 @@ namespace ApplicationDomain.ModelService
         /// <param name="user"> The user </param>
         /// <returns> Async result contains list of <see cref="UserTask"/> </returns>
         [NotNull, ItemNotNull]
-        Task<IList<UserTask>> GetAllFromUserAsync([NotNull] UserModel user);
+        Task<IList<UserTaskModel>> GetAllFromUserAsync([NotNull] UserModel user);
 
         /// <summary>
         /// Get all tasks from user
@@ -28,7 +28,7 @@ namespace ApplicationDomain.ModelService
         /// <param name="token"> <see cref="CancellationToken"/> </param>
         /// <returns> Async result contains list of <see cref="UserTask"/> </returns>
         [NotNull, ItemNotNull]
-        Task<IList<UserTask>> GetAllFromUserAsync([NotNull] UserModel user, CancellationToken token);
+        Task<IList<UserTaskModel>> GetAllFromUserAsync([NotNull] UserModel user, CancellationToken token);
 
         /// <summary>
         /// Add tasks to user
