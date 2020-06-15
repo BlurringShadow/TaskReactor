@@ -27,7 +27,7 @@ namespace ApplicationDomain.DataRepository
                     lock(Context)
                         return DbSet!.Include(goal => goal.FromTask)!
                             .Where(goal => task.Id == goal.FromTask.Id).ToList()!;
-                },
+                }, 
                 token
             ))!;
 
