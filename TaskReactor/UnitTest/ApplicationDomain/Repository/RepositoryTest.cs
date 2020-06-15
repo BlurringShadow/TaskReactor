@@ -25,13 +25,13 @@ namespace UnitTest.ApplicationDomain.Repository
 
         protected static IEnumerable<object[]> GetTestData(
             [NotNull, ItemNotNull] IEnumerable<TDatabaseModel> testEntities
-        ) => testEntities.Select(entity => new[] { entity }).ToList();
+        ) => testEntities.Select(entity => new[] {entity}).ToList();
 
         protected RepositoryTest([NotNull] ITestOutputHelper testOutputHelper)
         {
             TestOutputHelper = testOutputHelper;
             Repository = Container.GetExportedValue<TRepository>();
-            SerializerOptions = new JsonSerializerOptions { WriteIndented = true };
+            SerializerOptions = new JsonSerializerOptions {WriteIndented = true};
         }
     }
 }

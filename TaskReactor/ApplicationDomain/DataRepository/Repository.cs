@@ -35,7 +35,7 @@ namespace ApplicationDomain.DataRepository
             await Task.Run(
                 () =>
                 {
-                    lock (Context) return DbSet.Find(keys)!;
+                    lock(Context) return DbSet.Find(keys)!;
                 }, token
             );
 
@@ -43,7 +43,7 @@ namespace ApplicationDomain.DataRepository
             await Task.Run(
                 () =>
                 {
-                    lock (Context) return DbSet.Find(keys)!;
+                    lock(Context) return DbSet.Find(keys)!;
                 }, token
             );
 
@@ -57,7 +57,7 @@ namespace ApplicationDomain.DataRepository
             await Task.Run(
                 () =>
                 {
-                    lock (Context) Context.DeleteTableFromDbSet<TDatabaseModel>();
+                    lock(Context) Context.DeleteTableFromDbSet<TDatabaseModel>();
                 }, token
             );
 

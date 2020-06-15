@@ -40,7 +40,7 @@ namespace UnitTest.ApplicationDomain.Repository
                 DurationOfOneTime = TimeSpan.FromHours(1),
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now,
-                Interval = new Interval { Kind = IntervalKind.ByDay, Value = 1 }
+                Interval = new Interval {Kind = IntervalKind.ByDay, Value = 1}
             },
             new Goal
             {
@@ -49,7 +49,7 @@ namespace UnitTest.ApplicationDomain.Repository
                 DurationOfOneTime = TimeSpan.FromHours(2),
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now,
-                Interval = new Interval { Kind = IntervalKind.ByWeek, Value = 2 }
+                Interval = new Interval {Kind = IntervalKind.ByWeek, Value = 2}
             },
             new Goal
             {
@@ -58,14 +58,14 @@ namespace UnitTest.ApplicationDomain.Repository
                 DurationOfOneTime = TimeSpan.FromHours(3),
                 StartTime = DateTime.Now,
                 EndTime = DateTime.Now,
-                Interval = new Interval { Kind = IntervalKind.MonthByDay, Value = 3 }
+                Interval = new Interval {Kind = IntervalKind.MonthByDay, Value = 3}
             }
         };
 
         public GoalRepositoryTest([NotNull] ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             _userRepository = Container.GetExportedValue<IUserRepository>();
-            lock (Repository.Context)
+            lock(Repository.Context)
             {
                 _userRepository.Register(_testUser);
                 Task.WaitAll(Repository.DbSync());
@@ -77,7 +77,7 @@ namespace UnitTest.ApplicationDomain.Repository
             await Task.Run(
                 () =>
                 {
-                    lock (Repository.Context)
+                    lock(Repository.Context)
                     {
                         Repository.AddToTask(_testTask, goal);
                         Task.WaitAll(Repository.DbSync());
@@ -111,8 +111,8 @@ namespace UnitTest.ApplicationDomain.Repository
 
         void Dispose(bool disposing)
         {
-            if (_disposed || !disposing) return;
-            lock (Repository.Context)
+            if(_disposed || !disposing) return;
+            lock(Repository.Context)
             {
                 _userRepository.LogOff(_testUser);
                 Task.WaitAll(Repository.DbSync());

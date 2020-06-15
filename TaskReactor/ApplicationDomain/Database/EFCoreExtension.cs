@@ -115,7 +115,7 @@ namespace ApplicationDomain.Database
         ) where TDbContext : DbContext => await Task.Run(
             () =>
             {
-                lock (context)
+                lock(context)
                 {
                     using var transaction = context.Database!.BeginTransaction();
 

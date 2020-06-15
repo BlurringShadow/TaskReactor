@@ -41,7 +41,7 @@ namespace UnitTest.ApplicationDomain.Repository
             await Task.Run(
                 () =>
                 {
-                    lock (Repository.Context)
+                    lock(Repository.Context)
                     {
                         Repository.Register(user);
                         Task.WaitAll(Repository.DbSync());
@@ -66,7 +66,7 @@ namespace UnitTest.ApplicationDomain.Repository
             await Task.Run(
                 () =>
                 {
-                    lock (Repository.Context)
+                    lock(Repository.Context)
                     {
                         Repository.LogOff(user);
                         Task.WaitAll(Repository.DbSync());

@@ -25,7 +25,7 @@ namespace ApplicationDomain.DataRepository
             (await Task.Run(
                 () =>
                 {
-                    lock (Context)
+                    lock(Context)
                         return DbSet.Include(d => d.Target)!
                                 .Include(d => d.Dependency)!
                             .Where(dependency => dependency.Target.Id == task.Id).ToList()!;
@@ -38,7 +38,7 @@ namespace ApplicationDomain.DataRepository
         public IList<TaskDependency> AddDependencies(UserTask target, IEnumerable<UserTask> userTasks)
         {
             var taskDependencies =
-                (from task in userTasks select new TaskDependency { Target = target, Dependency = task }).ToList();
+                (from task in userTasks select new TaskDependency {Target = target, Dependency = task}).ToList();
             Update(taskDependencies);
             return taskDependencies;
         }

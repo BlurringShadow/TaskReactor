@@ -13,7 +13,7 @@ namespace UnitTest.ApplicationDomain.Repository
         RepositoryTest<TaskDependency, ITaskDependencyRepository>,
         IDisposable
     {
-        [NotNull] readonly User _testUser = new User { Name = "first", Password = "123" };
+        [NotNull] readonly User _testUser = new User {Name = "first", Password = "123"};
 
         bool _disposed;
 
@@ -51,7 +51,7 @@ namespace UnitTest.ApplicationDomain.Repository
                 }
             };
 
-            lock (Repository.Context)
+            lock(Repository.Context)
             {
                 TestOutputHelper.WriteLine(
                     $"Registering user {JsonSerializer.Serialize(_testUser, SerializerOptions)}"
@@ -70,7 +70,7 @@ namespace UnitTest.ApplicationDomain.Repository
             await Task.Run(
                 () =>
                 {
-                    lock (Repository.Context)
+                    lock(Repository.Context)
                     {
                         var dependencies =
                             Repository.AddDependencies(_testUser.Tasks![targetIndex], _testUser.Tasks[dependencyIndex]);
@@ -109,8 +109,8 @@ namespace UnitTest.ApplicationDomain.Repository
 
         void Dispose(bool disposing)
         {
-            if (_disposed || !disposing) return;
-            lock (Repository.Context)
+            if(_disposed || !disposing) return;
+            lock(Repository.Context)
             {
                 TestOutputHelper.WriteLine(
                     $"Removing user {JsonSerializer.Serialize(_testUser, SerializerOptions)}"
