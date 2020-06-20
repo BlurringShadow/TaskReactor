@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System.Collections.Specialized;
+using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Linq;
 using System.Threading;
@@ -28,7 +29,7 @@ namespace Presentation.ViewModels
         /// <summary>
         /// User Task collection
         /// </summary>
-        [NotNull, ItemNotNull] public BindableCollection<UserTaskItemViewModel> UserTaskItems { get; set; } =
+        [NotNull, ItemNotNull] public BindableCollection<UserTaskItemViewModel> UserTaskItems { get; } =
             new BindableCollection<UserTaskItemViewModel>();
 
         [ImportingConstructor,
@@ -41,10 +42,19 @@ namespace Presentation.ViewModels
         {
             _userService = userService;
             _userTaskService = userTaskService;
+
+            UserTaskItems.CollectionChanged += OnTaskItemsChanged;
+        }
+
+        void OnTaskItemsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            var old = e.OldItems;
+            var item = old[0];
         }
 
         protected override Task OnActivateAsync(CancellationToken cancellationToken)
         {
+            // Refresh the user data
             var user = _userService.FindByKeysAsync(new[] { CurrentUser.Identity }, cancellationToken).Result;
 
             if (user is null)
@@ -56,14 +66,22 @@ namespace Presentation.ViewModels
             {
                 CurrentUser = user;
 
-                // Refresh the task data
-                foreach (var userTaskItemViewModel in from userTaskModel in
-                        _userTaskService.GetAllFromUserAsync(CurrentUser, cancellationToken).Result
-                    select new UserTaskItemViewModel(userTaskModel))
+                #region Refresh the task data
+
+                var newTaskItemList = _userTaskService.GetAllFromUserAsync(CurrentUser, cancellationToken).Result;
+
                 {
-                    userTaskItemViewModel!.OnClickEvent += ToUserTaskEdit;
-                    UserTaskItems.Add(userTaskItemViewModel);
+                    var i = 0;
+                    for (; i < newTaskItemList.Count && UserTaskItems.Count > i + 1; ++i)
+                        UserTaskItems[i].Model = newTaskItemList[i]!;
+
+                    for (; i < newTaskItemList.Count; ++i)
+                        UserTaskItems.Add(new UserTaskItemViewModel(newTaskItemList[i]!));
                 }
+
+                while (UserTaskItems.Count > newTaskItemList.Count) UserTaskItems.RemoveAt(UserTaskItems.Count - 1);
+
+                #endregion
             }
 
             return base.OnActivateAsync(cancellationToken);
