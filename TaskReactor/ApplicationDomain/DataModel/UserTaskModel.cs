@@ -13,6 +13,8 @@ namespace ApplicationDomain.DataModel
         {
         }
 
+        public int Identity => _dataBaseModel.Id;
+
         [NotNull] public UserModel OwnerUser
         {
             get => new UserModel(_dataBaseModel.OwnerUser);
