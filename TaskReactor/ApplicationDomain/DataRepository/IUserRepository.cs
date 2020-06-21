@@ -20,14 +20,14 @@ namespace ApplicationDomain.DataRepository
         /// User log in
         /// </summary>
         /// <returns> User which matched input user's id and password </returns>
-        [NotNull] 
+        [NotNull]
         Task<User> LogInAsync([NotNull] User user);
 
         /// <summary>
         /// User log in
         /// </summary>
         /// <returns> User which matched input user's id and password </returns>
-        [NotNull] 
+        [NotNull]
         Task<User> LogInAsync([NotNull] User user, CancellationToken token);
 
         /// <summary>

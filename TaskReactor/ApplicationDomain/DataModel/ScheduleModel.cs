@@ -33,7 +33,7 @@ namespace ApplicationDomain.DataModel
         public TimeSpan StartTimeOfDay => _dataBaseModel.StartTime.TimeOfDay;
 
         public TimeSpan EndTimeOfDay => StartTimeOfDay + DurationOfOneTime;
-        
+
         [NotNull] public virtual Interval Interval
         {
             get => _dataBaseModel.Interval;

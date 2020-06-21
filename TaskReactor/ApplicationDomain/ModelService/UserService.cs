@@ -24,7 +24,7 @@ namespace ApplicationDomain.ModelService
         public async Task<UserModel> LogInAsync(int userId, string userPassword, CancellationToken token) =>
             CreateModelInstance(
                 (await Repository.LogInAsync(
-                    new User {Id = userId, Password = userPassword}, CancellationToken.None
+                    new User { Id = userId, Password = userPassword }, CancellationToken.None
                 ))!
             );
 
