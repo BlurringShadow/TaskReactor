@@ -21,11 +21,11 @@ namespace Utilities
         {
             var batch = new CompositionBatch();
 
-            if(contractName is null) batch.AddExportedValue(value);
+            if (contractName is null) batch.AddExportedValue(value);
             else batch.AddExportedValue(contractName, value);
 
             // enumerate the parts
-            foreach(var partDefinition in from partDefinition in container.Catalog!.Parts!
+            foreach (var partDefinition in from partDefinition in container.Catalog!.Parts!
                 where partDefinition != null &&
                       partDefinition.ExportDefinitions != null &&
                       partDefinition.ExportDefinitions.Any(predicate)
