@@ -39,10 +39,35 @@ namespace ApplicationDomain.DataModel
             get => _dataBaseModel.Interval;
             set
             {
+                ResetIntervalKind(value.Kind);
                 _dataBaseModel.Interval = value;
                 NotifyOfPropertyChange();
             }
         }
+
+        private void ResetIntervalKind(IntervalKind kind)
+        {
+            _intervalImpl = kind switch
+            {
+                IntervalKind.YearByWeek => (startTime, count) => startTime.AddDays(-startTime.Day)
+                    .AddYears(count)
+                    .AddWeeks(startTime.WeekOfMonth())
+                    .AddDays((double)startTime.DayOfWeek),
+                IntervalKind.YearByDay => (startTime, count) => startTime.AddYears(count),
+                IntervalKind.MonthByWeek => (startTime, count) => startTime.AddDays(-startTime.Day)
+                    .AddMonths(count)
+                    .AddWeeks(startTime.WeekOfMonth())
+                    .AddDays((double)startTime.DayOfWeek),
+                IntervalKind.MonthByDay => (startTime, count) => startTime.AddMonths(count),
+                IntervalKind.ByWeek => (startTime, count) => startTime.AddWeeks(count),
+                IntervalKind.ByDay => (startTime, count) => startTime.AddDays(count),
+                _ => throw new InvalidEnumArgumentException(
+                    nameof(Interval.Kind), (byte)Interval.Kind, typeof(IntervalKind)
+                )
+            };
+        }
+
+        [NotNull] private Func<DateTime, int, DateTime> _intervalImpl { get; set; }
 
         /// <summary>
         /// Get the date time using specified interval count.
@@ -50,7 +75,7 @@ namespace ApplicationDomain.DataModel
         /// </summary>
         /// <param name="count">Interval count</param>
         /// <returns></returns>
-        public DateTime this[byte count] =>
+        public DateTime this[int count] =>
             Interval.Kind switch
             {
                 IntervalKind.YearByWeek => StartTime.AddDays(-StartTime.Day)
