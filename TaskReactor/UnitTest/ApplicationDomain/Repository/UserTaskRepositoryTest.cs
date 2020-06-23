@@ -14,7 +14,7 @@ namespace UnitTest.ApplicationDomain.Repository
     {
         bool _disposed;
 
-        [NotNull] readonly User _testUser = new User {Name = "first", Password = "123"};
+        [NotNull] readonly User _testUser = new User { Name = "first", Password = "123" };
 
         [NotNull] readonly IUserRepository _userRepository;
 
@@ -46,7 +46,7 @@ namespace UnitTest.ApplicationDomain.Repository
         public UserTaskRepositoryTest([NotNull] ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             _userRepository = Container.GetExportedValue<IUserRepository>();
-            lock(Repository.Context)
+            lock (Repository.Context)
             {
                 _userRepository.Register(_testUser);
                 Task.WaitAll(Repository.DbSync());
@@ -58,7 +58,7 @@ namespace UnitTest.ApplicationDomain.Repository
             await Task.Run(
                 () =>
                 {
-                    lock(Repository.Context)
+                    lock (Repository.Context)
                     {
                         Repository.AddToUser(_testUser, task);
                         Task.WaitAll(Repository.DbSync());
@@ -80,7 +80,7 @@ namespace UnitTest.ApplicationDomain.Repository
         [Fact]
         async Task Test()
         {
-            foreach(var task in TestEntities) await AddToUser(task);
+            foreach (var task in TestEntities) await AddToUser(task);
             await GetAllTest();
         }
 
@@ -92,8 +92,8 @@ namespace UnitTest.ApplicationDomain.Repository
 
         void Dispose(bool disposing)
         {
-            if(_disposed || !disposing) return;
-            lock(Repository.Context)
+            if (_disposed || !disposing) return;
+            lock (Repository.Context)
             {
                 _userRepository.LogOff(_testUser);
                 Task.WaitAll(Repository.DbSync());
