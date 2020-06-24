@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Threading;
@@ -20,8 +21,10 @@ namespace Presentation.ViewModels
         [NotNull, ShareVariable(nameof(NavigationService), typeof(WelcomePageViewModel))]
         public INavigationService NavigationService { get; set; }
 
+        [NotNull] private UserModel _currentUser;
+
         [NotNull, ShareVariable(nameof(CurrentUser), typeof(WelcomePageViewModel))]
-        public UserModel CurrentUser { get; set; }
+        public UserModel CurrentUser { get => _currentUser; set => Set(ref _currentUser, value); }
 
         [NotNull] public string UserName => CurrentUser.Name;
 
@@ -41,20 +44,12 @@ namespace Presentation.ViewModels
         {
             _userService = userService;
             _userTaskService = userTaskService;
-
-            UserTaskItems.CollectionChanged += OnTaskItemsChanged;
         }
 
-        void OnTaskItemsChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            var old = e.OldItems;
-            var item = old[0];
-        }
-
-        protected override Task OnActivateAsync(CancellationToken cancellationToken)
+        protected override Task OnActivateAsync(CancellationToken token)
         {
             // Refresh the user data
-            var user = _userService.FindByKeysAsync(new[] { CurrentUser.Identity }, cancellationToken).Result;
+            var user = _userService.FindByKeysAsync(new[] { CurrentUser.Identity }, token).Result;
 
             if (user is null)
             {
@@ -64,37 +59,44 @@ namespace Presentation.ViewModels
             else
             {
                 CurrentUser = user;
-
-                #region Refresh the task data
-
-                var newTaskItemList = _userTaskService.GetAllFromUserAsync(CurrentUser, cancellationToken).Result;
-
-                {
-                    var i = 0;
-                    for (; i < newTaskItemList.Count && UserTaskItems.Count > i + 1; ++i)
-                        UserTaskItems[i].Model = newTaskItemList[i]!;
-
-                    for (; i < newTaskItemList.Count; ++i)
-                        UserTaskItems.Add(new UserTaskItemViewModel(newTaskItemList[i]!));
-                }
-
-                while (UserTaskItems.Count > newTaskItemList.Count) UserTaskItems.RemoveAt(UserTaskItems.Count - 1);
-
-                #endregion
+                RefreshTaskData(token);
             }
 
-            return base.OnActivateAsync(cancellationToken);
+            return base.OnActivateAsync(token);
         }
 
-        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
+        void RefreshTaskData(CancellationToken token)
+        {
+            var newTaskItemList = _userTaskService.GetAllFromUserAsync(CurrentUser, token).Result;
+
+            {
+                var i = 0;
+                for (; i < newTaskItemList.Count && UserTaskItems.Count > i + 1; ++i)
+                    UserTaskItems[i].Model = newTaskItemList[i]!;
+
+                for (; i < newTaskItemList.Count; ++i)
+                {
+                    var itemViewModel = new UserTaskItemViewModel(newTaskItemList[i]!);
+                    itemViewModel.OnClickEvent += ToUserTaskEdit;
+                    itemViewModel.OnRemoveEvent += OnRemoveTask;
+                    UserTaskItems.Add(itemViewModel);
+                }
+            }
+
+            while (UserTaskItems.Count > newTaskItemList.Count) UserTaskItems.RemoveAt(UserTaskItems.Count - 1);
+        }
+
+        protected override Task OnDeactivateAsync(bool close, CancellationToken token)
         {
             // Release the events
-            foreach (var userTaskItemViewModel in UserTaskItems) userTaskItemViewModel.OnClickEvent -= ToUserTaskEdit;
+            foreach (var itemViewModel in UserTaskItems)
+            {
+                itemViewModel.OnClickEvent -= ToUserTaskEdit;
+                itemViewModel.OnRemoveEvent -= OnRemoveTask;
+            }
 
-            return base.OnDeactivateAsync(close, cancellationToken);
+            return base.OnDeactivateAsync(close, token);
         }
-
-        public void AddTask() => NavigateToTaskEdit(new UserTaskModel { OwnerUser = CurrentUser });
 
         void NavigateToTaskEdit([NotNull] UserTaskModel newUserTaskModel)
         {
@@ -103,6 +105,17 @@ namespace Presentation.ViewModels
             NavigationService.NavigateToViewModel<UserTaskEditViewModel>();
         }
 
-        void ToUserTaskEdit([NotNull] UserTaskModel model) => NavigateToTaskEdit(model);
+        public void AddTask() => NavigateToTaskEdit(new UserTaskModel { OwnerUser = CurrentUser });
+
+        void OnRemoveTask([NotNull] UserTaskItemViewModel viewModel)
+        {
+            viewModel.OnClickEvent -= ToUserTaskEdit;
+            viewModel.OnRemoveEvent -= OnRemoveTask;
+
+            UserTaskItems.Remove(viewModel);
+            _userTaskService.Remove(viewModel.Model);
+        }
+
+        void ToUserTaskEdit([NotNull] UserTaskItemViewModel viewModel) => NavigateToTaskEdit(viewModel.Model);
     }
 }
