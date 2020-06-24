@@ -50,10 +50,14 @@ namespace ApplicationDomain.ModelService
             void Callback(object state)
             {
                 if (_enumerator?.MoveNext() == false || _enumerator is null) return;
+                var span = DateTime.Now - _enumerator.Current;
+
+                // Filter time that less than zero
+                if (span < TimeSpan.Zero) return;
 
                 NotifyAction();
 
-                _timer.Change(DateTime.Now - _enumerator.Current, TimeSpan.FromMilliseconds(-1));
+                _timer.Change(span, TimeSpan.FromMilliseconds(-1));
             }
 
             public ValueTask DisposeAsync() => _timer.DisposeAsync();
@@ -78,8 +82,10 @@ namespace ApplicationDomain.ModelService
         public void RemoveModel(TModel t) => _timerEvents.Remove(t);
 
         /// <summary>
-        /// Configure schedule way
+        /// Configure schedule way. <para/>
+        /// Function return a <see cref="DateTime"/> that next time to execute.
         /// </summary>
+        /// <returns> Next due time <see cref="DateTime"/> </returns>
         [NotNull]
         protected abstract IEnumerable<DateTime> Configuration([NotNull] TModel model);
     }
