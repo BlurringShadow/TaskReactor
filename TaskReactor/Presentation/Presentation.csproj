@@ -9,9 +9,9 @@
   <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="4.0.105-alpha" />
     <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
-    <PackageReference Include="MahApps.Metro" Version="2.0.1" />
+    <PackageReference Include="MahApps.Metro" Version="2.1.0" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="4.2.0" />
-    <PackageReference Include="Mantin.Controls.Wpf.Notification" Version="4.0.0" />
+    <PackageReference Include="Notifications.Wpf.Core" Version="1.2.0" />
     <PackageReference Include="System.ComponentModel.Composition" Version="4.7.0" />
   </ItemGroup>
 
