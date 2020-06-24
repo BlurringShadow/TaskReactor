@@ -45,59 +45,39 @@ namespace ApplicationDomain.DataModel
             }
         }
 
-        private void ResetIntervalKind(IntervalKind kind)
+        void ResetIntervalKind(IntervalKind kind)
         {
             _intervalImpl = kind switch
             {
-                IntervalKind.YearByWeek => (startTime, count) => startTime.AddDays(-startTime.Day)
+                IntervalKind.YearByWeek => count => StartTime.AddDays(-StartTime.Day)
                     .AddYears(count)
-                    .AddWeeks(startTime.WeekOfMonth())
-                    .AddDays((double)startTime.DayOfWeek),
-                IntervalKind.YearByDay => (startTime, count) => startTime.AddYears(count),
-                IntervalKind.MonthByWeek => (startTime, count) => startTime.AddDays(-startTime.Day)
+                    .AddWeeks(StartTime.WeekOfMonth())
+                    .AddDays((double)StartTime.DayOfWeek),
+                IntervalKind.YearByDay => count => StartTime.AddYears(count),
+                IntervalKind.MonthByWeek => count => StartTime.AddDays(-StartTime.Day)
                     .AddMonths(count)
-                    .AddWeeks(startTime.WeekOfMonth())
-                    .AddDays((double)startTime.DayOfWeek),
-                IntervalKind.MonthByDay => (startTime, count) => startTime.AddMonths(count),
-                IntervalKind.ByWeek => (startTime, count) => startTime.AddWeeks(count),
-                IntervalKind.ByDay => (startTime, count) => startTime.AddDays(count),
+                    .AddWeeks(StartTime.WeekOfMonth())
+                    .AddDays((double)StartTime.DayOfWeek),
+                IntervalKind.MonthByDay => count => StartTime.AddMonths(count),
+                IntervalKind.ByWeek => count => StartTime.AddWeeks(count),
+                IntervalKind.ByDay => count => StartTime.AddDays(count),
                 _ => throw new InvalidEnumArgumentException(
                     nameof(Interval.Kind), (byte)Interval.Kind, typeof(IntervalKind)
                 )
             };
         }
 
-        [NotNull] private Func<DateTime, int, DateTime> _intervalImpl { get; set; }
+        Func<int, DateTime> _intervalImpl { get; set; }
 
         /// <summary>
         /// Get the date time using specified interval count.
         /// Implementation for <see cref="Database.Entity.Interval"/>
         /// </summary>
         /// <param name="count">Interval count</param>
-        /// <returns></returns>
-        public DateTime this[int count] =>
-            Interval.Kind switch
-            {
-                IntervalKind.YearByWeek => StartTime.AddDays(-StartTime.Day)
-                    .AddYears(count)
-                    .AddWeeks(StartTime.WeekOfMonth())
-                    .AddDays((double)StartTime.DayOfWeek),
-                IntervalKind.YearByDay => StartTime.AddYears(count),
-                IntervalKind.MonthByWeek => StartTime.AddDays(-StartTime.Day)
-                    .AddMonths(count)
-                    .AddWeeks(StartTime.WeekOfMonth())
-                    .AddDays((double)StartTime.DayOfWeek),
-                IntervalKind.MonthByDay => StartTime.AddMonths(count),
-                IntervalKind.ByWeek => StartTime.AddWeeks(count),
-                IntervalKind.ByDay => StartTime.AddDays(count),
-                _ => throw new InvalidEnumArgumentException(
-                    nameof(Interval.Kind), (byte)Interval.Kind, typeof(IntervalKind)
-                )
-            };
+        /// <returns> Next </returns>
+        public DateTime this[int count] => _intervalImpl!(count);
 
-        protected ScheduleModel([NotNull] T item) : base(item)
-        {
-        }
+        protected ScheduleModel([NotNull] T item) : base(item) => ResetIntervalKind(_dataBaseModel.Interval.Kind);
 
         protected ScheduleModel()
         {
