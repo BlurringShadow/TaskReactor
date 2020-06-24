@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using ApplicationDomain.DataModel;
@@ -8,6 +9,11 @@ namespace ApplicationDomain.ModelService
 {
     public interface IGoalService
     {
+        /// <summary>
+        /// Set notify action for user task
+        /// </summary>
+        Action<GoalModel> NotifyAction { get; set; }
+
         /// <summary>
         /// Get all goals from task
         /// </summary>
