@@ -8,14 +8,27 @@
 
 #endregion
 
+using System.Collections.Generic;
 using ApplicationDomain.Database.Entity;
 using ApplicationDomain.DataModel;
 
 namespace ApplicationDomain.ModelService
 {
-    class GoalModelNotificationService : 
+    class GoalModelNotificationService :
         ScheduleModelNotificationService<GoalModel, Goal>,
         IGoalModelNotificationService
     {
+        private class GoalModelComparer : IEqualityComparer<GoalModel>
+        {
+            public bool Equals(GoalModel x, GoalModel y) =>
+                x?.Identity == y?.Identity;
+
+            public int GetHashCode(GoalModel obj) =>
+                obj.Identity.GetHashCode();
+        }
+
+        public GoalModelNotificationService() : base(new GoalModelComparer())
+        {
+        }
     }
 }

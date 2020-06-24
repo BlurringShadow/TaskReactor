@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
@@ -19,31 +20,22 @@ namespace ApplicationDomain.ModelService
 {
     abstract class ScheduleNotificationService<TModel> : IScheduleNotificationService<TModel>
     {
-        protected class TimerEvent : IAsyncDisposable
+        private class TimerEvent : IAsyncDisposable
         {
             [NotNull] readonly Timer _timer;
 
-            [NotNull] IEnumerable<DateTime> _nextTimeEnumerable;
-
-            [NotNull] public IEnumerable<DateTime> NextTimeEnumerable
-            {
-                get => _nextTimeEnumerable;
-                set
-                {
-                    _enumerator = value.GetEnumerator();
-                    _nextTimeEnumerable = value;
-                }
-            }
-
-            [NotNull] public Action NotifyAction;
+            [NotNull] public readonly Action<TModel> NotifyAction;
 
             IEnumerator<DateTime> _enumerator;
 
-            // ReSharper disable once NotNullMemberIsNotInitialized
-            public TimerEvent([NotNull] IEnumerable<DateTime> enumerable, [NotNull] Action notifyAction)
+            public TimerEvent(
+                [NotNull] IEnumerable<DateTime> enumerable,
+                [NotNull] Action<TModel> notifyAction,
+                [NotNull] TModel model
+            )
             {
-                _timer = new Timer(Callback);
-                NextTimeEnumerable = enumerable;
+                _timer = new Timer(Callback, model, -1, -1);
+                _enumerator = enumerable.GetEnumerator();
                 NotifyAction = notifyAction;
             }
 
@@ -55,7 +47,7 @@ namespace ApplicationDomain.ModelService
                 // Filter time that less than zero
                 if (span < TimeSpan.Zero) return;
 
-                NotifyAction();
+                NotifyAction((TModel)state);
 
                 _timer.Change(span, TimeSpan.FromMilliseconds(-1));
             }
@@ -65,18 +57,29 @@ namespace ApplicationDomain.ModelService
 
         [NotNull] readonly IDictionary<TModel, TimerEvent> _timerEvents;
 
+        public IReadOnlyCollection<TModel> Models => _timerEvents.Keys.ToArray();
+
         protected ScheduleNotificationService(IEqualityComparer<TModel> comparer = null) =>
             _timerEvents = new ConcurrentDictionary<TModel, TimerEvent>(comparer);
 
         public bool ContainsModel(TModel t) => _timerEvents.ContainsKey(t);
 
         public void AddModelAction(TModel t, Action<TModel> notifyAction) =>
-            _timerEvents.Add(t, new TimerEvent(Configuration(t), () => notifyAction(t)));
+            _timerEvents.Add(t, new TimerEvent(Configuration(t), notifyAction, t));
 
         public void UpdateModelAction(TModel t, Action<TModel> notifyAction)
         {
             if (ContainsModel(t)) _timerEvents.Remove(t);
             AddModelAction(t, notifyAction);
+        }
+
+        public void UpdateModel(TModel t)
+        {
+            var timerEvent = _timerEvents[t];
+            var previousAction = timerEvent!.NotifyAction;
+            timerEvent.DisposeAsync();
+            _timerEvents.Remove(t);
+            _timerEvents.Add(t, new TimerEvent(Configuration(t), previousAction, t));
         }
 
         public void RemoveModel(TModel t) => _timerEvents.Remove(t);

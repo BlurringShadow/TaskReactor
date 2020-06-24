@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace ApplicationDomain.ModelService
@@ -18,6 +19,12 @@ namespace ApplicationDomain.ModelService
     /// </summary>
     interface IScheduleNotificationService<TModel>
     {
+        /// <summary>
+        /// Get current added models.
+        /// </summary>
+        /// <returns> A copy of the collection </returns>
+        [NotNull, ItemNotNull] IReadOnlyCollection<TModel> Models { get; }
+
         /// <summary>
         /// Check the model is registered
         /// </summary>
@@ -41,7 +48,13 @@ namespace ApplicationDomain.ModelService
         public void UpdateModelAction([NotNull] TModel t, [NotNull] Action<TModel> notifyAction);
 
         /// <summary>
-        /// Remove the model registeration
+        /// Update the model <para/>
+        /// </summary>
+        /// <param name="t"> The model </param>
+        public void UpdateModel([NotNull] TModel t);
+
+        /// <summary>
+        /// Remove the model registration
         /// </summary>
         public void RemoveModel([NotNull] TModel t);
     }

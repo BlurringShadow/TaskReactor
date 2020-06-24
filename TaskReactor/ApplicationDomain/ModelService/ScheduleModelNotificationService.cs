@@ -21,6 +21,10 @@ namespace ApplicationDomain.ModelService
         where TScheduleModel : ScheduleModel<TItem>
         where TItem : class, ISchedule, new()
     {
+        protected ScheduleModelNotificationService(IEqualityComparer<TScheduleModel> comparer) : base(comparer)
+        {
+        }
+
         protected override IEnumerable<DateTime> Configuration(TScheduleModel model)
         {
             for (var i = 0;; ++i) yield return model[i];
