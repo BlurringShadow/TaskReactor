@@ -33,46 +33,51 @@ namespace ApplicationDomain.DataModel
         public TimeSpan StartTimeOfDay => _dataBaseModel.StartTime.TimeOfDay;
 
         public TimeSpan EndTimeOfDay => StartTimeOfDay + DurationOfOneTime;
-        
+
         [NotNull] public virtual Interval Interval
         {
             get => _dataBaseModel.Interval;
             set
             {
+                ResetIntervalKind(value.Kind);
                 _dataBaseModel.Interval = value;
                 NotifyOfPropertyChange();
             }
         }
+
+        void ResetIntervalKind(IntervalKind kind)
+        {
+            _intervalImpl = kind switch
+            {
+                IntervalKind.YearByWeek => count => StartTime.AddDays(-StartTime.Day)
+                    .AddYears(count)
+                    .AddWeeks(StartTime.WeekOfMonth())
+                    .AddDays((double)StartTime.DayOfWeek),
+                IntervalKind.YearByDay => count => StartTime.AddYears(count),
+                IntervalKind.MonthByWeek => count => StartTime.AddDays(-StartTime.Day)
+                    .AddMonths(count)
+                    .AddWeeks(StartTime.WeekOfMonth())
+                    .AddDays((double)StartTime.DayOfWeek),
+                IntervalKind.MonthByDay => count => StartTime.AddMonths(count),
+                IntervalKind.ByWeek => count => StartTime.AddWeeks(count),
+                IntervalKind.ByDay => count => StartTime.AddDays(count),
+                _ => throw new InvalidEnumArgumentException(
+                    nameof(Interval.Kind), (byte)Interval.Kind, typeof(IntervalKind)
+                )
+            };
+        }
+
+        Func<int, DateTime> _intervalImpl { get; set; }
 
         /// <summary>
         /// Get the date time using specified interval count.
         /// Implementation for <see cref="Database.Entity.Interval"/>
         /// </summary>
         /// <param name="count">Interval count</param>
-        /// <returns></returns>
-        public DateTime this[byte count] =>
-            Interval.Kind switch
-            {
-                IntervalKind.YearByWeek => StartTime.AddDays(-StartTime.Day)
-                    .AddYears(count)
-                    .AddWeeks(StartTime.WeekOfMonth())
-                    .AddDays((double)StartTime.DayOfWeek),
-                IntervalKind.YearByDay => StartTime.AddYears(count),
-                IntervalKind.MonthByWeek => StartTime.AddDays(-StartTime.Day)
-                    .AddMonths(count)
-                    .AddWeeks(StartTime.WeekOfMonth())
-                    .AddDays((double)StartTime.DayOfWeek),
-                IntervalKind.MonthByDay => StartTime.AddMonths(count),
-                IntervalKind.ByWeek => StartTime.AddWeeks(count),
-                IntervalKind.ByDay => StartTime.AddDays(count),
-                _ => throw new InvalidEnumArgumentException(
-                    nameof(Interval.Kind), (byte)Interval.Kind, typeof(IntervalKind)
-                )
-            };
+        /// <returns> Next </returns>
+        public DateTime this[int count] => _intervalImpl!(count);
 
-        protected ScheduleModel([NotNull] T item) : base(item)
-        {
-        }
+        protected ScheduleModel([NotNull] T item) : base(item) => ResetIntervalKind(_dataBaseModel.Interval.Kind);
 
         protected ScheduleModel()
         {
