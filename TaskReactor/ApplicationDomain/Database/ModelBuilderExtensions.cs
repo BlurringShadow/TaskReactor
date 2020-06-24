@@ -12,7 +12,7 @@ namespace ApplicationDomain.Database
             [NotNull] ValueConverter converter
         )
         {
-            foreach(var entityType in builder.Model!.GetEntityTypes()!)
+            foreach (var entityType in builder.Model!.GetEntityTypes()!)
                 builder.Entity(entityType!.ClrType!)!.UseConverter(converter);
             return builder;
         }

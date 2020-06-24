@@ -15,6 +15,8 @@ namespace ApplicationDomain.DataModel
             }
         }
 
+        public int Identity => _dataBaseModel.Id;
+
         public GoalModel()
         {
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -44,18 +45,18 @@ namespace ApplicationDomain.ModelService
 
         public void Remove(params TModel[] models) => Remove((IEnumerable<TModel>)models);
 
-        public void Remove(IEnumerable<TModel> models) =>
+        public virtual void Remove(IEnumerable<TModel> models) =>
             Repository.Remove(from model in models select model._dataBaseModel);
 
         public async Task RemoveAllAsync() => await Repository.Context.DeleteTableFromDbSetAsync<TDatabaseModel>();
 
         public void Update(params TModel[] models) => Update((IEnumerable<TModel>)models);
 
-        public void Update(IEnumerable<TModel> models) =>
+        public virtual void Update(IEnumerable<TModel> models) =>
             Repository.Update(from model in models select model._dataBaseModel);
 
         public async Task<int> DbSync() => await DbSync(CancellationToken.None);
 
-        public async Task<int> DbSync(CancellationToken token) => await Repository.DbSync(token)!;
+        public virtual async Task<int> DbSync(CancellationToken token) => await Repository.DbSync(token)!;
     }
 }

@@ -7,7 +7,7 @@ using Xunit.Abstractions;
 namespace UnitTest.ApplicationDomain.Repository
 {
     interface IRepositoryTest<TDatabaseModel, out TRepository, TDbContext>
-        where TDatabaseModel : DatabaseModel 
+        where TDatabaseModel : DatabaseModel
         where TRepository : IRepository<TDatabaseModel, TDbContext>
         where TDbContext : DbContext
     {

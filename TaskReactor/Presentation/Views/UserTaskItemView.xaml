@@ -10,18 +10,20 @@
              d:DesignHeight="50"
              d:DesignWidth="150"
              d:DataContext="{d:DesignInstance viewModels:UserTaskItemViewModel}">
-    <StackPanel Orientation="Horizontal">
-        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="5 0">
-            <StackPanel.Resources>
-                <Style x:Key="TextBoxStyle" TargetType="TextBox">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                </Style>
-            </StackPanel.Resources>
+    <Button cm:Message.Attach="OnClick" Style="{StaticResource MahApps.Styles.Button.Flat}" Background="Snow">
+        <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="5 0">
+                <StackPanel.Resources>
+                    <Style x:Key="TextBoxStyle" TargetType="TextBox">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                    </Style>
+                </StackPanel.Resources>
 
-            <TextBox x:Name="TaskTitle" FontSize="15" Text="今日日程1" Style="{StaticResource TextBoxStyle}"/>
+                <TextBox x:Name="TaskTitle" FontSize="15" Text="标题" Style="{StaticResource TextBoxStyle}" TextAlignment="Center"/>
 
-            <TextBox x:Name="TaskStartTime" FontSize="12" Text="Hello world" Style="{StaticResource TextBoxStyle}"/>
+                <TextBox x:Name="TaskStartTime" FontSize="12" Text="开始时间" Style="{StaticResource TextBoxStyle}"/>
+            </StackPanel>
         </StackPanel>
-    </StackPanel>
+    </Button>
 </UserControl>

@@ -8,6 +8,7 @@
 
 #endregion
 
+using System;
 using System.Globalization;
 using ApplicationDomain.DataModel;
 using Caliburn.Micro;
@@ -19,10 +20,14 @@ namespace Presentation.ViewModels
     {
         [NotNull] public UserTaskModel Model { get; set; }
 
-        public UserTaskItemViewModel([NotNull] UserTaskModel model) => Model = model;
-
         [NotNull] public string TaskTitle => Model.Title;
 
         [NotNull] public string TaskStartTime => Model.StartTime.ToString(CultureInfo.CurrentCulture);
+
+        public event Action<UserTaskModel> OnClickEvent;
+
+        public UserTaskItemViewModel([NotNull] UserTaskModel model) => Model = model;
+
+        public void OnClick() => OnClickEvent?.Invoke(Model);
     }
 }
