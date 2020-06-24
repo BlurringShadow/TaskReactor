@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Specialized;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
