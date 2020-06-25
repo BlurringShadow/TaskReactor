@@ -14,7 +14,7 @@
             <ListView x:Name="GoalItems"/>
         </Expander>
 
-        <Button d:DataContext="{Binding TaskModel, Mode=OneWay}" x:Name="OnClick" Style="{StaticResource MahApps.Styles.Button.Flat}" Background="Snow">
+        <Button DataContext="{Binding TaskModel, Mode=OneWay}" x:Name="OnClick" Style="{StaticResource MahApps.Styles.Button.Flat}" Background="Snow">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5 0">
                 <StackPanel.Resources>
                     <Style x:Key="TextBoxStyle" TargetType="TextBox">
