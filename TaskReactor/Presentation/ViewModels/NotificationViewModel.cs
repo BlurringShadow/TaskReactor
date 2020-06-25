@@ -12,7 +12,6 @@ using System;
 using System.ComponentModel.Composition.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
-using Caliburn.Micro;
 using JetBrains.Annotations;
 using Notifications.Wpf.Core;
 using Action = System.Action;

@@ -1,5 +1,4 @@
-﻿using System;
-using ApplicationDomain.Database.Entity;
+﻿using ApplicationDomain.Database.Entity;
 using ApplicationDomain.DataModel;
 using ApplicationDomain.DataRepository;
 using JetBrains.Annotations;

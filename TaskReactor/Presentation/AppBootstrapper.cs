@@ -10,7 +10,6 @@ using System.Windows.Threading;
 using ApplicationDomain.Database;
 using Caliburn.Micro;
 using JetBrains.Annotations;
-using Notifications.Wpf.Core;
 using Presentation.ViewModels;
 using Utilities;
 

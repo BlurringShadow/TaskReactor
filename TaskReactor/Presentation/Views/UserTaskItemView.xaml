@@ -3,27 +3,31 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:viewModels="clr-namespace:Presentation.ViewModels"
              xmlns:cm="http://caliburnmicro.com"
+             xmlns:viewModels="clr-namespace:Presentation.ViewModels.UserProfile"
              mc:Ignorable="d"
              cm:Bind.AtDesignTime="True"
-             d:DesignHeight="50"
              d:DesignWidth="150"
              d:DataContext="{d:DesignInstance viewModels:UserTaskItemViewModel}">
-    <Button cm:Message.Attach="OnClick" Style="{StaticResource MahApps.Styles.Button.Flat}" Background="Snow">
-        <StackPanel Orientation="Horizontal">
-            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="5 0">
+    <DockPanel>
+        <Expander DockPanel.Dock="Bottom" BorderThickness="0.05" IsExpanded="False">
+            <ListView x:Name="GoalItems"/>
+        </Expander>
+
+        <Button x:Name="OnClick" Style="{StaticResource MahApps.Styles.Button.Flat}" Background="Snow">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5 0">
                 <StackPanel.Resources>
                     <Style x:Key="TextBoxStyle" TargetType="TextBox">
                         <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
                     </Style>
                 </StackPanel.Resources>
 
-                <TextBox x:Name="TaskTitle" FontSize="15" Text="标题" Style="{StaticResource TextBoxStyle}" TextAlignment="Center"/>
+                <TextBox x:Name="TaskTitle" FontSize="15" Text="标题" Style="{StaticResource TextBoxStyle}"/>
 
                 <TextBox x:Name="TaskStartTime" FontSize="12" Text="开始时间" Style="{StaticResource TextBoxStyle}"/>
             </StackPanel>
-        </StackPanel>
-    </Button>
+        </Button>
+    </DockPanel>
 </UserControl>
