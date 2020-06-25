@@ -1,7 +1,7 @@
-﻿using System;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using ApplicationDomain.DataModel;
+using ApplicationDomain.ModelService;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
@@ -16,20 +16,19 @@ namespace Presentation.ViewModels
         [NotNull, ShareVariable(nameof(TaskModel), typeof(UserTaskModel))]
         public UserTaskModel TaskModel { get; set; }
 
+        [NotNull] readonly IUserTaskService _service;
+
         [ImportingConstructor,
          System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-        public UserTaskEditViewModel([NotNull] CompositionContainer container) : base(container)
-        {
-        }
+        public UserTaskEditViewModel([NotNull] CompositionContainer container, [NotNull] IUserTaskService service) : 
+            base(container) => _service = service;
 
         public void Confirm()
         {
-            this.ShareWithName(TaskModel, nameof(GoalEditViewModel.CurrentUserTask));
+            _service.Update(TaskModel);
+            NavigationService.GoBack();
         }
 
-        public void Cancel()
-        {
-            throw new NotImplementedException();
-        }
+        public void Cancel() => NavigationService.GoBack();
     }
 }
