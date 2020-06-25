@@ -27,7 +27,7 @@ namespace Presentation.ViewModels
 
         public void Confirm()
         {
-            // use goal service to implement data operation
+            // TODO use goal service to implement data operation
 
             NavigationService.GoBack();
         }
