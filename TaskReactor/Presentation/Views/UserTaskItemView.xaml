@@ -14,7 +14,7 @@
             <ListView x:Name="GoalItems"/>
         </Expander>
 
-        <Button x:Name="OnClick" Style="{StaticResource MahApps.Styles.Button.Flat}" Background="Snow">
+        <Button d:DataContext="{Binding TaskModel, Mode=OneWay}" x:Name="OnClick" Style="{StaticResource MahApps.Styles.Button.Flat}" Background="Snow">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5 0">
                 <StackPanel.Resources>
                     <Style x:Key="TextBoxStyle" TargetType="TextBox">
@@ -24,9 +24,9 @@
                     </Style>
                 </StackPanel.Resources>
 
-                <TextBox x:Name="TaskTitle" FontSize="15" Text="标题" Style="{StaticResource TextBoxStyle}"/>
+                <TextBox FontSize="15" Text="{Binding Title}" Style="{StaticResource TextBoxStyle}"/>
 
-                <TextBox x:Name="TaskStartTime" FontSize="12" Text="开始时间" Style="{StaticResource TextBoxStyle}"/>
+                <TextBox FontSize="10" Text="{Binding StartTime}" Style="{StaticResource TextBoxStyle}"/>
             </StackPanel>
         </Button>
     </DockPanel>
