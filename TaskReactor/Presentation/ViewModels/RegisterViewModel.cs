@@ -27,7 +27,7 @@ namespace Presentation.ViewModels
 
         public async Task Register()
         {
-            var user = new UserModel {Name = UserName!, Password = Password!};
+            var user = new UserModel { Name = UserName!, Password = Password! };
             _userService.Register(user);
 
             await _userService.DbSync();

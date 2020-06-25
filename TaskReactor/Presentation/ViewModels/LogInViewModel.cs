@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ApplicationDomain.ModelService;
 using Caliburn.Micro;
 using JetBrains.Annotations;
+using Presentation.ViewModels.UserProfile;
 
 namespace Presentation.ViewModels
 {
@@ -32,7 +33,7 @@ namespace Presentation.ViewModels
                 {
                     var userModel = await _userService.LogInAsync(int.Parse(Identity!), Password!);
 
-                    if(userModel is null) return;
+                    if (userModel is null) return;
 
                     this.ShareWithName(userModel, nameof(UserProfileViewModel.CurrentUser));
                     NavigationService.NavigateToViewModel<UserProfileViewModel>();
