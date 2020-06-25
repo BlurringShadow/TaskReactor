@@ -8,10 +8,10 @@ using ApplicationDomain.ModelService;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
-namespace Presentation.ViewModels
+namespace Presentation.ViewModels.UserProfile
 {
     [Export]
-    public sealed partial class UserProfileViewModel : ScreenViewModel
+    public sealed class UserProfileViewModel : ScreenViewModel
     {
         [NotNull] private readonly IUserTaskService _userTaskService;
         [NotNull] private readonly IUserService _userService;
@@ -122,7 +122,7 @@ namespace Presentation.ViewModels
             this.DeactivateAsync(false);
 
             this.ShareWithName(taskModel, nameof(UserTaskEditViewModel.TaskModel));
-            this.ShareWithName(NavigationService, nameof(NavigationService));
+            this.ShareWithName<UserProfileViewModel, INavigationService>(NavigationService, nameof(NavigationService));
             NavigationService.NavigateToViewModel<UserTaskEditViewModel>();
         }
 
@@ -144,10 +144,10 @@ namespace Presentation.ViewModels
             this.DeactivateAsync(false);
 
             this.ShareWithName(goalModel, nameof(GoalEditViewModel.GoalModel));
-            this.ShareWithName(NavigationService, nameof(NavigationService));
-            NavigationService.NavigateToViewModel<UserTaskItemViewModel.GoalItemViewModel>();
+            this.ShareWithName<UserProfileViewModel, INavigationService>(NavigationService, nameof(NavigationService));
+            NavigationService.NavigateToViewModel<GoalItemViewModel>();
         }
 
-        void ToGoalEdit([NotNull] UserTaskItemViewModel.GoalItemViewModel viewModel) => NavigateToGoalEdit(viewModel.GoalModel);
+        void ToGoalEdit([NotNull] GoalItemViewModel viewModel) => NavigateToGoalEdit(viewModel.GoalModel);
     }
 }
