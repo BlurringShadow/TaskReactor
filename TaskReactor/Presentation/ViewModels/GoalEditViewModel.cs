@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Windows.Navigation;
 using ApplicationDomain.DataModel;
+using ApplicationDomain.ModelService;
 using JetBrains.Annotations;
 
 namespace Presentation.ViewModels
@@ -9,20 +11,27 @@ namespace Presentation.ViewModels
     [Export, System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
     public sealed class GoalEditViewModel : ScreenViewModel
     {
-        [NotNull, ShareVariable(nameof(CurrentUserTask), typeof(UserTaskModel))]
-        public UserTaskModel CurrentUserTask
-        {
-            get => GoalModel.FromTask;
-            set => GoalModel.FromTask = value;
-        }
+        [NotNull] GoalModel _goalModel;
 
-        [NotNull] public GoalModel GoalModel { get; }
+        [NotNull, ShareVariable(nameof(GoalModel), typeof(UserProfileViewModel))]
+        public GoalModel GoalModel { get => _goalModel; set => Set(ref _goalModel, value); }
+
+        [NotNull, ShareVariable(nameof(GoalModel), typeof(NavigationService))]
+        public NavigationService NavigationService { get; set; }
+
+        [NotNull] readonly IGoalService _goalService;
 
         [ImportingConstructor]
-        public GoalEditViewModel([NotNull] CompositionContainer container) : base(container) => GoalModel = new GoalModel();
+        public GoalEditViewModel([NotNull] CompositionContainer container, [NotNull] IGoalService goalService) :
+            base(container) => _goalService = goalService;
 
-        public void Confirm() => throw new NotImplementedException();
+        public void Confirm()
+        {
+            // TODO use goal service to implement data operation
 
-        public void Cancel() => throw new NotImplementedException();
+            NavigationService.GoBack();
+        }
+
+        public void Cancel() => NavigationService.GoBack();
     }
 }
