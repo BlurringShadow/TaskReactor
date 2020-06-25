@@ -14,7 +14,7 @@
       cm:Bind.AtDesignTime="True"
       d:DataContext="{d:DesignInstance viewModels:UserTaskEditViewModel}">
 
-    <StackPanel d:DataContext="{Binding TaskModel, Mode=OneWay}">
+    <StackPanel d:DataContext="{Binding TaskModel, Mode=OneWayToSource}">
 
         <Label Content="添加任务" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="27"/>
 
