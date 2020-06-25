@@ -24,6 +24,16 @@ namespace ApplicationDomain.DataModel
             }
         }
 
+        public virtual string Description
+        {
+            get => _dataBaseModel.Description;
+            set
+            {
+                _dataBaseModel.Description = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         public virtual DateTime StartTime
         {
             get => _dataBaseModel.StartTime;
