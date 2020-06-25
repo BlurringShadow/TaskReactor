@@ -27,7 +27,12 @@ namespace ApplicationDomain.ModelService
 
         protected override IEnumerable<DateTime> Configuration(TScheduleModel model)
         {
-            for (var i = 0;; ++i) yield return model[i];
+            for (var i = 0;; ++i)
+            {
+                var nextDue = model[i];
+                if (nextDue > model.EndTime) break;
+                yield return nextDue;
+            }
         }
     }
 }

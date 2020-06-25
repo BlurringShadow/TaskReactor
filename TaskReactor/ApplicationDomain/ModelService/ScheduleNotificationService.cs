@@ -69,7 +69,12 @@ namespace ApplicationDomain.ModelService
 
         public void UpdateModelAction(TModel t, Action<TModel> notifyAction)
         {
-            if (ContainsModel(t)) _timerEvents.Remove(t);
+            if (ContainsModel(t))
+            {
+                _timerEvents[t]!.DisposeAsync();
+                _timerEvents.Remove(t);
+            }
+
             AddModelAction(t, notifyAction);
         }
 
