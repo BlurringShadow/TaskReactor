@@ -10,8 +10,11 @@
 
 using System;
 using System.Globalization;
+
 using ApplicationDomain.DataModel;
+
 using Caliburn.Micro;
+
 using JetBrains.Annotations;
 
 namespace Presentation.ViewModels

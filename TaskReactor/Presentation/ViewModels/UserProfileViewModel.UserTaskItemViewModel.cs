@@ -11,9 +11,12 @@
 using System;
 using System.Globalization;
 using System.Threading;
+
 using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
+
 using Caliburn.Micro;
+
 using JetBrains.Annotations;
 
 namespace Presentation.ViewModels
