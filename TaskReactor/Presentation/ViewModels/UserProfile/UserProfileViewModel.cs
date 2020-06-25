@@ -122,7 +122,7 @@ namespace Presentation.ViewModels.UserProfile
             this.DeactivateAsync(false);
 
             this.ShareWithName(taskModel, nameof(UserTaskEditViewModel.TaskModel));
-            this.ShareWithName<UserProfileViewModel, INavigationService>(NavigationService, nameof(NavigationService));
+            this.ShareWithName(NavigationService, nameof(NavigationService));
             NavigationService.NavigateToViewModel<UserTaskEditViewModel>();
         }
 
@@ -144,7 +144,7 @@ namespace Presentation.ViewModels.UserProfile
             this.DeactivateAsync(false);
 
             this.ShareWithName(goalModel, nameof(GoalEditViewModel.GoalModel));
-            this.ShareWithName<UserProfileViewModel, INavigationService>(NavigationService, nameof(NavigationService));
+            this.ShareWithName(NavigationService, nameof(NavigationService));
             NavigationService.NavigateToViewModel<GoalItemViewModel>();
         }
 

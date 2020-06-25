@@ -24,95 +24,91 @@
             </Border.Background>
         </Border>-->
 
-
         <Image DockPanel.Dock="Top" Source="images/title.png" Height="130"/>
 
 
-        <StackPanel HorizontalAlignment="Stretch" 
-                VerticalAlignment="Center"
-                Margin="120,0,120,0"
-                Background="Transparent">
+        <StackPanel HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    Margin="120,0,120,0"
+                    Background="Transparent">
             <StackPanel.Resources>
-                <Thickness x:Key="Margin">10</Thickness>
+                <Thickness x:Key="Margin"> 10 </Thickness>
             </StackPanel.Resources>
 
-            <Border BorderBrush="#4682B4"
-                    Opacity="0.8"
-                BorderThickness="2" 
-                CornerRadius="5" >
+            <Border BorderBrush="#4682B4" Opacity="0.8" BorderThickness="2" CornerRadius="5">
 
                 <StackPanel Margin="{StaticResource Margin}">
-
                     <DockPanel>
-                        <iconPacks:PackIconMaterial Height="30" Width="20" Kind="Account" 
+                        <iconPacks:PackIconMaterial Height="30" Width="20" Kind="Account"
                                                     Margin="{StaticResource Margin}"
-                                                    DockPanel.Dock="Left" Foreground="#707070" />
-                        <Border DockPanel.Dock="Right" 
-                    BorderBrush="	#4682B4"
-                    BorderThickness="2"
-                    CornerRadius="5"
-                    Margin="{StaticResource Margin}"
-                    Background="White">
+                                                    DockPanel.Dock="Left" Foreground="#707070"/>
+
+                        <Border DockPanel.Dock="Right"
+                                BorderBrush="#4682B4"
+                                BorderThickness="2"
+                                CornerRadius="5"
+                                Margin="{StaticResource Margin}"
+                                Background="White">
                             <TextBox VerticalAlignment="Center"
-                         x:Name="Set_UserName"
-                         Background="Transparent"
-                         BorderThickness="0"
-                         metro:TextBoxHelper.Watermark="请设置您的账号名" />
+                                     x:Name="UserName"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     metro:TextBoxHelper.Watermark="请设置您的账号名"/>
                         </Border>
                     </DockPanel>
 
                     <DockPanel>
-                        <iconPacks:PackIconMaterial Height="30" Width="20" Kind="LockReset" 
+                        <iconPacks:PackIconMaterial Height="30" Width="20" Kind="LockReset"
                                                     Margin="{StaticResource Margin}"
                                                     DockPanel.Dock="Left" Foreground="#707070"/>
-                        <Border DockPanel.Dock="Right" 
-                    BorderBrush="	#4682B4"
-                    BorderThickness="2"
-                    CornerRadius="5"
-                    Margin="{StaticResource Margin}"
-                    Background="White">
+                        <Border DockPanel.Dock="Right"
+                                BorderBrush="#4682B4"
+                                BorderThickness="2"
+                                CornerRadius="5"
+                                Margin="{StaticResource Margin}"
+                                Background="White">
                             <TextBox VerticalAlignment="Center"
-                         x:Name="Set_Password"
-                         Background="Transparent"
-                         BorderThickness="0"
-                         metro:TextBoxHelper.Watermark="请设置您的密码" />
+                                     x:Name="Password"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     metro:TextBoxHelper.Watermark="请设置您的密码"/>
                         </Border>
                     </DockPanel>
 
                     <DockPanel>
                         <Image Width="20"
-                   Height="30"
-                   DockPanel.Dock="Left"
-                   Margin="{StaticResource Margin}"/>
-                        <Border DockPanel.Dock="Right" 
-                    BorderBrush="	#4682B4"
-                    BorderThickness="2"
-                    CornerRadius="5"
-                    Margin="{StaticResource Margin}"
-                    Background="White">
-                            <PasswordBox VerticalAlignment="Center" 
-                                     x:Name="Confirm_Password"
-                                     Background="Transparent"
-                             BorderThickness="0"
-                             metro:TextBoxHelper.Watermark="请再次确认您的密码"/>
+                               Height="30"
+                               DockPanel.Dock="Left"
+                               Margin="{StaticResource Margin}"/>
+                        <Border DockPanel.Dock="Right"
+                                BorderBrush="#4682B4"
+                                BorderThickness="2"
+                                CornerRadius="5"
+                                Margin="{StaticResource Margin}"
+                                Background="White">
+                            <PasswordBox VerticalAlignment="Center"
+                                         x:Name="ReInputPassword"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         metro:TextBoxHelper.Watermark="请再次确认您的密码"/>
                         </Border>
                     </DockPanel>
 
                     <Label HorizontalAlignment="Center" x:Name="RegisteredId"/>
 
                     <Button HorizontalAlignment="Center"
-                x:Name="Register"
-                Content="注册"
-                Background="#87CEEB" 
-                Foreground="	#696969"
-                FontSize="14"
-                Margin="{StaticResource Margin}"
-                Width="150"
-                Height="30"/>
+                            x:Name="Register"
+                            Content="注册"
+                            Background="#87CEEB"
+                            Foreground="#696969"
+                            FontSize="14"
+                            Margin="{StaticResource Margin}"
+                            Width="150"
+                            Height="30"/>
                 </StackPanel>
             </Border>
         </StackPanel>
     </DockPanel>
-    
-    
+
+
 </UserControl>
