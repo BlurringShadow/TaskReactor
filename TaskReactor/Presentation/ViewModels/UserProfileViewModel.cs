@@ -11,7 +11,7 @@ using JetBrains.Annotations;
 namespace Presentation.ViewModels
 {
     [Export]
-    public sealed class UserProfileViewModel : ScreenViewModel
+    public sealed partial class UserProfileViewModel : ScreenViewModel
     {
         [NotNull] private readonly IUserTaskService _userTaskService;
         [NotNull] private readonly IUserService _userService;
@@ -22,7 +22,16 @@ namespace Presentation.ViewModels
         [NotNull] private UserModel _currentUser;
 
         [NotNull, ShareVariable(nameof(CurrentUser), typeof(WelcomePageViewModel))]
-        public UserModel CurrentUser { get => _currentUser; set => Set(ref _currentUser, value); }
+        public UserModel CurrentUser
+        {
+            get => _currentUser;
+            set
+            {
+                Set(ref _currentUser, value);
+                NotifyOfPropertyChange(nameof(UserName));
+                RefreshTaskData(CancellationToken.None);
+            }
+        }
 
         [NotNull] public string UserName => CurrentUser.Name;
 
@@ -67,21 +76,33 @@ namespace Presentation.ViewModels
         {
             var newTaskItemList = _userTaskService.GetAllFromUserAsync(CurrentUser, token).Result;
 
-            {
-                var i = 0;
-                for (; i < newTaskItemList.Count && UserTaskItems.Count > i + 1; ++i)
-                    UserTaskItems[i].Model = newTaskItemList[i]!;
+            var i = 0;
+            var newCount = newTaskItemList.Count;
+            var oldCount = UserTaskItems.Count;
 
-                for (; i < newTaskItemList.Count; ++i)
+            if (newCount > oldCount)
+            {
+                for (; i < oldCount; ++i)
+                    UserTaskItems[i].TaskModel = newTaskItemList[i]!;
+
+                for (; i < newCount; ++i)
                 {
-                    var itemViewModel = new UserTaskItemViewModel(newTaskItemList[i]!);
+                    var itemViewModel = new UserTaskItemViewModel(
+                        newTaskItemList[i]!, Container.GetExportedValue<IGoalService>()
+                    );
                     itemViewModel.OnClickEvent += ToUserTaskEdit;
                     itemViewModel.OnRemoveEvent += OnRemoveTask;
+                    itemViewModel.OnGoalClickEvent += ToGoalEdit;
                     UserTaskItems.Add(itemViewModel);
                 }
             }
+            else
+            {
+                for (; i < newCount; ++i)
+                    UserTaskItems[i].TaskModel = newTaskItemList[i]!;
 
-            while (UserTaskItems.Count > newTaskItemList.Count) UserTaskItems.RemoveAt(UserTaskItems.Count - 1);
+                while (UserTaskItems.Count > newTaskItemList.Count) UserTaskItems.RemoveAt(UserTaskItems.Count - 1);
+            }
         }
 
         protected override Task OnDeactivateAsync(bool close, CancellationToken token)
@@ -96,9 +117,11 @@ namespace Presentation.ViewModels
             return base.OnDeactivateAsync(close, token);
         }
 
-        void NavigateToTaskEdit([NotNull] UserTaskModel newUserTaskModel)
+        void NavigateToTaskEdit([NotNull] UserTaskModel taskModel)
         {
-            this.ShareWithName(newUserTaskModel, nameof(UserTaskEditViewModel.TaskModel));
+            this.DeactivateAsync(false);
+
+            this.ShareWithName(taskModel, nameof(UserTaskEditViewModel.TaskModel));
             this.ShareWithName(NavigationService, nameof(NavigationService));
             NavigationService.NavigateToViewModel<UserTaskEditViewModel>();
         }
@@ -111,9 +134,20 @@ namespace Presentation.ViewModels
             viewModel.OnRemoveEvent -= OnRemoveTask;
 
             UserTaskItems.Remove(viewModel);
-            _userTaskService.Remove(viewModel.Model);
+            _userTaskService.Remove(viewModel.TaskModel);
         }
 
-        void ToUserTaskEdit([NotNull] UserTaskItemViewModel viewModel) => NavigateToTaskEdit(viewModel.Model);
+        void ToUserTaskEdit([NotNull] UserTaskItemViewModel viewModel) => NavigateToTaskEdit(viewModel.TaskModel);
+
+        void NavigateToGoalEdit([NotNull] GoalModel goalModel)
+        {
+            this.DeactivateAsync(false);
+
+            this.ShareWithName(goalModel, nameof(GoalEditViewModel.GoalModel));
+            this.ShareWithName(NavigationService, nameof(NavigationService));
+            NavigationService.NavigateToViewModel<UserTaskItemViewModel.GoalItemViewModel>();
+        }
+
+        void ToGoalEdit([NotNull] UserTaskItemViewModel.GoalItemViewModel viewModel) => NavigateToGoalEdit(viewModel.GoalModel);
     }
 }

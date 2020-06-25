@@ -26,7 +26,7 @@
 
         <Border Style="{StaticResource BorderStyle}"/>
 
-        <DockPanel DockPanel.Dock="Left" Background="RoyalBlue">
+        <DockPanel DockPanel.Dock="Left" Background="CornflowerBlue">
             <!--
             <DockPanel.Resources>
                 <Style x:Key="ButtonStyle" BasedOn="{StaticResource MahApps.Styles.Button}" TargetType="Button">
@@ -66,11 +66,11 @@
                       x:Name="UserTaskItems"/>
 
             <Button Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}" 
-                    Background="LightGray"
+                    Background="WhiteSmoke"
                     HorizontalAlignment="Stretch"
                     x:Name="AddTask">
                 <DockPanel>
-                    <iconPacks:PackIconEntypo Kind="AddToList" VerticalAlignment="Center"/>
+                    <iconPacks:PackIconEntypo Kind="AddToList" Foreground="Black" VerticalAlignment="Center"/>
 
                     <Label Content="新建日程" FontSize="15"/>
                 </DockPanel>
