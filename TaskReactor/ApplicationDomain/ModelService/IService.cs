@@ -1,12 +1,12 @@
-﻿using ApplicationDomain.Database.Entity;
-using ApplicationDomain.DataModel;
-using ApplicationDomain.DataRepository;
+﻿using ApplicationDomain.DataModel;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Data.Database.Entity;
+using Data.DataRepository;
 
 namespace ApplicationDomain.ModelService
 {
@@ -17,7 +17,7 @@ namespace ApplicationDomain.ModelService
         where TModel : Model<TDatabaseModel>, new()
     {
         /// <summary>
-        /// <see cref="IRepository{T, U}"/>
+        /// <see cref="Data.DataRepository.IRepository{TDataBaseModel,TDbContext}"/>
         /// </summary>
         [NotNull] public TRepository Repository { get; }
 

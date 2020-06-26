@@ -8,8 +8,8 @@
 
 #endregion
 
-using ApplicationDomain.Database.Entity;
 using ApplicationDomain.DataModel;
+using Data.Database.Entity;
 
 namespace ApplicationDomain.ModelService
 {

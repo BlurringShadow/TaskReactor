@@ -1,6 +1,6 @@
 using System.Text.Json;
-using ApplicationDomain.Database.Entity;
-using ApplicationDomain.DataRepository;
+using Data.Database.Entity;
+using Data.DataRepository;
 using Microsoft.EntityFrameworkCore;
 using Xunit.Abstractions;
 

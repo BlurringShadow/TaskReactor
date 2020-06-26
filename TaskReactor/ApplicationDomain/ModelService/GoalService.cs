@@ -4,10 +4,10 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ApplicationDomain.Database;
-using ApplicationDomain.Database.Entity;
 using ApplicationDomain.DataModel;
-using ApplicationDomain.DataRepository;
+using Data.Database;
+using Data.Database.Entity;
+using Data.DataRepository;
 using JetBrains.Annotations;
 
 namespace ApplicationDomain.ModelService

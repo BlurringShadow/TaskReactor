@@ -1,5 +1,5 @@
 using System.ComponentModel.Composition.Hosting;
-using ApplicationDomain.Database.Entity;
+using Data.Database.Entity;
 using JetBrains.Annotations;
 using Presentation;
 

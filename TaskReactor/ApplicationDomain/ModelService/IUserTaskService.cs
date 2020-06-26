@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-using ApplicationDomain.Database;
-using ApplicationDomain.Database.Entity;
 using ApplicationDomain.DataModel;
-using ApplicationDomain.DataRepository;
+using Data.Database;
+using Data.Database.Entity;
+using Data.DataRepository;
 using JetBrains.Annotations;
 
 namespace ApplicationDomain.ModelService
@@ -23,7 +23,7 @@ namespace ApplicationDomain.ModelService
         /// Get all tasks from user
         /// </summary>
         /// <param name="user"> The user </param>
-        /// <returns> Async result contains list of <see cref="UserTask"/> </returns>
+        /// <returns> Async result contains list of <see cref="Data.Database.Entity.UserTask"/> </returns>
         [NotNull, ItemNotNull]
         Task<IList<UserTaskModel>> GetAllFromUserAsync([NotNull] UserModel user);
 
@@ -32,7 +32,7 @@ namespace ApplicationDomain.ModelService
         /// </summary>
         /// <param name="user"> The user </param>
         /// <param name="token"> <see cref="CancellationToken"/> </param>
-        /// <returns> Async result contains list of <see cref="UserTask"/> </returns>
+        /// <returns> Async result contains list of <see cref="Data.Database.Entity.UserTask"/> </returns>
         [NotNull, ItemNotNull]
         Task<IList<UserTaskModel>> GetAllFromUserAsync([NotNull] UserModel user, CancellationToken token);
 

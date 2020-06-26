@@ -1,5 +1,5 @@
 ﻿using System;
-using ApplicationDomain.Database.Entity;
+using Data.Database.Entity;
 using JetBrains.Annotations;
 
 namespace ApplicationDomain.DataModel

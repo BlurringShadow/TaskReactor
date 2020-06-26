@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using ApplicationDomain.Database.Entity;
+using Data.Database.Entity;
 using JetBrains.Annotations;
 
 namespace ApplicationDomain.DataModel
@@ -71,7 +71,7 @@ namespace ApplicationDomain.DataModel
 
         /// <summary>
         /// Get the date time using specified interval count.
-        /// Implementation for <see cref="Database.Entity.Interval"/>
+        /// Implementation for <see cref="Data.Database.Entity.Interval"/>
         /// </summary>
         /// <param name="count">Interval count</param>
         /// <returns> Next </returns>

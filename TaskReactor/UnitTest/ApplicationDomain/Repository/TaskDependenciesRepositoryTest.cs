@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text.Json;
 using System.Threading.Tasks;
-using ApplicationDomain.Database.Entity;
-using ApplicationDomain.DataRepository;
+using Data.Database.Entity;
+using Data.DataRepository;
 using JetBrains.Annotations;
 using Xunit;
 using Xunit.Abstractions;

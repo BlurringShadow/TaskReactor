@@ -9,8 +9,8 @@
 #endregion
 
 using System.Collections.Generic;
-using ApplicationDomain.Database.Entity;
 using ApplicationDomain.DataModel;
+using Data.Database.Entity;
 
 namespace ApplicationDomain.ModelService
 {

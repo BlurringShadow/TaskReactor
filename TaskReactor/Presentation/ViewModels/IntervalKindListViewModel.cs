@@ -10,8 +10,8 @@
 
 using System;
 using System.Linq;
-using ApplicationDomain.Database.Entity;
 using Caliburn.Micro;
+using Data.Database.Entity;
 using JetBrains.Annotations;
 using Utilities;
 
