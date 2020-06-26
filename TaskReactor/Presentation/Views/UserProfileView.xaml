@@ -72,7 +72,7 @@
                 <DockPanel>
                     <iconPacks:PackIconEntypo Kind="AddToList" Foreground="Black" VerticalAlignment="Center"/>
 
-                    <Label Content="新建日程" FontSize="15"/>
+                    <Label Content="新建任务" FontSize="15"/>
                 </DockPanel>
             </Button>
         </StackPanel>

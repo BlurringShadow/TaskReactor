@@ -5,13 +5,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cm="http://caliburnmicro.com"
              xmlns:viewModels="clr-namespace:Presentation.ViewModels.UserProfile"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              cm:Bind.AtDesignTime="True"
              d:DesignWidth="150"
              d:DataContext="{d:DesignInstance viewModels:UserTaskItemViewModel}">
     <DockPanel>
         <Expander DockPanel.Dock="Bottom" BorderThickness="0.05" IsExpanded="False">
-            <ListView x:Name="GoalItems"/>
+            <DockPanel>
+                <Button DockPanel.Dock="Bottom" 
+                        Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}" 
+                        Background="LightBlue"
+                        HorizontalAlignment="Stretch"
+                        x:Name="AddGoal">
+                    <DockPanel>
+                        <iconPacks:PackIconZondicons Kind="DateAdd" Foreground="DimGray" VerticalAlignment="Center"/>
+
+                        <Label Content="新建目标" FontSize="15"/>
+                    </DockPanel>
+                </Button>
+
+                <ListView x:Name="GoalItems"/>
+            </DockPanel>
         </Expander>
 
         <Button DataContext="{Binding TaskModel, Mode=OneWay}" x:Name="OnClick" Style="{StaticResource MahApps.Styles.Button.Flat}" Background="Snow">

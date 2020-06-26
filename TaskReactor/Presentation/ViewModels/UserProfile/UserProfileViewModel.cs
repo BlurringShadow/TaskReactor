@@ -93,6 +93,7 @@ namespace Presentation.ViewModels.UserProfile
                     itemViewModel.OnClickEvent += ToUserTaskEdit;
                     itemViewModel.OnRemoveEvent += OnRemoveTask;
                     itemViewModel.OnGoalClickEvent += ToGoalEdit;
+                    itemViewModel.OnAddGoalEvent += AddGoal;
                     UserTaskItems.Add(itemViewModel);
                 }
             }
@@ -112,6 +113,8 @@ namespace Presentation.ViewModels.UserProfile
             {
                 itemViewModel.OnClickEvent -= ToUserTaskEdit;
                 itemViewModel.OnRemoveEvent -= OnRemoveTask;
+                itemViewModel.OnGoalClickEvent -= ToGoalEdit;
+                itemViewModel.OnAddGoalEvent -= AddGoal;
             }
 
             return base.OnDeactivateAsync(close, token);
@@ -149,5 +152,8 @@ namespace Presentation.ViewModels.UserProfile
         }
 
         void ToGoalEdit([NotNull] GoalItemViewModel viewModel) => NavigateToGoalEdit(viewModel.GoalModel);
+
+        void AddGoal([NotNull] UserTaskItemViewModel viewModel) =>
+            NavigateToGoalEdit(new GoalModel { FromTask = viewModel.TaskModel });
     }
 }
