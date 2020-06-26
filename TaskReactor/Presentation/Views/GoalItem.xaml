@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Presentation.Views.GoalItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Presentation.Views"
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:userProfile="clr-namespace:Presentation.ViewModels.UserProfile"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d" 
+             d:DesignWidth="150"
+             d:DataContext="{d:DesignInstance userProfile:GoalItemViewModel}">
+    <DockPanel Background="LightBlue" x:Name="OnClick">
+        <DockPanel.Resources>
+            <Thickness x:Key="Margin">5</Thickness>
+        </DockPanel.Resources>
+
+        <DockPanel DockPanel.Dock="Top" Margin="{StaticResource Margin}">
+            <Image Source="images/目标栏.png" DockPanel.Dock="Left" 
+                   Margin="{StaticResource Margin}" Height="20" Width="20"/>
+            <DockPanel DockPanel.Dock="Right" Margin="{StaticResource  Margin}">
+                <Label Content="目标" DockPanel.Dock="Top" FontSize="10px" 
+                       HorizontalAlignment="Left" FontStyle="Italic" Foreground="SlateGray"/>
+                <Label x:Name="DisplayName" DockPanel.Dock="Bottom" Foreground="White"
+                   Margin="{StaticResource Margin}" HorizontalAlignment="Center" />
+            </DockPanel>
+        </DockPanel>
+        
+        <DockPanel DockPanel.Dock="Bottom" Margin="{StaticResource Margin}">
+            <iconPacks:PackIconMaterial Kind="CalendarClock" 
+                                        Foreground="#707070"
+                                        Margin="{StaticResource Margin}"
+                                        VerticalAlignment="Center"
+                                        DockPanel.Dock="Left"
+                                        Width="20" Height="20"/>
+            <DockPanel DockPanel.Dock="Right" Margin="{StaticResource  Margin}">
+                <Label Content="开始时间" DockPanel.Dock="Top" FontSize="10px" 
+                       HorizontalAlignment="Left" FontStyle="Italic" Foreground="SlateGray"/>
+                <Label x:Name="GoalStartTime" DockPanel.Dock="Bottom" Foreground="White"
+                   Margin="{StaticResource Margin}" HorizontalAlignment="Center"/>
+            </DockPanel>
+        </DockPanel>
+        
+    </DockPanel>
+
+</UserControl>
