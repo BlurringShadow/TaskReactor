@@ -54,6 +54,8 @@ namespace Presentation.ViewModels.UserProfile
 
         public event Action<GoalItemViewModel> OnGoalClickEvent;
 
+        public event Action<UserTaskItemViewModel> OnAddGoalEvent;
+
         /// <summary>
         /// User Task collection
         /// </summary>
@@ -101,5 +103,7 @@ namespace Presentation.ViewModels.UserProfile
         public void OnClick() => OnClickEvent?.Invoke(this);
 
         public void OnRemove() => OnRemoveEvent?.Invoke(this);
+
+        public void AddGoal() => OnAddGoalEvent?.Invoke(this);
     }
 }
