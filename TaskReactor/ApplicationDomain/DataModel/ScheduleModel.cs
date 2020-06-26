@@ -67,7 +67,7 @@ namespace ApplicationDomain.DataModel
             };
         }
 
-        Func<int, DateTime> _intervalImpl { get; set; }
+        Func<int, DateTime> _intervalImpl;
 
         /// <summary>
         /// Get the date time using specified interval count.

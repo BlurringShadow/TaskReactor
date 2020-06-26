@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using ApplicationDomain.Database;
+using ApplicationDomain.Database.Entity;
 using ApplicationDomain.DataModel;
+using ApplicationDomain.DataRepository;
 using JetBrains.Annotations;
 
 namespace ApplicationDomain.ModelService
 {
-    public interface IGoalService
+    public interface IGoalService : IService<Goal, TaskReactorDbContext, IGoalRepository, GoalModel>
     {
         /// <summary>
         /// Set notify action for user task
