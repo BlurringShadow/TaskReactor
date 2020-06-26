@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
-using ApplicationDomain.Database;
-using ApplicationDomain.Database.Entity;
-using ApplicationDomain.DataRepository;
+using Data.Database;
+using Data.Database.Entity;
+using Data.DataRepository;
 using JetBrains.Annotations;
 using Xunit.Abstractions;
 

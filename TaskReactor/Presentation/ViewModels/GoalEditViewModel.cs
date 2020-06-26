@@ -2,9 +2,9 @@
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Windows.Navigation;
-using ApplicationDomain.Database.Entity;
 using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
+using Data.Database.Entity;
 using JetBrains.Annotations;
 using Presentation.ViewModels.UserProfile;
 

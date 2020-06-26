@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
-using ApplicationDomain.Database.Entity;
 using ApplicationDomain.DataModel;
+using Data.Database.Entity;
 using JetBrains.Annotations;
 
 namespace ApplicationDomain.ModelService
