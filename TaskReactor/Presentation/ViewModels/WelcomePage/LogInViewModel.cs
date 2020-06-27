@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Windows;
@@ -12,7 +13,7 @@ namespace Presentation.ViewModels.WelcomePage
     [Export]
     public class LogInViewModel : ScreenViewModel
     {
-        [NotNull, ShareVariable(nameof(NavigationService), typeof(WelcomePageViewModel))]
+        [NotNull, ShareVariable(nameof(NavigationService), typeof(MainScreenViewModel))]
         public INavigationService NavigationService { get; set; }
 
         [NotNull] private readonly IUserService _userService;
@@ -29,7 +30,17 @@ namespace Presentation.ViewModels.WelcomePage
             }
         }
 
-        public string Identity { get; private set; }
+        private string _identity;
+
+        public string Identity
+        {
+            get => _identity;
+            set
+            {
+                Set(ref _identity, value);
+                NotifyOfPropertyChange(nameof(CanLogin));
+            }
+        }
 
         [ImportingConstructor,
          System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
@@ -43,15 +54,20 @@ namespace Presentation.ViewModels.WelcomePage
         // TODO display login progress bar
         public async void LogIn()
         {
-            var userModel = await _userService.LogInAsync(int.Parse(Identity!), Password!);
-            if (userModel is null)
+            try
             {
-                MessageBox.Show("incorrect password or id not exists");
-                return;
-            }
+                var userModel = await _userService.LogInAsync(int.Parse(Identity!), Password!);
+                if (userModel is null)
+                {
+                    MessageBox.Show("incorrect password or id not exists");
+                    return;
+                }
 
-            this.ShareWithName(userModel, nameof(UserProfileViewModel.CurrentUser));
-            NavigationService.NavigateToViewModel<UserProfileViewModel>();
+                this.ShareWithName(userModel, nameof(UserProfileViewModel.CurrentUser));
+                this.ShareWithName(NavigationService, nameof(UserProfileViewModel.NavigationService));
+                NavigationService.NavigateToViewModel<UserProfileViewModel>();
+            }
+            catch (Exception e) { MessageBox.Show($"{e}"); }
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Presentation.ViewModels.UserProfile
 
         [NotNull] private UserModel _currentUser;
 
-        [NotNull, ShareVariable(nameof(CurrentUser), typeof(WelcomePageViewModel))]
+        [NotNull, ShareVariable(nameof(CurrentUser), typeof(LogInViewModel))]
         public UserModel CurrentUser
         {
             get => _currentUser;
@@ -30,7 +30,7 @@ namespace Presentation.ViewModels.UserProfile
             {
                 Set(ref _currentUser, value);
                 NotifyOfPropertyChange(nameof(UserName));
-                RefreshTaskData(CancellationToken.None);
+                _ = RefreshTaskData(CancellationToken.None);
             }
         }
 
@@ -54,10 +54,10 @@ namespace Presentation.ViewModels.UserProfile
             _userTaskService = userTaskService;
         }
 
-        protected override Task OnActivateAsync(CancellationToken token)
+        protected override async Task OnActivateAsync(CancellationToken token)
         {
             // Refresh the user data
-            var user = _userService.FindByKeysAsync(new[] { CurrentUser.Identity }, token).Result;
+            var user = await _userService.FindByKeysAsync(token, CurrentUser.Identity);
 
             if (user is null)
             {
@@ -67,15 +67,15 @@ namespace Presentation.ViewModels.UserProfile
             else
             {
                 CurrentUser = user;
-                RefreshTaskData(token);
+                _ = RefreshTaskData(token);
             }
 
-            return base.OnActivateAsync(token);
+            await base.OnActivateAsync(token)!;
         }
 
-        void RefreshTaskData(CancellationToken token)
+        async Task RefreshTaskData(CancellationToken token)
         {
-            var newTaskItemList = _userTaskService.GetAllFromUserAsync(CurrentUser, token).Result;
+            var newTaskItemList = await _userTaskService.GetAllFromUserAsync(CurrentUser, token);
 
             var i = 0;
             var newCount = newTaskItemList.Count;

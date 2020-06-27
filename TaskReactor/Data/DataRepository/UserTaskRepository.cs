@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Data.Database;
@@ -20,14 +19,14 @@ namespace Data.DataRepository
         public async Task<IList<UserTask>> GetAllFromUserAsync(User user) =>
             await GetAllFromUserAsync(user, CancellationToken.None);
 
-        public async Task<IList<UserTask>> GetAllFromUserAsync(User user, CancellationToken token) =>
-            (await Task.Run(
-                () =>
-                {
-                    lock (Context)
-                        return Context.Set<User>()!.Include(u => u.Tasks)!.First(u => u.Id == user.Id)!.Tasks;
-                }, token
-            ))!;
+        public Task<IList<UserTask>> GetAllFromUserAsync(User user, CancellationToken token)
+        {
+            lock (Context)
+                return Task.Run(
+                    async () => (await Context.Set<User>()!.Include(u => u.Tasks)!
+                        .SingleAsync(u => u.Id == user.Id, token)!)!.Tasks, token
+                );
+        }
 
         public void AddToUser(User user, params UserTask[] userTasks) =>
             AddToUser(user, (IEnumerable<UserTask>)userTasks);

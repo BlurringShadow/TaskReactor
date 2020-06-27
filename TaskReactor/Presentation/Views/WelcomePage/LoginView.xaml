@@ -60,7 +60,7 @@
 
                     <Border Style="{StaticResource BorderStyle}">
                         <TextBox VerticalAlignment="Center"
-                                 x:Name="UserName"
+                                 x:Name="Identity"
                                  Background="Transparent"
                                  BorderThickness="0"
                                  metro:TextBoxHelper.Watermark="账号"/>
@@ -79,8 +79,8 @@
                     </Border>
                 </DockPanel>
 
-                <Button HorizontalAlignment="Center"
-                        x:Name="LogIn"
+                <Button x:Name="LogIn"
+                        HorizontalAlignment="Center"
                         Content="登录"
                         FontSize="14"
                         Background="#87CEEB"
