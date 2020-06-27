@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApplicationDomain.ModelService
 {
-    public abstract class Service<TDatabaseModel, TDbContext, TRepository, TModel> :
+    abstract class Service<TDatabaseModel, TDbContext, TRepository, TModel> :
         IService<TDatabaseModel, TDbContext, TRepository, TModel>
         where TDatabaseModel : DatabaseModel, new()
         where TDbContext : DbContext
@@ -39,6 +39,15 @@ namespace ApplicationDomain.ModelService
         public async ValueTask<TModel> FindByKeysAsync(IEnumerable keys, CancellationToken token)
         {
             var result = await Repository.FindByKeysAsync(keys, token);
+            return result is null ? null : CreateModelInstance(result);
+        }
+
+        public async ValueTask<TModel> FindByKeysAsync(params object[] keys) =>
+            await FindByKeysAsync(CancellationToken.None, keys);
+
+        public async ValueTask<TModel> FindByKeysAsync(CancellationToken token, params object[] keys)
+        {
+            var result = await Repository.FindByKeysAsync(token, keys);
             return result is null ? null : CreateModelInstance(result);
         }
 

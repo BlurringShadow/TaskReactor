@@ -19,7 +19,7 @@ namespace ApplicationDomain.ModelService
         /// <summary>
         /// <see cref="Data.DataRepository.IRepository{TDataBaseModel,TDbContext}"/>
         /// </summary>
-        [NotNull] public TRepository Repository { get; }
+        [NotNull] TRepository Repository { get; }
 
         /// <summary>
         /// Find if table contains the key. Input <paramref name="keys"/> should match the entity key type order
@@ -27,7 +27,7 @@ namespace ApplicationDomain.ModelService
         /// <param name="keys"> input keys </param>
         /// <returns> Return an async task and task.value is true if contains. </returns>
         [NotNull]
-        public Task<bool> ContainsByKeyAsync([NotNull] IEnumerable keys);
+        Task<bool> ContainsByKeyAsync([NotNull] IEnumerable keys);
 
         /// <summary>
         /// Find if table contains the key. Input <paramref name="keys"/> should match the entity key type order
@@ -36,7 +36,7 @@ namespace ApplicationDomain.ModelService
         /// <param name="token"> <see cref="CancellationToken"/> </param>
         /// <returns> Return an async task and task.value is true if contains. </returns>
         [NotNull]
-        public Task<bool> ContainsByKeyAsync([NotNull] IEnumerable keys, CancellationToken token);
+        Task<bool> ContainsByKeyAsync([NotNull] IEnumerable keys, CancellationToken token);
 
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace ApplicationDomain.ModelService
         /// </summary>
         /// <param name="keys"> input keys </param>
         /// <returns> Return an async task with finding result. </returns>
-        public ValueTask<TModel> FindByKeysAsync([NotNull] IEnumerable keys);
+        ValueTask<TModel> FindByKeysAsync([NotNull] IEnumerable keys);
 
         /// <summary>
         /// Find if table contains the key. Input <paramref name="keys"/> should match the entity key type order
@@ -52,47 +52,51 @@ namespace ApplicationDomain.ModelService
         /// <param name="keys"> input keys </param>
         /// <param name="token"> <see cref="CancellationToken"/> </param>
         /// <returns> Return an async task with finding result. </returns>
-        public ValueTask<TModel> FindByKeysAsync([NotNull] IEnumerable keys, CancellationToken token);
+        ValueTask<TModel> FindByKeysAsync([NotNull] IEnumerable keys, CancellationToken token);
+
+        ValueTask<TModel> FindByKeysAsync([NotNull] params object[] keys);
+
+        ValueTask<TModel> FindByKeysAsync(CancellationToken token, [NotNull] params object[] keys);
 
         /// <summary>
         /// Remove the models in database
         /// </summary>
-        public void Remove([ItemNotNull, NotNull] IEnumerable<TModel> models);
+        void Remove([ItemNotNull, NotNull] IEnumerable<TModel> models);
 
         /// <summary>
         /// Remove the models in database
         /// </summary>
-        public void Remove([ItemNotNull, NotNull] params TModel[] models);
+        void Remove([ItemNotNull, NotNull] params TModel[] models);
 
         /// <summary>
         /// Remove all the models in database
         /// </summary>
         /// <returns> Async running task </returns>
         [NotNull]
-        public Task RemoveAllAsync();
+        Task RemoveAllAsync();
 
         /// <summary>
         /// Update the models in database
         /// </summary>
-        public void Update([ItemNotNull, NotNull] IEnumerable<TModel> models);
+        void Update([ItemNotNull, NotNull] IEnumerable<TModel> models);
 
         /// <summary>
         /// Update the models in database
         /// </summary>
-        public void Update([ItemNotNull, NotNull] params TModel[] models);
+        void Update([ItemNotNull, NotNull] params TModel[] models);
 
         /// <summary>
         /// Sync changes into database
         /// </summary>
         /// <returns> Async task with affected rows </returns>
         [NotNull]
-        public Task<int> DbSync();
+        Task<int> DbSync();
 
         /// <summary>
         /// Sync changes into database
         /// </summary>
         /// <returns> Async task with affected rows </returns>
         [NotNull]
-        public Task<int> DbSync(CancellationToken token);
+        Task<int> DbSync(CancellationToken token);
     }
 }
