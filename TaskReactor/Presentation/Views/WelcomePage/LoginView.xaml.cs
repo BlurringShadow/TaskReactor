@@ -1,4 +1,4 @@
-﻿namespace Presentation.Views
+﻿namespace Presentation.Views.WelcomePage
 {
     /// <summary>
     /// LogInView.xaml 的交互逻辑

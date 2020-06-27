@@ -1,0 +1,108 @@
+﻿<UserControl x:Class="Presentation.Views.WelcomePage.RegisterView"
+             x:Name="RegisterControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Presentation.Views"
+             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:viewModels="clr-namespace:Presentation.ViewModels"
+             xmlns:cm="http://caliburnmicro.com"
+             xmlns:welcomePage="clr-namespace:Presentation.ViewModels.WelcomePage"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             d:DesignWidth="800"
+             d:DesignHeight="600"
+             mc:Ignorable="d"
+             cm:Bind.AtDesignTime="True"
+             d:DataContext="{d:DesignInstance welcomePage:RegisterViewModel}">
+    <Border BorderBrush="#4682B4"
+            BorderThickness="2"
+            CornerRadius="5"
+            VerticalAlignment="Center"
+            Margin="120,0,120,0">
+        <Border.Resources>
+            <Thickness x:Key="Margin"> 10 </Thickness>
+        </Border.Resources>
+
+        <StackPanel Margin="{StaticResource Margin}">
+            <StackPanel.Resources>
+                <Style x:Key="BorderStyle" TargetType="Border">
+                    <Setter Property="DockPanel.Dock" Value="Right"/>
+
+                    <Setter Property="BorderBrush" Value="#4682B4"/>
+
+                    <Setter Property="BorderThickness" Value="2"/>
+
+                    <Setter Property="CornerRadius" Value="5"/>
+
+                    <Setter Property="Margin" Value="{StaticResource Margin}"/>
+
+                    <Setter Property="Background" Value="White"/>
+                </Style>
+
+                <Style x:Key="PackIconMaterialStyle" TargetType="iconPacks:PackIconMaterial">
+                    <Setter Property="Height" Value="30"/>
+
+                    <Setter Property="Width" Value="20"/>
+
+                    <Setter Property="Margin" Value="{StaticResource Margin}"/>
+
+                    <Setter Property="DockPanel.Dock" Value="Left"/>
+
+                    <Setter Property="Foreground" Value="#707070"/>
+                </Style>
+
+                <Style x:Key="TextInputStyle" TargetType="PasswordBox" BasedOn="{StaticResource {x:Type PasswordBox}}">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+
+                    <Setter Property="Background" Value="Transparent"/>
+
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Style>
+            </StackPanel.Resources>
+
+            <DockPanel>
+                <iconPacks:PackIconMaterial Kind="Account" Style="{StaticResource PackIconMaterialStyle}"/>
+
+                <Border Style="{StaticResource BorderStyle}">
+                    <TextBox x:Name="UserName"
+                             VerticalAlignment="Center"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             metro:TextBoxHelper.Watermark="请设置您的账号名"/>
+                </Border>
+            </DockPanel>
+
+            <DockPanel>
+                <iconPacks:PackIconMaterial Kind="LockOutline" Style="{StaticResource PackIconMaterialStyle}"/>
+                <Border Style="{StaticResource BorderStyle}">
+                    <PasswordBox cm:Message.Attach="[Event LostFocus] = [Action SetPassword($source)]"
+                                 metro:TextBoxHelper.Watermark="请设置您的密码"
+                                 Style="{StaticResource TextInputStyle}"/>
+                </Border>
+            </DockPanel>
+
+            <DockPanel>
+                <iconPacks:PackIconMaterial Kind="LockQuestion" Style="{StaticResource PackIconMaterialStyle}"/>
+                <Border Style="{StaticResource BorderStyle}">
+                    <PasswordBox cm:Message.Attach="[Event LostFocus] = [Action SetReInputPassword($source)]"
+                                 Style="{StaticResource TextInputStyle}"
+                                 metro:TextBoxHelper.Watermark="请再次确认您的密码">
+                    </PasswordBox>
+                </Border>
+            </DockPanel>
+
+            <Label HorizontalAlignment="Center" x:Name="RegisteredId"/>
+
+            <Button HorizontalAlignment="Center"
+                    x:Name="Register"
+                    Content="注册"
+                    Background="#87CEEB"
+                    FontSize="14"
+                    Margin="{StaticResource Margin}"
+                    Width="150"
+                    Height="30"/>
+        </StackPanel>
+    </Border>
+</UserControl>

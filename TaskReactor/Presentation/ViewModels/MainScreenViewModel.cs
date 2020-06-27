@@ -3,6 +3,7 @@ using System.ComponentModel.Composition.Hosting;
 using System.Windows.Controls;
 using Caliburn.Micro;
 using JetBrains.Annotations;
+using Presentation.ViewModels.WelcomePage;
 
 namespace Presentation.ViewModels
 {

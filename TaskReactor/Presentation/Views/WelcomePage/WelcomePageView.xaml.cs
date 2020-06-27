@@ -1,4 +1,4 @@
-﻿namespace Presentation.Views
+﻿namespace Presentation.Views.WelcomePage
 {
     public sealed partial class WelcomePageView
     {

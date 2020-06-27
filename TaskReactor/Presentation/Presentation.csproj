@@ -7,6 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\Resources\default_avatar.png" />
+    <None Remove="Views\Resources\title.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="Views\Resources\Dictionary.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\Resources\default_avatar.png" />
+    <Resource Include="Views\Resources\Dictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Include="Views\Resources\title.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Caliburn.Micro" Version="4.0.105-alpha" />
     <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
     <PackageReference Include="MahApps.Metro" Version="2.1.0" />

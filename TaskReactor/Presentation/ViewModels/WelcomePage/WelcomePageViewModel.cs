@@ -3,7 +3,7 @@ using System.ComponentModel.Composition.Hosting;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
-namespace Presentation.ViewModels
+namespace Presentation.ViewModels.WelcomePage
 {
     [Export]
     public sealed class WelcomePageViewModel : ConductorOneActiveViewModel<ScreenViewModel>
