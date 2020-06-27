@@ -7,6 +7,7 @@ using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
+using ApplicationDomain.DataModel;
 using Caliburn.Micro;
 using Data.Database;
 using JetBrains.Annotations;
@@ -25,6 +26,7 @@ namespace Presentation
             _container = new CompositionContainer(
                 new AggregateCatalog(
                     new AssemblyCatalog(typeof(TaskReactorDbContext).Assembly),
+                    new AssemblyCatalog(typeof(Model<>).Assembly),
                     new AssemblyCatalog(typeof(IViewModel).Assembly)
                 ),
                 true
