@@ -7,6 +7,7 @@ using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
 using Caliburn.Micro;
 using JetBrains.Annotations;
+using Presentation.ViewModels.WelcomePage;
 
 namespace Presentation.ViewModels.UserProfile
 {

@@ -1,4 +1,4 @@
-﻿namespace Presentation.Views
+﻿namespace Presentation.Views.UserProfile
 {
     public partial class UserTaskItemView
     {

@@ -1,4 +1,4 @@
-<UserControl x:Class="Presentation.Views.UserProfileView"
+<UserControl x:Class="Presentation.Views.UserProfile.UserProfileView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,6 +10,7 @@
              d:DesignHeight="600"
              cm:Bind.AtDesignTime="True"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:local="clr-namespace:Presentation.Views"
              d:DataContext="{d:DesignInstance viewModels:UserProfileViewModel}">
     <DockPanel Background="White">
         <DockPanel.Resources>
@@ -47,7 +48,10 @@
             </Button>
 
             <StackPanel DockPanel.Dock="Top">
-                <Image x:Name="UserAvatar" Margin="20" Width="100" Height="100" Source="default_background.jpg"/>
+                <Image x:Name="UserAvatar" 
+                       Margin="20" Width="100" 
+                       Height="100"
+                       Source="{StaticResource DefaultAvatar}"/>
 
                 <TextBlock x:Name="UserName"
                            TextAlignment="Center"
@@ -65,7 +69,7 @@
                       Cursor="Hand"
                       x:Name="UserTaskItems"/>
 
-            <Button Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}" 
+            <Button Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
                     Background="WhiteSmoke"
                     HorizontalAlignment="Stretch"
                     x:Name="AddTask">
