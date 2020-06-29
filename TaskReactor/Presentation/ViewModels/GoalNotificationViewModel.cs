@@ -10,6 +10,9 @@ namespace Presentation.ViewModels
 {
     public sealed class GoalNotificationViewModel : PropertyChangedBase,INotificationViewModel
     {
+            public string Title { get; set; }
+            public string Message { get; set; }
+            
             [NotNull] public INotificationManager Manager { get; }
             [NotNull] GoalModel _goalModel;
 
