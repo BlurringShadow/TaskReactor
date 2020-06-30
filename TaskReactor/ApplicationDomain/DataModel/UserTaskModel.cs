@@ -1,12 +1,15 @@
-﻿using Data.Database.Entity;
+﻿using System;
+using Data.Database.Entity;
 using JetBrains.Annotations;
 
 namespace ApplicationDomain.DataModel
 {
-    public class UserTaskModel : ItemModel<UserTask>
+    public sealed class UserTaskModel : ItemModel<UserTask>
     {
         public UserTaskModel()
         {
+            StartTime = DateTime.Now;
+            EndTime = DateTime.Now;
         }
 
         internal UserTaskModel([NotNull] UserTask userTask) : base(userTask)

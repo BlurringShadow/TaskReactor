@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace ApplicationDomain.DataModel
 {
-    public class UserModel : Model<User>
+    public sealed class UserModel : Model<User>
     {
         public UserModel()
         {
