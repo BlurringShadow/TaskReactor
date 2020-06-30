@@ -18,7 +18,7 @@ namespace Presentation.ViewModels
         [NotNull, ShareVariable(nameof(GoalModel), typeof(UserProfileViewModel))]
         public GoalModel GoalModel { get => _goalModel; set => Set(ref _goalModel, value); }
 
-        [NotNull, ShareVariable(nameof(GoalModel), typeof(NavigationService))]
+        [NotNull, ShareVariable(nameof(GoalModel), typeof(UserProfileViewModel))]
         public NavigationService NavigationService { get; set; }
 
         [NotNull] public IntervalKindListViewModel IntervalKindListViewModel { get; } = new IntervalKindListViewModel();

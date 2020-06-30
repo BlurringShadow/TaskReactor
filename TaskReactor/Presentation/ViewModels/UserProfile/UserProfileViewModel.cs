@@ -150,7 +150,7 @@ namespace Presentation.ViewModels.UserProfile
 
             this.ShareWithName(goalModel, nameof(GoalEditViewModel.GoalModel));
             this.ShareWithName(NavigationService, nameof(NavigationService));
-            NavigationService.NavigateToViewModel<GoalItemViewModel>();
+            NavigationService.NavigateToViewModel<GoalEditViewModel>();
         }
 
         void ToGoalEdit([NotNull] GoalItemViewModel viewModel) => NavigateToGoalEdit(viewModel.GoalModel);
