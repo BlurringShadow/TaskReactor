@@ -14,13 +14,14 @@ namespace Presentation.ViewModels.UserProfile
     [Export]
     public sealed class UserProfileViewModel : ScreenViewModel
     {
-        [NotNull] private readonly IUserTaskService _userTaskService;
-        [NotNull] private readonly IUserService _userService;
+        [NotNull] readonly IUserTaskService _userTaskService;
 
-        [NotNull, ShareVariable(nameof(NavigationService), typeof(WelcomePageViewModel))]
+        [NotNull] readonly IUserService _userService;
+
+        [NotNull, ShareVariable(nameof(NavigationService), typeof(LogInViewModel))]
         public INavigationService NavigationService { get; set; }
 
-        [NotNull] private UserModel _currentUser;
+        [NotNull] UserModel _currentUser;
 
         [NotNull, ShareVariable(nameof(CurrentUser), typeof(LogInViewModel))]
         public UserModel CurrentUser
@@ -44,9 +45,11 @@ namespace Presentation.ViewModels.UserProfile
 
         [ImportingConstructor,
          System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-        public UserProfileViewModel([NotNull] IocContainer container,
+        public UserProfileViewModel(
+            [NotNull] IocContainer container,
             [NotNull] IUserTaskService userTaskService,
-            [NotNull] IUserService userService) : base(container)
+            [NotNull] IUserService userService
+        ) : base(container)
         {
             _userService = userService;
             _userTaskService = userTaskService;
