@@ -9,9 +9,9 @@
 #endregion
 
 using System;
-using System.ComponentModel.Composition.Hosting;
 using Caliburn.Micro;
 using JetBrains.Annotations;
+using Utilities;
 
 namespace Presentation.ViewModels
 {
@@ -20,11 +20,11 @@ namespace Presentation.ViewModels
     /// </summary>
     public abstract class ConductorViewModel<T> : Conductor<T>, IViewModel where T : class
     {
-        public CompositionContainer Container { get; }
+        public IocContainer Container { get; }
 
         public Type InstanceType { get; }
 
-        protected ConductorViewModel([NotNull] CompositionContainer container)
+        protected ConductorViewModel([NotNull] IocContainer container)
         {
             Container = container;
             InstanceType = this.Initialize();

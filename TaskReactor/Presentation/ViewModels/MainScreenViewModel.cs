@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Windows.Controls;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 using Presentation.ViewModels.WelcomePage;
+using Utilities;
 
 namespace Presentation.ViewModels
 {
@@ -14,7 +14,7 @@ namespace Presentation.ViewModels
 
         [ImportingConstructor,
          System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-        public MainScreenViewModel([NotNull] CompositionContainer container) : base(container) =>
+        public MainScreenViewModel([NotNull] IocContainer container) : base(container) =>
             DisplayName = "Task Reactor";
 
         /// <summary> Initialize the frame navigation service </summary>

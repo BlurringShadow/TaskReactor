@@ -1,7 +1,7 @@
 ﻿using System;
-using System.ComponentModel.Composition.Hosting;
 using Caliburn.Micro;
 using JetBrains.Annotations;
+using Utilities;
 
 namespace Presentation.ViewModels
 {
@@ -13,7 +13,7 @@ namespace Presentation.ViewModels
         /// <summary>
         /// Container to store shared variable.
         /// </summary>
-        [NotNull] CompositionContainer Container { get; }
+        [NotNull] IocContainer Container { get; }
 
         /// <summary>
         /// The type of current instance

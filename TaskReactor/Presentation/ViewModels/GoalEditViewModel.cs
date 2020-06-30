@@ -1,12 +1,12 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Windows.Navigation;
 using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
 using Data.Database.Entity;
 using JetBrains.Annotations;
 using Presentation.ViewModels.UserProfile;
+using Utilities;
 
 namespace Presentation.ViewModels
 {
@@ -33,7 +33,7 @@ namespace Presentation.ViewModels
 
         // ReSharper disable once NotNullMemberIsNotInitialized
         [ImportingConstructor]
-        public GoalEditViewModel([NotNull] CompositionContainer container, [NotNull] IGoalService goalService) :
+        public GoalEditViewModel([NotNull] IocContainer container, [NotNull] IGoalService goalService) :
             base(container) => _goalService = goalService;
 
         public void Confirm()

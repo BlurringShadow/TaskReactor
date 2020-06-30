@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
-using Utilities;
 
 namespace Presentation.ViewModels
 {

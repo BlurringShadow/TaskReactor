@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using Caliburn.Micro;
 using JetBrains.Annotations;
+using Utilities;
 
 namespace Presentation.ViewModels.WelcomePage
 {
@@ -13,7 +13,7 @@ namespace Presentation.ViewModels.WelcomePage
 
         [ImportingConstructor,
          System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-        public WelcomePageViewModel([NotNull] CompositionContainer container) : base(container)
+        public WelcomePageViewModel([NotNull] IocContainer container) : base(container)
         {
             DisplayName = "Welcome";
 

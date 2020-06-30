@@ -1,12 +1,12 @@
 using System;
 using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Windows;
 using System.Windows.Controls;
 using ApplicationDomain.ModelService;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 using Presentation.ViewModels.UserProfile;
+using Utilities;
 
 namespace Presentation.ViewModels.WelcomePage
 {
@@ -44,7 +44,7 @@ namespace Presentation.ViewModels.WelcomePage
 
         [ImportingConstructor,
          System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-        public LogInViewModel([NotNull] CompositionContainer container, [NotNull] IUserService userService) :
+        public LogInViewModel([NotNull] IocContainer container, [NotNull] IUserService userService) :
             base(container) => _userService = userService;
 
         public bool CanLogin => int.TryParse(Identity, out _) && !string.IsNullOrEmpty(Password);

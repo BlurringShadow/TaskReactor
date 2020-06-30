@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -8,6 +7,7 @@ using ApplicationDomain.ModelService;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 using Presentation.ViewModels.WelcomePage;
+using Utilities;
 
 namespace Presentation.ViewModels.UserProfile
 {
@@ -44,11 +44,9 @@ namespace Presentation.ViewModels.UserProfile
 
         [ImportingConstructor,
          System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-        public UserProfileViewModel(
-            [NotNull] CompositionContainer container,
+        public UserProfileViewModel([NotNull] IocContainer container,
             [NotNull] IUserTaskService userTaskService,
-            [NotNull] IUserService userService
-        ) : base(container)
+            [NotNull] IUserService userService) : base(container)
         {
             _userService = userService;
             _userTaskService = userTaskService;

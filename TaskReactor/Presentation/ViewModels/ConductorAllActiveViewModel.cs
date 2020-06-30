@@ -1,7 +1,7 @@
 ﻿using System;
-using System.ComponentModel.Composition.Hosting;
 using Caliburn.Micro;
 using JetBrains.Annotations;
+using Utilities;
 
 namespace Presentation.ViewModels
 {
@@ -10,11 +10,11 @@ namespace Presentation.ViewModels
     /// </summary>
     public abstract class ConductorAllActiveViewModel<T> : Conductor<T>.Collection.AllActive, IViewModel where T : class
     {
-        public CompositionContainer Container { get; }
+        public IocContainer Container { get; }
 
         public Type InstanceType { get; }
 
-        protected ConductorAllActiveViewModel([NotNull] CompositionContainer container)
+        protected ConductorAllActiveViewModel([NotNull] IocContainer container)
         {
             Container = container;
             InstanceType = this.Initialize();

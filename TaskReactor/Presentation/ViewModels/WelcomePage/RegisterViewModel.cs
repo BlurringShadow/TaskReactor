@@ -1,10 +1,10 @@
 using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
 using JetBrains.Annotations;
+using Utilities;
 
 namespace Presentation.ViewModels.WelcomePage
 {
@@ -62,7 +62,7 @@ namespace Presentation.ViewModels.WelcomePage
         public void SetReInputPassword([NotNull] PasswordBox value) => ReInputPassword = value.Password;
 
         [ImportingConstructor]
-        public RegisterViewModel([NotNull] CompositionContainer container, [NotNull] IUserService userService) :
+        public RegisterViewModel([NotNull] IocContainer container, [NotNull] IUserService userService) :
             base(container) => _userService = userService;
 
         public async Task Register()

@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 using Presentation.ViewModels.WelcomePage;
+using Utilities;
 
 namespace Presentation.ViewModels
 {
@@ -21,7 +21,7 @@ namespace Presentation.ViewModels
 
         [ImportingConstructor,
          System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-        public UserTaskEditViewModel([NotNull] CompositionContainer container, [NotNull] IUserTaskService service) : 
+        public UserTaskEditViewModel([NotNull] IocContainer container, [NotNull] IUserTaskService service) : 
             base(container) => _service = service;
 
         public void Confirm()
