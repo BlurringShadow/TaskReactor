@@ -23,12 +23,17 @@ namespace Utilities
     {
         const BindingFlags _privateFieldBindingFlags = BindingFlags.Instance | BindingFlags.NonPublic;
 
-        readonly ComposablePartExportProvider _composablePartExportProvider;
+        [NotNull] readonly ComposablePartExportProvider _composablePartExportProvider;
+
+        [NotNull] static readonly FieldInfo _partsFieldInfo = typeof(ComposablePartExportProvider)
+            .GetField("_parts", _privateFieldBindingFlags)!;
+
+        [NotNull] static readonly FieldInfo _composablePartFieldInfo = typeof(CompositionContainer)
+            .GetField("_partExportProvider", _privateFieldBindingFlags)!;
 
         // Exposed the composable part
         [NotNull, ItemNotNull] public IEnumerable<ComposablePart> ComposableParts =>
-            ((IEnumerable<ComposablePart>)typeof(ComposablePartExportProvider)
-                .GetField("_parts", _privateFieldBindingFlags)!.GetValue(_composablePartExportProvider))!;
+            ((IEnumerable<ComposablePart>)_partsFieldInfo.GetValue(_composablePartExportProvider))!;
 
         public IocContainer() : this((ComposablePartCatalog)null)
         {
@@ -58,8 +63,7 @@ namespace Utilities
             CompositionOptions compositionOptions,
             params ExportProvider[] providers
         ) : base(catalog, compositionOptions, providers) =>
-            _composablePartExportProvider = (ComposablePartExportProvider)typeof(CompositionContainer)
-                .GetField("_partExportProvider", _privateFieldBindingFlags)!.GetValue(this);
+            _composablePartExportProvider = ((ComposablePartExportProvider)_composablePartFieldInfo.GetValue(this))!;
 
         public void UpdateExportedValue<T>(
             T value,
