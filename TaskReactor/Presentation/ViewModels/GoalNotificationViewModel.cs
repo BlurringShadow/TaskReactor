@@ -1,76 +1,27 @@
-using System;
-using System.Threading.Tasks;
+using System.ComponentModel.Composition;
 using JetBrains.Annotations;
 using Notifications.Wpf.Core;
-using Caliburn.Micro;
 using ApplicationDomain.DataModel;
-using System.Threading;
+using Utilities;
 
 namespace Presentation.ViewModels
 {
-    public sealed class GoalNotificationViewModel : PropertyChangedBase,INotificationViewModel
+    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
+    public sealed class GoalNotificationViewModel : NotificationViewModel
     {
-            public string Title { get; set; }
-            public string Message { get; set; }
-            
-            [NotNull] public INotificationManager Manager { get; }
-            [NotNull] GoalModel _goalModel;
+        [NotNull] private GoalModel _goalModel;
 
-            public GoalModel GoalModel { get => _goalModel;}
+        [NotNull] public GoalModel GoalModel
+        {
+            get => _goalModel;
+            set => Set(ref _goalModel, value);
+        }
 
-            public GoalNotificationViewModel(INotificationManager manager)
-            {
-                Manager = manager;
-            }
-
-            public TimeSpan Duration
-            {
-                get
-                {
-                    return GoalModel.DurationOfOneTime;
-                }
-                set { }
-            
-            }
-
-            public async Task ShowAsync()
-                {
-                    var content = new NotificationContent
-                    {
-                        Title = GoalModel.Title,
-                        Message = GoalModel.Description,
-                        Type = NotificationType.Information
-                    };
-                    //弹窗提示
-                    await Manager.ShowAsync(content);
-                }
-
-            public async Task ShowAsync(CancellationToken token)
-            {
-                if (!token.IsCancellationRequested)
-                {
-                    var content = new NotificationContent
-                    {
-                        Title = GoalModel.Title,
-                        Message = GoalModel.Description,
-                        Type = NotificationType.Information
-                    };
-                    //弹窗提示
-                    await Manager.ShowAsync(content);
-            }
-            }
-
-            public event System.Action OnClick=ToGoalEditView;
-            public event System.Action OnClose=Handle;
-            
-            public static void ToGoalEditView() {
-                //跳到goalEditView，用户可在那个页面查看详情或者对计划作出修改
-            }
-            
-            public static void Handle()
-            {
-                
-            }
-
+        // ReSharper disable once NotNullMemberIsNotInitialized
+        public GoalNotificationViewModel(
+            [NotNull] INotificationManager manager,
+            [NotNull] GoalModel goalModel,
+            [NotNull] IocContainer container
+        ) : base(manager) => GoalModel = goalModel;
     }
 }

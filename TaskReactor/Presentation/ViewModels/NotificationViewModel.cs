@@ -9,16 +9,16 @@
 #endregion
 
 using System;
-using System.ComponentModel.Composition.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 using JetBrains.Annotations;
 using Notifications.Wpf.Core;
 using Action = System.Action;
 
 namespace Presentation.ViewModels
 {
-    public abstract class NotificationViewModel : ScreenViewModel, INotificationViewModel
+    public abstract class NotificationViewModel : PropertyChangedBase, INotificationViewModel
     {
         public INotificationManager Manager { get; }
 
@@ -28,8 +28,7 @@ namespace Presentation.ViewModels
 
         public TimeSpan Duration { get; set; }
 
-        protected NotificationViewModel([NotNull] INotificationManager manager, [NotNull] CompositionContainer container) :
-            base(container) => Manager = manager;
+        protected NotificationViewModel([NotNull] INotificationManager manager) => Manager = manager;
 
         public async Task ShowAsync(CancellationToken token) =>
             await Manager.ShowAsync(this, null, Duration, OnClick, OnClose, token);

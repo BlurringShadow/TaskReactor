@@ -19,11 +19,11 @@ namespace Presentation
     public sealed class AppBootstrapper : BootstrapperBase
     {
         // IOC container
-        [NotNull] private readonly CompositionContainer _container;
+        [NotNull] private readonly IocContainer _container;
 
         public AppBootstrapper()
         {
-            _container = new CompositionContainer(
+            _container = new IocContainer(
                 new AggregateCatalog(
                     new AssemblyCatalog(typeof(TaskReactorDbContext).Assembly),
                     new AssemblyCatalog(typeof(Model<>).Assembly),

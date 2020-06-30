@@ -19,7 +19,7 @@ namespace Presentation.ViewModels
     /// <summary>
     /// Provide notification presentation support
     /// </summary>
-    interface INotificationViewModel : IViewModel, Notifications.Wpf.Core.INotificationViewModel
+    interface INotificationViewModel : Notifications.Wpf.Core.INotificationViewModel
     {
         /// <summary>
         /// <see cref="INotificationManager"/> support for basic functionality
