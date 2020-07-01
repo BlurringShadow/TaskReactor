@@ -11,12 +11,13 @@
              d:DesignWidth="150"
              d:DataContext="{d:DesignInstance viewModels:UserTaskItemViewModel}">
     <DockPanel>
-        <Expander DockPanel.Dock="Bottom" BorderThickness="0.05" IsExpanded="False">
+        <Expander DockPanel.Dock="Bottom" BorderThickness="0" IsExpanded="False">
             <DockPanel>
                 <Button DockPanel.Dock="Bottom" 
                         Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}" 
                         Background="LightBlue"
                         HorizontalAlignment="Stretch"
+                        BorderThickness="0.05"
                         x:Name="AddGoal">
                     <DockPanel>
                         <iconPacks:PackIconZondicons Kind="DateAdd" Foreground="DimGray" VerticalAlignment="Center"/>
@@ -29,19 +30,19 @@
             </DockPanel>
         </Expander>
 
-        <Button DataContext="{Binding TaskModel, Mode=OneWay}" x:Name="OnClick" Style="{StaticResource MahApps.Styles.Button.Flat}" Background="Snow">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5 0">
+        <Button x:Name="OnClick" Style="{StaticResource MahApps.Styles.Button.Flat}" Padding="0" Background="Snow">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <StackPanel.Resources>
-                    <Style x:Key="TextBoxStyle" TargetType="TextBox">
+                    <Style x:Key="TextBlockStyle" TargetType="TextBlock">
                         <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="BorderBrush" Value="Transparent"/>
                         <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Margin" Value="3"/>
                     </Style>
                 </StackPanel.Resources>
 
-                <TextBox FontSize="15" Text="{Binding Title}" Style="{StaticResource TextBoxStyle}"/>
+                <TextBlock FontSize="20" Text="{Binding DisplayName}" Style="{StaticResource TextBlockStyle}"/>
 
-                <TextBox FontSize="10" Text="{Binding StartTime}" Style="{StaticResource TextBoxStyle}"/>
+                <TextBlock FontSize="15" Text="{Binding TaskModel.StartTime}" Style="{StaticResource TextBlockStyle}"/>
             </StackPanel>
         </Button>
     </DockPanel>
