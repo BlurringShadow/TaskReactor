@@ -9,8 +9,8 @@
 #endregion
 
 using System;
-using System.Globalization;
 using System.Threading;
+using System.Threading.Tasks;
 using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
 using Caliburn.Micro;
@@ -30,9 +30,8 @@ namespace Presentation.ViewModels.UserProfile
             set
             {
                 Set(ref _taskModel, value);
-                RefreshGoalsData(CancellationToken.None);
+                _ = RefreshGoalsData(CancellationToken.None);
                 NotifyOfPropertyChange(nameof(DisplayName));
-                NotifyOfPropertyChange(nameof(TaskStartTime));
             }
         }
 
@@ -45,8 +44,6 @@ namespace Presentation.ViewModels.UserProfile
                 base.DisplayName = value;
             }
         }
-
-        [NotNull] public string TaskStartTime => TaskModel.StartTime.ToString(CultureInfo.CurrentCulture);
 
         public event Action<UserTaskItemViewModel> OnClickEvent;
 
@@ -65,13 +62,13 @@ namespace Presentation.ViewModels.UserProfile
         // ReSharper disable once NotNullMemberIsNotInitialized
         public UserTaskItemViewModel([NotNull] UserTaskModel taskModel, [NotNull] IGoalService goalService)
         {
-            TaskModel = taskModel;
             _goalService = goalService;
+            TaskModel = taskModel;
         }
 
-        void RefreshGoalsData(CancellationToken token)
+        async Task RefreshGoalsData(CancellationToken token)
         {
-            var goalList = _goalService.GetAllFromTaskAsync(TaskModel, token).Result;
+            var goalList = await _goalService.GetAllFromTaskAsync(TaskModel, token);
 
             var i = 0;
             var newCount = goalList.Count;

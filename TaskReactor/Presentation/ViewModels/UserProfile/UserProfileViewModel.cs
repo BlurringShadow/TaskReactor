@@ -108,20 +108,6 @@ namespace Presentation.ViewModels.UserProfile
             }
         }
 
-        protected override Task OnDeactivateAsync(bool close, CancellationToken token)
-        {
-            // Release the events
-            foreach (var itemViewModel in UserTaskItems)
-            {
-                itemViewModel.OnClickEvent -= ToUserTaskEdit;
-                itemViewModel.OnRemoveEvent -= OnRemoveTask;
-                itemViewModel.OnGoalClickEvent -= ToGoalEdit;
-                itemViewModel.OnAddGoalEvent -= AddGoal;
-            }
-
-            return base.OnDeactivateAsync(close, token);
-        }
-
         void NavigateToTaskEdit([NotNull] UserTaskModel taskModel)
         {
             this.DeactivateAsync(false);
@@ -149,7 +135,8 @@ namespace Presentation.ViewModels.UserProfile
             this.DeactivateAsync(false);
 
             this.ShareWithName(goalModel, nameof(GoalEditViewModel.GoalModel));
-            this.ShareWithName(NavigationService, nameof(NavigationService));
+            this.ShareWithName(NavigationService, nameof(GoalEditViewModel.NavigationService));
+
             NavigationService.NavigateToViewModel<GoalEditViewModel>();
         }
 

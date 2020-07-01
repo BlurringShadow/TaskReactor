@@ -61,7 +61,7 @@ namespace ApplicationDomain.ModelService
             foreach (var model in goalList)
             {
                 // ReSharper disable once AssignNullToNotNullAttribute
-                _service.UpdateModel(model);
+                _service.UpdateModelAction(model, NotifyAction ?? (_ => {}));
                 var index = toBeRemoved.BinarySearch(model, _comparer);
                 if (index >= 0) toBeRemoved.RemoveAt(index);
             }
@@ -89,7 +89,7 @@ namespace ApplicationDomain.ModelService
         {
             foreach (var model in models)
             {
-                _service.UpdateModel(model);
+                _service.UpdateModelAction(model, NotifyAction ?? (_ => {}));
                 Repository.Update(model._dataBaseModel);
             }
         }

@@ -29,14 +29,13 @@ namespace Presentation.ViewModels
         {
             var values = EnumExtension.GetValues<IntervalKind>().ToArray();
 
-            PresentStrCollection.Add(KindToString(null));
             PresentStrCollection.AddRange(new string[values.Length]);
 
             foreach (var value in values)
                 PresentStrCollection[(int)value] = KindToString(value);
         }
 
-        public static string KindToString(IntervalKind? kind) =>
+        public static string KindToString(IntervalKind kind) =>
             kind switch
             {
                 IntervalKind.YearByWeek => "隔几年这周",
@@ -45,7 +44,7 @@ namespace Presentation.ViewModels
                 IntervalKind.MonthByDay => "隔几个月这天",
                 IntervalKind.ByWeek => "隔几周这天",
                 IntervalKind.ByDay => "隔几天",
-                null => "单次",
+                IntervalKind.OnceTime => "单次",
                 _ => throw new ArgumentOutOfRangeException()
             };
     }

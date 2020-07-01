@@ -17,9 +17,7 @@ namespace ApplicationDomain.DataModel
 
         public int Identity => _dataBaseModel.Id;
 
-        public GoalModel()
-        {
-        }
+        public GoalModel() => _dataBaseModel.Interval = new Interval();
 
         internal GoalModel([NotNull] Goal item) : base(item)
         {

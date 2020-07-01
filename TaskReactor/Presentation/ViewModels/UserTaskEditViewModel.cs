@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
 using Caliburn.Micro;
@@ -24,10 +25,11 @@ namespace Presentation.ViewModels
         public UserTaskEditViewModel([NotNull] IocContainer container, [NotNull] IUserTaskService service) : 
             base(container) => _service = service;
 
-        public void Confirm()
+        public async Task Confirm()
         {
             _service.Update(TaskModel);
             NavigationService.GoBack();
+            await _service.DbSync();
         }
 
         public void Cancel() => NavigationService.GoBack();

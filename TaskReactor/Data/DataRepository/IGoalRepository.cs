@@ -17,7 +17,7 @@ namespace Data.DataRepository
         /// <param name="task"> Input task </param>
         /// <returns> Async result of list goals </returns>
         [NotNull, ItemNotNull]
-        Task<List<Goal>> GetAllFromTaskAsync([NotNull] UserTask task);
+        Task<IList<Goal>> GetAllFromTaskAsync([NotNull] UserTask task);
 
         /// <summary>
         /// Get all goals from task
@@ -26,7 +26,7 @@ namespace Data.DataRepository
         /// <param name="token"> <see cref="CancellationToken"/> </param>
         /// <returns> Async result of list goals </returns>
         [NotNull, ItemNotNull]
-        Task<List<Goal>> GetAllFromTaskAsync([NotNull] UserTask task, CancellationToken token);
+        Task<IList<Goal>> GetAllFromTaskAsync([NotNull] UserTask task, CancellationToken token);
 
 
         /// <summary>

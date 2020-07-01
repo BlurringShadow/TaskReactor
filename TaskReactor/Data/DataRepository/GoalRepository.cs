@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Data.Database;
@@ -17,19 +16,17 @@ namespace Data.DataRepository
         {
         }
 
-        public async Task<List<Goal>> GetAllFromTaskAsync(UserTask task) =>
+        public async Task<IList<Goal>> GetAllFromTaskAsync(UserTask task) =>
             await GetAllFromTaskAsync(task, CancellationToken.None);
 
-        public async Task<List<Goal>> GetAllFromTaskAsync(UserTask task, CancellationToken token) =>
-            (await Task.Run(
-                () =>
-                {
-                    lock (Context)
-                        return DbSet!.Include(goal => goal.FromTask)!
-                            .Where(goal => task.Id == goal.FromTask.Id).ToList()!;
-                },
-                token
-            ))!;
+        public Task<IList<Goal>> GetAllFromTaskAsync(UserTask task, CancellationToken token)
+        {
+            lock (Context)
+                return Task.Run(
+                    async () => (await Context.Set<UserTask>()!.Include(t => t.Goals)!
+                        .SingleAsync(t => t.Id == task.Id, token)!)!.Goals, token
+                );
+        }
 
         public void AddToTask(UserTask userTask, params Goal[] goals) =>
             AddToTask(userTask, (IEnumerable<Goal>)goals);

@@ -61,6 +61,7 @@ namespace ApplicationDomain.DataModel
                 IntervalKind.MonthByDay => count => StartTime.AddMonths(count),
                 IntervalKind.ByWeek => count => StartTime.AddWeeks(count),
                 IntervalKind.ByDay => count => StartTime.AddDays(count),
+                IntervalKind.OnceTime => count => StartTime,
                 _ => throw new InvalidEnumArgumentException(
                     nameof(Interval.Kind), (byte)Interval.Kind, typeof(IntervalKind)
                 )
