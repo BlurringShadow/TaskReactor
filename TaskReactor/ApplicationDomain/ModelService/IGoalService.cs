@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using ApplicationDomain.DataModel;
@@ -10,6 +11,7 @@ using JetBrains.Annotations;
 
 namespace ApplicationDomain.ModelService
 {
+    [InheritedExport]
     public interface IGoalService : IService<Goal, TaskReactorDbContext, IGoalRepository, GoalModel>
     {
         /// <summary>
