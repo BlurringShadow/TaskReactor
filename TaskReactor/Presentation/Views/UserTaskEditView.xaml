@@ -18,6 +18,7 @@
         <DockPanel.Resources>
             <Style x:Key="DateTimePickerStyle" TargetType="metro:DateTimePicker">
                 <Setter Property="DockPanel.Dock" Value="Right"/>
+                <Setter Property="FontSize" Value="24"/>
                 <Setter Property="Culture" Value="{x:Static sys:CultureInfo.CurrentUICulture}"/>
             </Style>
 
@@ -76,14 +77,14 @@
             </DockPanel>
 
             <DockPanel Margin="10">
-                <Label Content="开始日期：" FontSize="24" DockPanel.Dock="Left"/>
+                <Label Content="开始日期：" Style="{StaticResource LabelStyle}"/>
 
                 <metro:DateTimePicker SelectedDateTime="{Binding TaskModel.StartTime}"
                                       Style="{StaticResource DateTimePickerStyle}"/>
             </DockPanel>
 
             <DockPanel Margin="10">
-                <Label Content="截至日期：" FontSize="24" DockPanel.Dock="Left"/>
+                <Label Content="截至日期：" Style="{StaticResource LabelStyle}"/>
 
                 <metro:DateTimePicker SelectedDateTime="{Binding TaskModel.EndTime}"
                                       Style="{StaticResource DateTimePickerStyle}"/>

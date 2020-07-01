@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Globalization;
 using ApplicationDomain.DataModel;
 using Caliburn.Micro;
 using JetBrains.Annotations;
@@ -27,7 +26,6 @@ namespace Presentation.ViewModels.UserProfile
             {
                 Set(ref _goalModel, value);
                 NotifyOfPropertyChange(nameof(DisplayName));
-                NotifyOfPropertyChange(nameof(GoalStartTime));
             }
         }
 
@@ -40,8 +38,6 @@ namespace Presentation.ViewModels.UserProfile
                 base.DisplayName = value;
             }
         }
-
-        [NotNull] public string GoalStartTime => GoalModel.StartTime.ToString(CultureInfo.CurrentCulture);
 
         public event Action<GoalItemViewModel> OnClickEvent;
 

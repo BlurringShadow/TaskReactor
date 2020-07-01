@@ -3,28 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Presentation.Views"
-             xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:viewModel="clr-namespace:Presentation.ViewModels.UserProfile"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:sys="clr-namespace:System.Globalization;assembly=System.Runtime"
              mc:Ignorable="d"
              d:DesignWidth="300"
              d:DataContext="{d:DesignInstance viewModel:GoalItemViewModel}">
-    <Button x:Name="OnClick" 
+    <Button x:Name="OnClick"
             Background="Azure"
-            HorizontalAlignment="Stretch" 
+            HorizontalAlignment="Stretch"
+            Padding="0"
             Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}">
         <StackPanel Orientation="Horizontal">
             <StackPanel.Resources>
-                <Thickness x:Key="Margin"> 5 </Thickness>
-
-                <Style x:Key="TitleLabelStyle" TargetType="Label">
-                    <Setter Property="FontSize" Value="10px"/>
-                    <Setter Property="DockPanel.Dock" Value="Top"/>
-                    <Setter Property="HorizontalAlignment" Value="Left"/>
-                    <Setter Property="FontStyle" Value="Italic"/>
-                    <Setter Property="Foreground" Value="DarkSlateBlue"/>
-                </Style>
+                <Thickness x:Key="Margin"> 2 </Thickness>
 
                 <Style x:Key="ContentLabelStyle" TargetType="Label">
                     <Setter Property="Foreground" Value="Black"/>
@@ -46,22 +38,17 @@
             <DockPanel Margin="{StaticResource Margin}">
                 <iconPacks:PackIconOcticons Kind="ListUnordered" Style="{StaticResource IconStyle}"/>
 
-                <DockPanel DockPanel.Dock="Right" Margin="{StaticResource  Margin}">
-                    <Label Content="目标" Style="{StaticResource TitleLabelStyle}"/>
-
-                    <Label x:Name="DisplayName" Style="{StaticResource ContentLabelStyle}"/>
-                </DockPanel>
+                <Label x:Name="DisplayName" Style="{StaticResource ContentLabelStyle}" DockPanel.Dock="Right"/>
             </DockPanel>
 
             <DockPanel Margin="{StaticResource Margin}">
                 <iconPacks:PackIconMaterial Kind="CalendarClock" Style="{StaticResource IconStyle}"/>
 
-                <DockPanel DockPanel.Dock="Right" Margin="{StaticResource  Margin}">
-                    <Label Content="开始时间" Style="{StaticResource TitleLabelStyle}"/>
-
-                    <Label x:Name="GoalStartTime" Style="{StaticResource ContentLabelStyle}"/>
-                </DockPanel>
+                <Label
+                    Content="{Binding GoalModel.StartTime, 
+                    ConverterCulture={x:Static sys:CultureInfo.CurrentUICulture}}"
+                    Style="{StaticResource ContentLabelStyle}"/>
             </DockPanel>
         </StackPanel>
-    </Button >
+    </Button>
 </UserControl>

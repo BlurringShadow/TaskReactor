@@ -76,8 +76,7 @@ namespace ApplicationDomain.ModelService
             return taskList;
         }
 
-        public void AddToUser(UserModel user,
-            params UserTaskModel[] userTasks) =>
+        public void AddToUser(UserModel user, params UserTaskModel[] userTasks) =>
             AddToUser(user, (IEnumerable<UserTaskModel>)userTasks);
 
         public void AddToUser(UserModel user, IEnumerable<UserTaskModel> userTasks)
