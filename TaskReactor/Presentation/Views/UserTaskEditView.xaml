@@ -3,7 +3,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:Presentation.Views"
       mc:Ignorable="d"
       d:DesignHeight="450"
       d:DesignWidth="800"
@@ -14,59 +13,77 @@
       cm:Bind.AtDesignTime="True"
       d:DataContext="{d:DesignInstance viewModels:UserTaskEditViewModel}">
 
-    <StackPanel d:DataContext="{Binding TaskModel, Mode=OneWayToSource}">
+    <DockPanel>
+        <DockPanel.Resources>
+            <Style x:Key="DateTimePickerStyle" TargetType="metro:DateTimePicker">
+                <Setter Property="DockPanel.Dock" Value="Right"/>
+                <Setter Property="Culture" Value="zh-CN"/>
+            </Style>
 
-        <Label Content="添加任务" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="27"/>
+            <Style x:Key="LabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="24"/>
+            </Style>
 
-        <DockPanel>
-            <Label Content="标题：" FontSize="24"/>
+            <Style x:Key="TextBoxStyle" TargetType="TextBox">
+                <Setter Property="FontSize" Value="24"/>
 
-            <TextBox Margin="10"
-                     TextWrapping="Wrap"
-                     FontSize="23"
-                     Text="{Binding Title}"/>
-        </DockPanel>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+            </Style>
+        </DockPanel.Resources>
 
-        <DockPanel>
-            <Label Content="描述：" FontSize="23"/>
-
-            <TextBox Margin="10" TextWrapping="Wrap" FontSize="24" x:Name="Description"/>
-        </DockPanel>
-
-        <Grid Margin="0,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <DockPanel Dock="Left">
-                <Label Content="开始日期：" FontSize="24" DockPanel.Dock="Left"/>
-
-                <Calendar DisplayDate="{Binding StartTime}" DockPanel.Dock="Right"/>
-            </DockPanel>
-
-            <DockPanel Grid.Column="1" Dock="Right">
-                <Label Content="截至日期：" FontSize="24" DockPanel.Dock="Left"/>
-
-                <Calendar DisplayDate="{Binding EndTime}" DockPanel.Dock="Right"/>
-            </DockPanel>
-        </Grid>
-
-        <StackPanel Orientation="Horizontal" Background="#FAFAFA" FlowDirection="RightToLeft" Margin="0,0,30,0">
+        <StackPanel VerticalAlignment="Bottom"
+                    DockPanel.Dock="Bottom"
+                    Orientation="Horizontal"
+                    FlowDirection="RightToLeft"
+                    Margin="0,0,30,0">
             <StackPanel.Resources>
-                <Style x:Key="ButtonStyle" BasedOn="{StaticResource MahApps.Styles.Button.Reveal}"
+                <Style x:Key="ButtonStyle" BasedOn="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
                        TargetType="Button">
                     <Setter Property="VerticalAlignment" Value="Center"/>
+
                     <Setter Property="FontSize" Value="24"/>
+
                     <Setter Property="Width" Value="76"/>
+
                     <Setter Property="Height" Value="40"/>
+
                     <Setter Property="Margin" Value="10,10"/>
                 </Style>
             </StackPanel.Resources>
 
-            <Button Content="取消" x:Name="Cancel" Style="{StaticResource ButtonStyle}"/>
+            <Button Content="取消" Background="IndianRed" x:Name="Cancel" Style="{StaticResource ButtonStyle}"/>
 
             <Button Content="确定" x:Name="Confirm" Style="{StaticResource ButtonStyle}"/>
         </StackPanel>
-    </StackPanel>
+
+        <StackPanel>
+            <Label Content="添加任务" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="27"/>
+
+            <DockPanel Margin="10">
+                <Label Content="标题：" Style="{StaticResource LabelStyle}"/>
+
+                <TextBox Style="{StaticResource TextBoxStyle}" Text="{Binding TaskModel.Title}"/>
+            </DockPanel>
+
+            <DockPanel Margin="10">
+                <Label Content="描述：" Style="{StaticResource LabelStyle}"/>
+
+                <TextBox Style="{StaticResource TextBoxStyle}" Height="100" Text="{Binding TaskModel.Description}"/>
+            </DockPanel>
+
+            <DockPanel Margin="10">
+                <Label Content="开始日期：" FontSize="24" DockPanel.Dock="Left"/>
+
+                <metro:DateTimePicker SelectedDateTime="{Binding TaskModel.StartTime}"
+                                      Style="{StaticResource DateTimePickerStyle}"/>
+            </DockPanel>
+
+            <DockPanel Margin="10">
+                <Label Content="截至日期：" FontSize="24" DockPanel.Dock="Left"/>
+
+                <metro:DateTimePicker SelectedDateTime="{Binding TaskModel.EndTime}"
+                                      Style="{StaticResource DateTimePickerStyle}"/>
+            </DockPanel>
+        </StackPanel>
+    </DockPanel>
 </Page>
