@@ -10,6 +10,7 @@
       xmlns:cm="http://caliburnmicro.com"
       xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:viewModels="clr-namespace:Presentation.ViewModels"
+      xmlns:sys="clr-namespace:System.Globalization;assembly=System.Runtime"
       cm:Bind.AtDesignTime="True"
       d:DataContext="{d:DesignInstance viewModels:UserTaskEditViewModel}">
 
@@ -17,14 +18,14 @@
         <DockPanel.Resources>
             <Style x:Key="DateTimePickerStyle" TargetType="metro:DateTimePicker">
                 <Setter Property="DockPanel.Dock" Value="Right"/>
-                <Setter Property="Culture" Value="zh-CN"/>
+                <Setter Property="Culture" Value="{x:Static sys:CultureInfo.CurrentUICulture}"/>
             </Style>
 
             <Style x:Key="LabelStyle" TargetType="Label">
                 <Setter Property="FontSize" Value="24"/>
             </Style>
 
-            <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Style x:Key="TextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox.Button}">
                 <Setter Property="FontSize" Value="24"/>
 
                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -68,7 +69,10 @@
             <DockPanel Margin="10">
                 <Label Content="描述：" Style="{StaticResource LabelStyle}"/>
 
-                <TextBox Style="{StaticResource TextBoxStyle}" Height="100" Text="{Binding TaskModel.Description}"/>
+                <TextBox Style="{StaticResource TextBoxStyle}" 
+                         Height="100" 
+                         VerticalContentAlignment="Top"
+                         Text="{Binding TaskModel.Description}"/>
             </DockPanel>
 
             <DockPanel Margin="10">

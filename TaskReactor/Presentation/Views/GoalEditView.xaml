@@ -6,6 +6,7 @@
       xmlns:cm="http://caliburnmicro.com"
       xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:viewModels="clr-namespace:Presentation.ViewModels"
+      xmlns:sys="clr-namespace:System.Globalization;assembly=System.Runtime"
       mc:Ignorable="d"
       Title="ScheduleEdit"
       Height="721"
@@ -41,6 +42,13 @@
                     <Setter Property="Margin" Value="10"/>
                 </Style>
 
+                <Style x:Key="TextBoxStyle" TargetType="TextBox"
+                       BasedOn="{StaticResource MahApps.Styles.TextBox.Button}">
+                    <Setter Property="FontSize" Value="24"/>
+
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                </Style>
+
                 <Style x:Key="LabelStyle" TargetType="Label">
                     <Setter Property="HorizontalAlignment" Value="Left"/>
                     <Setter Property="VerticalAlignment" Value="Top"/>
@@ -49,7 +57,8 @@
 
                 <Style x:Key="DateTimePickerStyle" TargetType="metro:DateTimePicker">
                     <Setter Property="DockPanel.Dock" Value="Right"/>
-                    <Setter Property="Culture" Value="zh-CN"/>
+                    <Setter Property="FontSize" Value="24"/>
+                    <Setter Property="Culture" Value="{x:Static sys:CultureInfo.CurrentUICulture}"/>
                 </Style>
             </StackPanel.Resources>
             <Label Margin="10" Content="添加计划" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="27"/>
@@ -57,16 +66,13 @@
             <DockPanel Style="{StaticResource DockPanelStyle}">
                 <Label Content="计划名称：" Style="{StaticResource LabelStyle}"/>
 
-                <TextBox TextWrapping="Wrap"
-                         Text="{Binding GoalModel.Title}"
-                         Style="{StaticResource MahApps.Styles.TextBox.Button}"/>
+                <TextBox Text="{Binding GoalModel.Title}" Style="{StaticResource TextBoxStyle}"/>
             </DockPanel>
 
             <DockPanel Style="{StaticResource DockPanelStyle}">
                 <Label Content="计划描述：" Style="{StaticResource LabelStyle}"/>
 
-                <TextBox TextWrapping="Wrap" Text="{Binding GoalModel.Description}"
-                         Style="{StaticResource MahApps.Styles.TextBox.Button}"/>
+                <TextBox Text="{Binding GoalModel.Description}" Style="{StaticResource TextBoxStyle}"/>
             </DockPanel>
 
             <DockPanel Style="{StaticResource DockPanelStyle}">
@@ -94,11 +100,10 @@
             <DockPanel Style="{StaticResource DockPanelStyle}">
                 <Label Content="一次持续时间(天)：" Style="{StaticResource LabelStyle}"/>
 
-                <metro:NumericUpDown Grid.Column="0" Value="{Binding Duration}" Minimum="0"/>
+                <metro:NumericUpDown Grid.Column="0" Value="{Binding Duration}" Minimum="0" FontSize="24"/>
             </DockPanel>
 
-
-            <DockPanel Margin="10">
+            <DockPanel Style="{StaticResource DockPanelStyle}">
                 <Label Content="开始日期：" DockPanel.Dock="Left" Style="{StaticResource LabelStyle}"/>
 
                 <metro:DateTimePicker SelectedDateTime="{Binding GoalModel.StartTime}"
