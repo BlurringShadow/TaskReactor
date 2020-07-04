@@ -1,0 +1,21 @@
+﻿<graphx:VertexControl x:Class="Presentation.Views.UserProfile.TaskDependencyGraph.TaskVertexControl"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:cm="http://caliburnmicro.com"
+                      xmlns:welcomePage="clr-namespace:Presentation.ViewModels.WelcomePage"
+                      d:DesignWidth="300"
+                      d:DesignHeight="100"
+                      mc:Ignorable="d"
+                      cm:Bind.AtDesignTime="True"
+                      d:DataContext="{d:DesignInstance taskDependencyGraph:UserTaskVertex}"
+                      xmlns:graphx="http://schemas.panthernet.ru/graphx/"
+                      xmlns:taskDependencyGraph="clr-namespace:Presentation.Views.TaskDependencyGraph">
+    <graphx:VertexControl.Template>
+        <ControlTemplate>
+            <!--Insert you content here-->
+            <UserControl/>
+        </ControlTemplate>
+    </graphx:VertexControl.Template>
+</graphx:VertexControl>
