@@ -12,8 +12,14 @@
       d:DesignWidth="800"
       Title="GraphEditPageView"
       d:DataContext="{d:DesignInstance taskDependencyGraph:GraphEditPageViewModel}">
-    <graphx:ZoomControl x:Name="ZoomControl">
-        <local:TaskGraphArea cm:Message.Attach="[Event SelectedVertex] = [Action OnSelectedVertex];
-                             [Event DoubleClickEdge] = [Action OnDoubleClickEdge($source)]"/>
-    </graphx:ZoomControl>
+    <DockPanel>
+        <!--TODO Add custom editor ui
+        <StackPanel/>
+        -->
+
+        <graphx:ZoomControl DockPanel.Dock="Left" x:Name="ZoomControl">
+            <local:TaskGraphArea cm:Message.Attach="[Event SelectedVertex] = [Action OnSelectedVertex];
+                                 [Event DoubleClickEdge] = [Action OnDoubleClickEdge($source)]"/>
+        </graphx:ZoomControl>
+    </DockPanel>
 </Page>

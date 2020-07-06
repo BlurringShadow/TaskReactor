@@ -2,7 +2,6 @@ using System.ComponentModel.Composition;
 using JetBrains.Annotations;
 using Notifications.Wpf.Core;
 using ApplicationDomain.DataModel;
-using Utilities;
 
 namespace Presentation.ViewModels
 {
