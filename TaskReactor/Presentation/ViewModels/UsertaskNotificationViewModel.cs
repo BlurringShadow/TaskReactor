@@ -1,76 +1,17 @@
-using System;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Notifications.Wpf.Core;
-using Caliburn.Micro;
 using ApplicationDomain.DataModel;
-using System.Threading;
 
 namespace Presentation.ViewModels
 {
-    public sealed class UsertaskNotificationViewModel : PropertyChangedBase,INotificationViewModel
+    public sealed class UserTaskNotificationViewModel : NotificationViewModel
     {
-            public string Title { get; set; }
-            public string Message { get; set; }
-            
-            [NotNull] public INotificationManager Manager { get; }
-            [NotNull] GoalModel _goalModel;
+        [NotNull] private UserTaskModel _model;
 
-            public GoalModel GoalModel { get => _goalModel;}
+        [NotNull] public UserTaskModel Model { get => _model; set => Set(ref _model, value); }
 
-            public UsertaskNotificationViewModel(INotificationManager manager)
-            {
-                Manager = manager;
-            }
-
-            public TimeSpan Duration
-            {
-                get
-                {
-                    return GoalModel.DurationOfOneTime;
-                }
-                set { }
-            
-            }
-
-            public async Task ShowAsync()
-                {
-                    var content = new NotificationContent
-                    {
-                        Title = GoalModel.Title,
-                        Message = GoalModel.Description,
-                        Type = NotificationType.Information
-                    };
-                    //弹窗提示
-                    await Manager.ShowAsync(content);
-                }
-
-            public async Task ShowAsync(CancellationToken token)
-            {
-                if (!token.IsCancellationRequested)
-                {
-                    var content = new NotificationContent
-                    {
-                        Title = GoalModel.Title,
-                        Message = GoalModel.Description,
-                        Type = NotificationType.Information
-                    };
-                    //弹窗提示
-                    await Manager.ShowAsync(content);
-            }
-            }
-
-            public event System.Action OnClick=ToGoalEditView;
-            public event System.Action OnClose=Handle;
-            
-            public static void ToGoalEditView() {
-                //跳到goalEditView
-            }
-            
-            public static void Handle()
-            {
-                
-            }
-
+        // ReSharper disable once NotNullMemberIsNotInitialized
+        public UserTaskNotificationViewModel([NotNull] INotificationManager manager, [NotNull] UserTaskModel model) :
+            base(manager) => Model = model;
     }
 }

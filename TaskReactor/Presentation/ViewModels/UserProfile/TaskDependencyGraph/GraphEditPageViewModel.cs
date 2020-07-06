@@ -143,9 +143,10 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
 
                 // TODO Add vertex
 
+                // TODO Add edges
+                // ReSharper disable once UnusedVariable
                 foreach (var dependency in await dependenciesTask)
                 {
-                    // TODO Add edges
                 }
             }
         }

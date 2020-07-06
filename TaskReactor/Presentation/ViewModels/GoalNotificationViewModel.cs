@@ -18,10 +18,7 @@ namespace Presentation.ViewModels
         }
 
         // ReSharper disable once NotNullMemberIsNotInitialized
-        public GoalNotificationViewModel(
-            [NotNull] INotificationManager manager,
-            [NotNull] GoalModel goalModel,
-            [NotNull] IocContainer container
-        ) : base(manager) => GoalModel = goalModel;
+        public GoalNotificationViewModel([NotNull] INotificationManager manager, [NotNull] GoalModel goalModel) : 
+            base(manager) => GoalModel = goalModel;
     }
 }

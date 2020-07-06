@@ -1,7 +1,7 @@
 namespace Presentation.Views
 {
-    public sealed partial class UsertaskNotificationView
+    public sealed partial class UserTaskNotificationView
     {
-        public UsertaskNotificationView() => InitializeComponent();
+        public UserTaskNotificationView() => InitializeComponent();
     }
 }
