@@ -3,12 +3,16 @@ using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using ApplicationDomain.DataModel;
+using Data.Database;
+using Data.Database.Entity;
+using Data.DataRepository;
 using JetBrains.Annotations;
 
 namespace ApplicationDomain.ModelService
 {
     [InheritedExport]
-    public interface ITaskDependencyService
+    public interface ITaskDependencyService : 
+        IService<TaskDependency, TaskReactorDbContext, ITaskDependencyRepository, TaskDependencyModel>
     {
         /// <summary>
         /// Get task dependencies
