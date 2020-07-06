@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using JetBrains.Annotations;
 
 namespace Presentation.Views.UserProfile.TaskDependencyGraph
 {
@@ -8,9 +9,11 @@ namespace Presentation.Views.UserProfile.TaskDependencyGraph
             typeof(TaskVertexControl), new FrameworkPropertyMetadata(typeof(TaskVertexControl))
         );
 
-        public TaskVertexControl(UserTaskVertex vertexData, bool tracePositionChange = false, bool bindToDataObject = true) :
+        public TaskVertexControl([NotNull] UserTaskVertex vertexData, bool tracePositionChange, bool bindToDataObject = true) :
             base(vertexData, tracePositionChange, bindToDataObject)
         {
         }
+
+        public UserTaskVertex GetDataVertex() => (UserTaskVertex)Vertex;
     }
 }
