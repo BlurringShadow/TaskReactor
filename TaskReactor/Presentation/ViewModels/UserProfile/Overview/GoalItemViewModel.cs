@@ -13,7 +13,7 @@ using ApplicationDomain.DataModel;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
-namespace Presentation.ViewModels.UserProfile
+namespace Presentation.ViewModels.UserProfile.Overview
 {
     public sealed class GoalItemViewModel : Screen
     {

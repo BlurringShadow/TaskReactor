@@ -16,7 +16,7 @@ using ApplicationDomain.ModelService;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 
-namespace Presentation.ViewModels.UserProfile
+namespace Presentation.ViewModels.UserProfile.Overview
 {
     public sealed class UserTaskItemViewModel : Screen
     {

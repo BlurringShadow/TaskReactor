@@ -1,4 +1,4 @@
-﻿namespace Presentation.Views.UserProfile
+﻿namespace Presentation.Views.UserProfile.Overview
 {
     public partial class GoalItemView
     {
