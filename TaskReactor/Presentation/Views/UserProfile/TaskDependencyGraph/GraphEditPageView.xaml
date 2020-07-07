@@ -7,19 +7,35 @@
       xmlns:graphx="http://schemas.panthernet.ru/graphx/"
       xmlns:taskDependencyGraph="clr-namespace:Presentation.ViewModels.UserProfile.TaskDependencyGraph"
       xmlns:cm="http://caliburnmicro.com"
+      xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       mc:Ignorable="d"
-      d:DesignHeight="450" 
+      d:DesignHeight="450"
       d:DesignWidth="800"
       Title="GraphEditPageView"
-      d:DataContext="{d:DesignInstance taskDependencyGraph:GraphEditPageViewModel}">
+      d:DataContext="{d:DesignInstance taskDependencyGraph:GraphEditPageViewModel}"
+      x:Name="Page">
     <DockPanel>
-        <!--TODO Add custom editor ui
-        <StackPanel/>
-        -->
+        <StackPanel DockPanel.Dock="Right" VerticalAlignment="Stretch">
+            <Label Content="双击连线删除依赖，&#x000A;下方按钮可以切换模式" Margin="5"/>
 
-        <graphx:ZoomControl DockPanel.Dock="Left" x:Name="ZoomControl">
-            <local:TaskGraphArea cm:Message.Attach="[Event SelectedVertex] = [Action OnSelectedVertex];
-                                 [Event DoubleClickEdge] = [Action OnDoubleClickEdge($source)]"/>
+            <metro:ToggleSwitch Content="{Binding ModePresentStr}" Margin="5"/>
+
+            <Button x:Name="RefreshData"
+                    Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
+                    Foreground="White"
+                    Margin="5"
+                    HorizontalAlignment="Stretch"
+                    BorderThickness="0.05"
+                    BorderBrush="Black"
+                    Content="{iconPacks:JamIcons Kind=Refresh}"/>
+        </StackPanel>
+
+        <graphx:ZoomControl>
+            <local:TaskGraphArea
+                cm:Message.Attach="[Event SelectedVertex] = [Action OnSelectedVertex];
+                                 [Event DoubleClickEdge] = [Action OnDoubleClickEdge]
+                                 [Event Initialized] = [Action OnBindingGraphArea($source)]"/>
         </graphx:ZoomControl>
     </DockPanel>
 </Page>
