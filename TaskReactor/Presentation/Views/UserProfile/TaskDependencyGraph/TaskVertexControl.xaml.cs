@@ -9,8 +9,7 @@ namespace Presentation.Views.UserProfile.TaskDependencyGraph
             typeof(TaskVertexControl), new FrameworkPropertyMetadata(typeof(TaskVertexControl))
         );
 
-        public TaskVertexControl([NotNull] UserTaskVertex vertexData, bool tracePositionChange, bool bindToDataObject = true) :
-            base(vertexData, tracePositionChange, bindToDataObject)
+        public TaskVertexControl([NotNull] UserTaskVertex vertexData) : base(vertexData, false)
         {
         }
 
