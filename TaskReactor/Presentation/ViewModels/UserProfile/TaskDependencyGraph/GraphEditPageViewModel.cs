@@ -9,7 +9,9 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ApplicationDomain.DataModel;
@@ -23,73 +25,9 @@ using Utilities;
 namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
 {
     [Export]
-    public class GraphEditPageViewModel : ScreenViewModel
+    public partial class GraphEditPageViewModel : ScreenViewModel
     {
-        public class EditorControl
-        {
-            public enum EditorMode
-            {
-                Move,
-                Link
-            }
-
-            public EditorMode Mode { get; set; }
-
-            VertexControl _selectedVertexControl;
-
-            public async Task OnSelectedVertex(
-                VertexControl vertexControl,
-                [NotNull] TaskGraphArea area,
-                [NotNull] ITaskDependencyService service
-            )
-            {
-                var dstData = vertexControl?.GetDataVertex<UserTaskVertex>();
-
-                if (Mode != EditorMode.Link || dstData is null) return;
-
-                var sourceData = _selectedVertexControl?.GetDataVertex<UserTaskVertex>();
-
-                if (sourceData is null ||
-                    sourceData.Task!.StartTime > dstData!.Task!.StartTime ||
-                    area.LogicCore!.Graph!.ContainsEdge(dstData, sourceData))
-                {
-                    _selectedVertexControl = vertexControl;
-                    return;
-                }
-
-                TaskDependencyModel dependencyModel;
-                try
-                {
-                    dependencyModel = service.AddDependencies(dstData.Task, sourceData.Task)[0];
-                    await service.DbSync();
-                }
-                catch (Exception) { return; }
-
-                var data = new TaskDependencyEdge(dstData, sourceData) { Model = dependencyModel };
-                area.AddEdge(data, new EdgeControl(_selectedVertexControl, vertexControl, data));
-            }
-
-            public async Task OnDoubleClickEdge(
-                EdgeControl edgeControl,
-                [NotNull] TaskGraphArea area,
-                [NotNull] ITaskDependencyService service
-            )
-            {
-                var data = edgeControl?.GetDataEdge<TaskDependencyEdge>();
-                if (data is null) return;
-
-                try
-                {
-                    service.Remove(data.Model!);
-                    await service.DbSync();
-                }
-                catch (Exception) { return; }
-
-                area.RemoveEdge(data);
-            }
-        }
-
-        [NotNull, ShareVariable(nameof(CurrentUserModel), typeof(UserProfileViewModel))] 
+        [NotNull, ShareVariable(nameof(CurrentUserModel), typeof(UserProfileViewModel))]
         public UserModel CurrentUserModel { get; set; }
 
         [NotNull] readonly IUserTaskService _taskService;
@@ -97,6 +35,8 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
         [NotNull] readonly ITaskDependencyService _taskDependencyService;
 
         [NotNull] readonly EditorControl _control = new EditorControl();
+
+        TaskGraphArea _area;
 
         public EditorControl.EditorMode Mode
         {
@@ -108,17 +48,27 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
             }
         }
 
+        public string ModePresentStr =>
+            Mode switch
+            {
+                EditorControl.EditorMode.Move => "移动",
+                EditorControl.EditorMode.Link => "创建依赖",
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
         // ReSharper disable once NotNullMemberIsNotInitialized
         [ImportingConstructor]
         public GraphEditPageViewModel(
-            [NotNull] IocContainer container, 
-            [NotNull] ITaskDependencyService service, 
+            [NotNull] IocContainer container,
+            [NotNull] ITaskDependencyService service,
             [NotNull] IUserTaskService taskService
         ) : base(container)
         {
             _taskDependencyService = service;
             _taskService = taskService;
         }
+
+        public void OnBindingGraphArea([NotNull] TaskGraphArea area) => _area = area;
 
         public async Task OnSelectedVertex(object sender, VertexSelectedEventArgs args) =>
             await _control.OnSelectedVertex(args?.VertexControl, ((TaskGraphArea)sender)!, _taskDependencyService);
@@ -134,19 +84,50 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
 
         public async Task RefreshData()
         {
+            await Task.Run(
+                () =>
+                {
+                    while (_area is null) ;
+                }
+            );
+
             var taskList = await _taskService.GetAllFromUserAsync(CurrentUserModel);
+            var dependencyTaskList = new List<Task<List<TaskDependencyModel>>>(taskList.Count);
+
             foreach (var task in taskList)
             {
-                var dependenciesTask = _taskDependencyService.GetDependenciesAsync(task!);
+                dependencyTaskList.Add(_taskDependencyService.GetDependenciesAsync(task!));
 
-                // TODO Add vertex
-
-                // TODO Add edges
-                // ReSharper disable once UnusedVariable
-                foreach (var dependency in await dependenciesTask)
                 {
+                    var vertex = Container.GetExportedValue<UserTaskVertex>();
+
+                    vertex.ID = task.Identity;
+
+                    // ReSharper disable once PossibleNullReferenceException
+                    _area.AddVertex(vertex, new TaskVertexControl(vertex));
                 }
             }
+
+            // ReSharper disable PossibleNullReferenceException
+            // ReSharper disable AssignNullToNotNullAttribute
+            // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
+            foreach (var dependenciesTask in dependencyTaskList)
+            foreach (var edgeData in (await dependenciesTask).Select(
+                dependency => new TaskDependencyEdge { Model = dependency }
+            ))
+            {
+                edgeData.SetLinkVertexByModel(_area.LogicCore.Graph);
+
+                var vertexList = _area.VertexList;
+                _area.AddEdge(
+                    edgeData, new EdgeControl(vertexList[edgeData.Source], vertexList[edgeData.Target], edgeData)
+                );
+            }
+
+            _area.RelayoutGraph(true);
+
+            // ReSharper restore PossibleNullReferenceException
+            // ReSharper restore AssignNullToNotNullAttribute
         }
     }
 }
