@@ -25,10 +25,20 @@ using Utilities;
 namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
 {
     [Export]
-    public partial class GraphEditPageViewModel : ScreenViewModel
+    public sealed partial class GraphEditPageViewModel : ScreenViewModel
     {
-        [NotNull, ShareVariable(nameof(CurrentUserModel), typeof(UserProfileViewModel))]
-        public UserModel CurrentUserModel { get; set; }
+        [NotNull] private UserModel _currentUser;
+
+        [NotNull, ShareVariable(nameof(CurrentUser), typeof(UserProfileViewModel))]
+        public UserModel CurrentUser
+        {
+            get => _currentUser;
+            set
+            {
+                _ = RefreshData();
+                Set(ref _currentUser, value);
+            }
+        }
 
         [NotNull] readonly IUserTaskService _taskService;
 
@@ -91,7 +101,7 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
                 }
             );
 
-            var taskList = await _taskService.GetAllFromUserAsync(CurrentUserModel);
+            var taskList = await _taskService.GetAllFromUserAsync(CurrentUser);
             var dependencyTaskList = new List<Task<List<TaskDependencyModel>>>(taskList.Count);
 
             foreach (var task in taskList)

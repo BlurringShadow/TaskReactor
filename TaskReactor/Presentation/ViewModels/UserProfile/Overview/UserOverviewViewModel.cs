@@ -11,27 +11,25 @@
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
 using Caliburn.Micro;
 using JetBrains.Annotations;
-using Presentation.ViewModels.WelcomePage;
 using Utilities;
 
 namespace Presentation.ViewModels.UserProfile.Overview
 {
     [Export]
-    public class UserOverviewViewModel : ScreenViewModel
+    public sealed class UserOverviewViewModel : ScreenViewModel
     {
         [NotNull] readonly IUserTaskService _userTaskService;
 
-        [NotNull, ShareVariable(nameof(NavigationService), typeof(LogInViewModel))]
+        [NotNull, ShareVariable(nameof(NavigationService), typeof(UserProfileViewModel))]
         public INavigationService NavigationService { get; set; }
 
         [NotNull] UserModel _currentUser;
 
-        [NotNull, ShareVariable(nameof(CurrentUser), typeof(LogInViewModel))]
+        [NotNull, ShareVariable(nameof(CurrentUser), typeof(UserProfileViewModel))]
         public UserModel CurrentUser
         {
             get => _currentUser;
