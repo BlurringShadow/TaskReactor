@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace ApplicationDomain.ModelService
     sealed class TaskDependencyService : Service<TaskDependency, TaskReactorDbContext, ITaskDependencyRepository,
         TaskDependencyModel>, ITaskDependencyService
     {
+        [ImportingConstructor]
         public TaskDependencyService([NotNull] ITaskDependencyRepository repository) : base(repository)
         {
         }
