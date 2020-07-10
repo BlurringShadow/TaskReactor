@@ -11,15 +11,21 @@
       cm:Bind.AtDesignTime="True"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:system="clr-namespace:System;assembly=System.Runtime"
       Style="{StaticResource MahApps.Styles.Page}"
       d:DataContext="{d:DesignInstance viewModels:UserProfileViewModel}">
     <DockPanel Background="White">
-        <DockPanel.Resources>
-        </DockPanel.Resources>
+        <metro:HamburgerMenu x:Name="Menu"
+                             Padding="5"
+                             SelectedIndex="{Binding ActiveIndex}"
+                             Style="{StaticResource MahApps.Styles.HamburgerMenu.CreatorsUpdate}"
+                             CanResizeOpenPane="True"
+                             DisplayMode="CompactOverlay">
+            <metro:HamburgerMenu.Resources>
+                <system:Double x:Key="IconSize"> 25 </system:Double>
+                <system:Double x:Key="IconPartSize"> 48 </system:Double>
+            </metro:HamburgerMenu.Resources>
 
-        <metro:HamburgerMenu Padding="5" IsPaneOpen="true"
-                             cm:View.Model="{Binding ActiveItem}"
-                             SelectedIndex="{Binding ActiveIndex}">
             <metro:HamburgerMenu.HamburgerButtonTemplate>
                 <DataTemplate>
                     <Image x:Name="UserAvatar"
@@ -41,8 +47,8 @@
                                HorizontalAlignment="Center"
                                FontSize="30"
                                FontWeight="Light"
-                               Text="{Binding CurrentUser.Name}"
-                               Foreground="White"/>
+                               DataContext="{Binding DataContext, ElementName=Menu}"
+                               Text="{Binding CurrentUser.Name}"/>
                 </DataTemplate>
             </metro:HamburgerMenu.HamburgerMenuHeaderTemplate>
 
@@ -51,10 +57,9 @@
                     <DockPanel>
                         <Label DockPanel.Dock="Left"
                                x:Name="IconPart"
-                               Margin="5"
-                               Height="32"
-                               Width="32"
-                               Foreground="White"
+                               Margin="0 5"
+                               Height="{StaticResource IconPartSize}"
+                               Width="{StaticResource IconPartSize}"
                                HorizontalContentAlignment="Center"
                                VerticalContentAlignment="Center"
                                Content="{Binding Icon}"/>
@@ -64,24 +69,37 @@
                                    Text="{Binding Label}"/>
                     </DockPanel>
                 </DataTemplate>
-
             </metro:HamburgerMenu.ItemTemplate>
 
             <metro:HamburgerMenu.ItemsSource>
                 <metro:HamburgerMenuItemCollection>
-                    <metro:HamburgerMenuIconItem Icon="{iconPacks:Zondicons Kind=DateAdd, Height=20, Width=20}"
-                                                 Label="任务总览"/>
+                    <metro:HamburgerMenuIconItem
+                        Icon="{iconPacks:Zondicons Kind=DateAdd, 
+                                                   Height={StaticResource IconSize},
+                                                   Width={StaticResource IconSize}}"
+                        Label="任务总览"/>
 
-                    <metro:HamburgerMenuIconItem Icon="{iconPacks:Material Kind=Graphql, Height=20, Width=20}"
-                                                 Label="任务关联图"/>
+                    <metro:HamburgerMenuIconItem
+                        Icon="{iconPacks:Material Kind=Graphql, 
+                                                  Height={StaticResource IconSize}, 
+                                                  Width={StaticResource IconSize}}"
+                        Label="任务关联图"/>
 
-                    <metro:HamburgerMenuIconItem Icon="{iconPacks:PicolIcons Kind=Logout, Height=20, Width=20}"
-                                                 Label="登出"/>
+                    <metro:HamburgerMenuIconItem
+                        Icon="{iconPacks:PicolIcons Kind=Logout,                                                                                           Height={StaticResource IconSize}, 
+                                                    Width={StaticResource IconSize}}"
 
-                    <metro:HamburgerMenuIconItem Icon="{iconPacks:JamIcons Kind=Cog, Height=20, Width=20}"
-                                                 Label="设置"/>
+                        Label="登出"/>
+
+                    <metro:HamburgerMenuIconItem
+                        Icon="{iconPacks:JamIcons Kind=Cog, 
+                                                  Height={StaticResource IconSize}, 
+                                                  Width={StaticResource IconSize}}"
+                        Label="设置"/>
                 </metro:HamburgerMenuItemCollection>
             </metro:HamburgerMenu.ItemsSource>
+
+            <ContentControl BorderThickness="1" BorderBrush="Black" cm:View.Model="{Binding ActiveItem}"/>
         </metro:HamburgerMenu>
     </DockPanel>
 </Page>
