@@ -11,6 +11,7 @@
       cm:Bind.AtDesignTime="True"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+      Style="{StaticResource MahApps.Styles.Page}"
       d:DataContext="{d:DesignInstance viewModels:UserProfileViewModel}">
     <DockPanel Background="White">
         <DockPanel.Resources>

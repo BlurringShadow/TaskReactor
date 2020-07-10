@@ -12,14 +12,19 @@
       xmlns:viewModels="clr-namespace:Presentation.ViewModels"
       xmlns:sys="clr-namespace:System.Globalization;assembly=System.Runtime"
       cm:Bind.AtDesignTime="True"
+      Style="{StaticResource MahApps.Styles.Page}"
       d:DataContext="{d:DesignInstance viewModels:UserTaskEditViewModel}">
 
     <DockPanel>
         <DockPanel.Resources>
             <Style x:Key="DateTimePickerStyle" TargetType="metro:DateTimePicker">
                 <Setter Property="DockPanel.Dock" Value="Right"/>
+
                 <Setter Property="FontSize" Value="24"/>
+
                 <Setter Property="Culture" Value="{x:Static sys:CultureInfo.CurrentUICulture}"/>
+
+                <Setter Property="BorderThickness" Value="2"/>
             </Style>
 
             <Style x:Key="LabelStyle" TargetType="Label">
@@ -30,6 +35,8 @@
                 <Setter Property="FontSize" Value="24"/>
 
                 <Setter Property="TextWrapping" Value="Wrap"/>
+
+                <Setter Property="BorderThickness" Value="2"/>
             </Style>
         </DockPanel.Resources>
 

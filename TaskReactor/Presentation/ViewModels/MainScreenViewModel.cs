@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.Composition;
-using System.Windows.Controls;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 using Presentation.ViewModels.WelcomePage;
+using Presentation.Views;
 using Utilities;
 
 namespace Presentation.ViewModels
@@ -17,10 +17,12 @@ namespace Presentation.ViewModels
         public MainScreenViewModel([NotNull] IocContainer container) : base(container) =>
             DisplayName = "Task Reactor";
 
-        /// <summary> Initialize the frame navigation service </summary>
-        public void RegisterFrame([NotNull] Frame frame)
+        /// <summary> Initialize the window navigation service </summary>
+        public void RegisterWindow([NotNull] MainScreenView window)
         {
-            _navigationService = new FrameAdapter(frame);
+            // ReSharper disable once AssignNullToNotNullAttribute
+            _navigationService = new CMNavigationService(window.NavigationService);
+
             this.ShareWithName(_navigationService, nameof(WelcomePageViewModel.NavigationService));
             Navigate();
         }

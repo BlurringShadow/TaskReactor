@@ -12,16 +12,21 @@
       Height="721"
       Width="1204"
       cm:Bind.AtDesignTime="True"
+      Style="{StaticResource MahApps.Styles.Page}"
       d:DataContext="{d:DesignInstance viewModels:GoalEditViewModel}">
 
     <DockPanel Margin="20,10">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" FlowDirection="RightToLeft">
             <StackPanel.Resources>
-                <Style x:Key="ButtonStyle" BasedOn="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
+                <Style x:Key="ButtonStyle" 
+                       BasedOn="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
                        TargetType="Button">
                     <Setter Property="FontSize" Value="30"/>
+
                     <Setter Property="Width" Value="150"/>
+
                     <Setter Property="Height" Value="50"/>
+
                     <Setter Property="Margin" Value="20,0"/>
                 </Style>
             </StackPanel.Resources>
@@ -42,23 +47,32 @@
                     <Setter Property="Margin" Value="10"/>
                 </Style>
 
-                <Style x:Key="TextBoxStyle" TargetType="TextBox"
+                <Style x:Key="TextBoxStyle" 
+                       TargetType="TextBox"
                        BasedOn="{StaticResource MahApps.Styles.TextBox.Button}">
                     <Setter Property="FontSize" Value="24"/>
 
                     <Setter Property="TextWrapping" Value="Wrap"/>
+
+                    <Setter Property="BorderThickness" Value="2"/>
                 </Style>
 
                 <Style x:Key="LabelStyle" TargetType="Label">
                     <Setter Property="HorizontalAlignment" Value="Left"/>
+
                     <Setter Property="VerticalAlignment" Value="Top"/>
+
                     <Setter Property="FontSize" Value="24"/>
                 </Style>
 
                 <Style x:Key="DateTimePickerStyle" TargetType="metro:DateTimePicker">
                     <Setter Property="DockPanel.Dock" Value="Right"/>
+
                     <Setter Property="FontSize" Value="24"/>
+
                     <Setter Property="Culture" Value="{x:Static sys:CultureInfo.CurrentUICulture}"/>
+
+                    <Setter Property="BorderThickness" Value="2"/>
                 </Style>
             </StackPanel.Resources>
             <Label Margin="10" Content="添加计划" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="27"/>
@@ -87,6 +101,7 @@
 
                     <metro:NumericUpDown Grid.Column="0"
                                          ParsingNumberStyle="Integer"
+                                         BorderThickness="2"
                                          Minimum="0"
                                          Value="{Binding GoalModel.Interval.Value}"/>
 
@@ -100,7 +115,8 @@
             <DockPanel Style="{StaticResource DockPanelStyle}">
                 <Label Content="一次持续时间(天)：" Style="{StaticResource LabelStyle}"/>
 
-                <metro:NumericUpDown Grid.Column="0" Value="{Binding Duration}" Minimum="0" FontSize="24"/>
+                <metro:NumericUpDown Grid.Column="0" BorderThickness="2" Value="{Binding Duration}" Minimum="0"
+                                     FontSize="24"/>
             </DockPanel>
 
             <DockPanel Style="{StaticResource DockPanelStyle}">

@@ -19,7 +19,20 @@ namespace Presentation.ViewModels.UserProfile
         [NotNull] UserModel _currentUser;
 
         [NotNull, ShareVariable(nameof(CurrentUser), typeof(LogInViewModel))]
-        public UserModel CurrentUser { get => _currentUser; set => Set(ref _currentUser, value); }
+        public UserModel CurrentUser
+        {
+            get => _currentUser;
+            set
+            {
+                Set(ref _currentUser, value);
+
+                this.ShareWithName(CurrentUser, nameof(UserOverviewViewModel.CurrentUser));
+
+                // ReSharper disable once PossibleNullReferenceException
+                Items[0] = Container.GetExportedValue<UserOverviewViewModel>();
+                Items[1] = Container.GetExportedValue<GraphEditPageViewModel>();
+            }
+        }
 
         [NotNull] readonly IUserService _userService;
 
@@ -60,36 +73,30 @@ namespace Presentation.ViewModels.UserProfile
         }
 
         // ReSharper disable once NotNullMemberIsNotInitialized
+        [ImportingConstructor]
         public UserProfileViewModel([NotNull] IocContainer container, [NotNull] IUserService userService) :
             base(container)
         {
             _userService = userService;
 
+            this.ShareWithName(NavigationService, nameof(NavigationService));
+
             // ReSharper disable once PossibleNullReferenceException
-            Items.Add(Container.GetExportedValue<UserOverviewViewModel>());
-            Items.Add(Container.GetExportedValue<GraphEditPageViewModel>());
+            Items.Add(null);
+            Items.Add(null);
         }
 
         protected override async Task OnActivateAsync(CancellationToken token)
         {
+            var task = base.OnActivateAsync(token)!;
             // Refresh the user data
-            var user = await _userService.FindByKeysAsync(token, CurrentUser.Identity);
-
-            if (user is null)
+            if (await _userService.FindByKeysAsync(token, CurrentUser.Identity) is null)
             {
                 MessageBox.Show("用户不存在，请重新登录");
                 NavigationService.NavigateToViewModel<WelcomePageViewModel>();
             }
-            else
-            {
-                CurrentUser = user;
-                this.ShareWithName(CurrentUser, nameof(UserOverviewViewModel.CurrentUser));
-                // ReSharper disable once PossibleNullReferenceException
-                Items[0] = Container.GetExportedValue<UserOverviewViewModel>();
-                Items[1] = Container.GetExportedValue<GraphEditPageViewModel>();
-            }
 
-            await base.OnActivateAsync(token)!;
+            if (!(task is null)) await task;
         }
     }
 }

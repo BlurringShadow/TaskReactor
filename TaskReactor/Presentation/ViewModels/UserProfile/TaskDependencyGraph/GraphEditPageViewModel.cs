@@ -119,25 +119,32 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
             }
 
             // ReSharper disable PossibleNullReferenceException
-            // ReSharper disable AssignNullToNotNullAttribute
-            // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
-            foreach (var dependenciesTask in dependencyTaskList)
-            foreach (var edgeData in (await dependenciesTask).Select(
-                dependency => new TaskDependencyEdge { Model = dependency }
-            ))
-            {
-                edgeData.SetLinkVertexByModel(_area.LogicCore.Graph);
+            await _area.Dispatcher.Invoke(
+                async () =>
+                {
+                    // ReSharper disable PossibleNullReferenceException
+                    // ReSharper disable AssignNullToNotNullAttribute
+                    // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
+                    foreach (var dependenciesTask in dependencyTaskList)
+                    foreach (var edgeData in (await dependenciesTask).Select(
+                        dependency => new TaskDependencyEdge { Model = dependency }
+                    ))
+                    {
+                        edgeData.SetLinkVertexByModel(_area.LogicCore.Graph);
 
-                var vertexList = _area.VertexList;
-                _area.AddEdge(
-                    edgeData, new EdgeControl(vertexList[edgeData.Source], vertexList[edgeData.Target], edgeData)
-                );
-            }
+                        var vertexList = _area.VertexList;
+                        _area.AddEdge(
+                            edgeData,
+                            new EdgeControl(vertexList[edgeData.Source], vertexList[edgeData.Target], edgeData)
+                        );
+                    }
 
-            _area.RelayoutGraph(true);
+                    _area.RelayoutGraph(true);
 
-            // ReSharper restore PossibleNullReferenceException
-            // ReSharper restore AssignNullToNotNullAttribute
+                    // ReSharper restore PossibleNullReferenceException
+                    // ReSharper restore AssignNullToNotNullAttribute
+                }
+            );
         }
     }
 }

@@ -19,20 +19,16 @@ namespace Presentation
     public sealed class AppBootstrapper : BootstrapperBase
     {
         // IOC container
-        [NotNull] private readonly IocContainer _container;
+        [NotNull] readonly IocContainer _container = new IocContainer(
+            new AggregateCatalog(
+                new AssemblyCatalog(typeof(TaskReactorDbContext).Assembly),
+                new AssemblyCatalog(typeof(Model<>).Assembly),
+                new AssemblyCatalog(typeof(IViewModel).Assembly)
+            ),
+            true
+        );
 
-        public AppBootstrapper()
-        {
-            _container = new IocContainer(
-                new AggregateCatalog(
-                    new AssemblyCatalog(typeof(TaskReactorDbContext).Assembly),
-                    new AssemblyCatalog(typeof(Model<>).Assembly),
-                    new AssemblyCatalog(typeof(IViewModel).Assembly)
-                ),
-                true
-            );
-            Initialize();
-        }
+        public AppBootstrapper() => Initialize();
 
         protected override void Configure()
         {
@@ -62,7 +58,9 @@ namespace Presentation
             }
             catch (Exception e)
             {
-                throw new NullReferenceException($"Can't export type:{serviceType.AssemblyQualifiedName}\n contract name:{contractName}", e);
+                throw new NullReferenceException(
+                    $"Can't export type:{serviceType.AssemblyQualifiedName}\n contract name:{contractName}", e
+                );
             }
         }
 
@@ -76,7 +74,7 @@ namespace Presentation
             try
             {
                 _container.GetExportedValue<IWindowManager>()
-                    .ShowWindowAsync(GetInstance(typeof(MainScreenViewModel), null));
+                    .ShowWindowAsync(_container.GetExportedValue<MainScreenViewModel>());
             }
             catch (Exception e)
             {
