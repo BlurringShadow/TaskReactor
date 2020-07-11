@@ -11,6 +11,7 @@ using JetBrains.Annotations;
 
 namespace ApplicationDomain.ModelService
 {
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     sealed class TaskDependencyService : Service<TaskDependency, TaskReactorDbContext, ITaskDependencyRepository,
         TaskDependencyModel>, ITaskDependencyService
     {

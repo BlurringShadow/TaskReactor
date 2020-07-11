@@ -12,6 +12,7 @@ using JetBrains.Annotations;
 
 namespace ApplicationDomain.ModelService
 {
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     sealed class UserTaskService :
         Service<UserTask, TaskReactorDbContext, IUserTaskRepository, UserTaskModel>,
         IUserTaskService

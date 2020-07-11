@@ -9,6 +9,7 @@ using JetBrains.Annotations;
 
 namespace ApplicationDomain.ModelService
 {
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     sealed class UserService : Service<User, TaskReactorDbContext, IUserRepository, UserModel>, IUserService
     {
         [ImportingConstructor]

@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 
 namespace Data.DataRepository
 {
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     sealed class UserRepository : Repository<User, TaskReactorDbContext>, IUserRepository
     {
         [ImportingConstructor]

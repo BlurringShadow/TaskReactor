@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.DataRepository
 {
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     sealed class GoalRepository : Repository<Goal, TaskReactorDbContext>, IGoalRepository
     {
         [ImportingConstructor]
@@ -19,14 +20,9 @@ namespace Data.DataRepository
         public async Task<IList<Goal>> GetAllFromTaskAsync(UserTask task) =>
             await GetAllFromTaskAsync(task, CancellationToken.None);
 
-        public Task<IList<Goal>> GetAllFromTaskAsync(UserTask task, CancellationToken token)
-        {
-            lock (Context)
-                return Task.Run(
-                    async () => (await Context.Set<UserTask>()!.Include(t => t.Goals)!
-                        .SingleAsync(t => t.Id == task.Id, token)!)!.Goals, token
-                );
-        }
+        public async Task<IList<Goal>> GetAllFromTaskAsync(UserTask task, CancellationToken token) =>
+            (await Context.Set<UserTask>()!.Include(t => t.Goals)!
+                .SingleAsync(t => t.Id == task.Id, token)!)!.Goals!;
 
         public void AddToTask(UserTask userTask, params Goal[] goals) =>
             AddToTask(userTask, (IEnumerable<Goal>)goals);
@@ -41,7 +37,7 @@ namespace Data.DataRepository
                 userTask.Goals.Add(goal);
             }
 
-            lock (Context) Context.Update(userTask);
+            Context.Update(userTask);
         }
     }
 }

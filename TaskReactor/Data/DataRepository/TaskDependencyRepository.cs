@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.DataRepository
 {
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     sealed class TaskDependencyRepository : Repository<TaskDependency, TaskReactorDbContext>,
         ITaskDependencyRepository
     {
@@ -21,16 +22,10 @@ namespace Data.DataRepository
         public async Task<IList<TaskDependency>> GetDependenciesAsync(UserTask task) =>
             await GetDependenciesAsync(task, CancellationToken.None)!;
 
-        public async Task<IList<TaskDependency>> GetDependenciesAsync(UserTask task, CancellationToken token) =>
-            (await Task.Run(
-                () =>
-                {
-                    lock (Context)
-                        return DbSet.Include(d => d.Target)!
-                                .Include(d => d.Dependency)!
-                            .Where(dependency => dependency.Target.Id == task.Id).ToList()!;
-                }, token
-            ))!;
+        public async Task<List<TaskDependency>> GetDependenciesAsync(UserTask task, CancellationToken token) =>
+            (await DbSet.Include(d => d.Target)!
+                    .Include(d => d.Dependency)!
+                .Where(dependency => dependency.Target.Id == task.Id).ToListAsync(token)!)!;
 
         public IList<TaskDependency> AddDependencies(UserTask target, params UserTask[] userTasks) =>
             AddDependencies(target, (IEnumerable<UserTask>)userTasks);

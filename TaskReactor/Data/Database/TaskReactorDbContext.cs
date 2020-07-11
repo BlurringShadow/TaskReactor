@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Database
 {
-    [Export]
+    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class TaskReactorDbContext : DbContext
     {
         public const string DbPath = @"database/task_reactor.db";

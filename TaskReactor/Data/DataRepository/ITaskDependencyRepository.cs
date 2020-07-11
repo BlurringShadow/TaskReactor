@@ -21,7 +21,7 @@ namespace Data.DataRepository
         /// Get task dependencies
         /// </summary>
         [NotNull, ItemNotNull]
-        Task<IList<TaskDependency>> GetDependenciesAsync([NotNull] UserTask task, CancellationToken token);
+        Task<List<TaskDependency>> GetDependenciesAsync([NotNull] UserTask task, CancellationToken token);
 
         /// <summary>
         /// Add task dependencies to task

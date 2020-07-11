@@ -12,6 +12,7 @@ using JetBrains.Annotations;
 
 namespace ApplicationDomain.ModelService
 {
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     sealed class GoalService : Service<Goal, TaskReactorDbContext, IGoalRepository, GoalModel>, IGoalService
     {
         private class GoalModelComparer : Comparer<GoalModel>

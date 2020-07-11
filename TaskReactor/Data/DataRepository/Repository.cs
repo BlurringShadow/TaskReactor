@@ -31,21 +31,11 @@ namespace Data.DataRepository
         public async Task<TDatabaseModel> FindByKeysAsync(IEnumerable keys) =>
             await FindByKeysAsync(keys, CancellationToken.None);
 
-        public async Task<TDatabaseModel> FindByKeysAsync(IEnumerable keys, CancellationToken token) =>
-            await Task.Run(
-                () =>
-                {
-                    lock (Context) return DbSet.Find(keys)!;
-                }, token
-            );
+        public Task<TDatabaseModel> FindByKeysAsync(IEnumerable keys, CancellationToken token) =>
+            Task.Run(async () => await DbSet.FindAsync(keys)!, token);
 
-        public async Task<TDatabaseModel> FindByKeysAsync(CancellationToken token, params object[] keys) =>
-            await Task.Run(
-                () =>
-                {
-                    lock (Context) return DbSet.Find(keys)!;
-                }, token
-            );
+        public Task<TDatabaseModel> FindByKeysAsync(CancellationToken token, params object[] keys) =>
+            Task.Run(async () => await DbSet.FindAsync(keys)!, token);
 
         public void Remove(params TDatabaseModel[] models) => Remove((IEnumerable<TDatabaseModel>)models);
 
@@ -53,13 +43,8 @@ namespace Data.DataRepository
 
         public async Task RemoveAllAsync() => await RemoveAllAsync(CancellationToken.None);
 
-        public async Task RemoveAllAsync(CancellationToken token) =>
-            await Task.Run(
-                () =>
-                {
-                    lock (Context) Context.DeleteTableFromDbSet<TDatabaseModel>();
-                }, token
-            );
+        public Task RemoveAllAsync(CancellationToken token) =>
+            Task.Run(() => Context.DeleteTableFromDbSet<TDatabaseModel>(), token);
 
         public void Update(params TDatabaseModel[] models) => Update((IEnumerable<TDatabaseModel>)models);
 
