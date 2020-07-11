@@ -51,36 +51,29 @@ namespace UnitTest.ApplicationDomain.Repository
                 }
             };
 
-            lock (Repository.Context)
-            {
-                TestOutputHelper.WriteLine(
-                    $"Registering user {JsonSerializer.Serialize(_testUser, SerializerOptions)}"
-                );
-                _userRepository.Register(_testUser);
-                Task.WaitAll(Repository.DbSync());
-            }
+            TestOutputHelper.WriteLine(
+                $"Registering user {JsonSerializer.Serialize(_testUser, SerializerOptions)}"
+            );
+            _userRepository.Register(_testUser);
+            Task.WaitAll(_userRepository.DbSync());
+            TestOutputHelper.WriteLine("Successfully Registered");
 
-            _testUser = _userRepository.LogInAsync(_testUser).Result!;
+            Assert.NotNull(_userRepository.LogInAsync(_testUser).Result);
+
             TestOutputHelper.WriteLine(
                 $"Successfully log in user {JsonSerializer.Serialize(_testUser, SerializerOptions)}"
             );
         }
 
-        async Task AddDependenciesTest(int targetIndex, int dependencyIndex) =>
-            await Task.Run(
-                () =>
-                {
-                    lock (Repository.Context)
-                    {
-                        var dependencies =
-                            Repository.AddDependencies(_testUser.Tasks![targetIndex], _testUser.Tasks[dependencyIndex]);
-                        Task.WaitAll(Repository.DbSync());
-                        TestOutputHelper.WriteLine(
-                            $"Successfully add task dependency {JsonSerializer.Serialize(dependencies, SerializerOptions)}"
-                        );
-                    }
-                }
+        async Task AddDependenciesTest(int targetIndex, int dependencyIndex)
+        {
+            var dependencies =
+                Repository.AddDependencies(_testUser.Tasks![targetIndex], _testUser.Tasks[dependencyIndex]);
+            await Repository.DbSync();
+            TestOutputHelper.WriteLine(
+                $"Successfully add task dependency {JsonSerializer.Serialize(dependencies, SerializerOptions)}"
             );
+        }
 
         async Task GetDependenciesTest([NotNull] UserTask task) =>
             TestOutputHelper.WriteLine(
@@ -110,15 +103,12 @@ namespace UnitTest.ApplicationDomain.Repository
         void Dispose(bool disposing)
         {
             if (_disposed || !disposing) return;
-            lock (Repository.Context)
-            {
-                TestOutputHelper.WriteLine(
-                    $"Removing user {JsonSerializer.Serialize(_testUser, SerializerOptions)}"
-                );
-                _userRepository.LogOff(_testUser);
-                Task.WaitAll(_userRepository.DbSync());
-                TestOutputHelper.WriteLine("Successfully removed");
-            }
+            TestOutputHelper.WriteLine(
+                $"Removing user {JsonSerializer.Serialize(_testUser, SerializerOptions)}"
+            );
+            _userRepository.LogOff(_testUser);
+            Task.WaitAll(_userRepository.DbSync());
+            TestOutputHelper.WriteLine("Successfully removed");
 
             _disposed = true;
         }

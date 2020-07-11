@@ -38,16 +38,8 @@ namespace UnitTest.ApplicationDomain.Repository
 
         async Task UserRegisterTest([NotNull] User user)
         {
-            await Task.Run(
-                () =>
-                {
-                    lock (Repository.Context)
-                    {
-                        Repository.Register(user);
-                        Task.WaitAll(Repository.DbSync());
-                    }
-                }
-            );
+            Repository.Register(user);
+            await Repository.DbSync();
             TestOutputHelper.WriteLine(
                 $"Successfully register user {JsonSerializer.Serialize(user, SerializerOptions)}"
             );
@@ -63,16 +55,8 @@ namespace UnitTest.ApplicationDomain.Repository
 
         async Task UserLogOffTest([NotNull] User user)
         {
-            await Task.Run(
-                () =>
-                {
-                    lock (Repository.Context)
-                    {
-                        Repository.LogOff(user);
-                        Task.WaitAll(Repository.DbSync());
-                    }
-                }
-            );
+            Repository.LogOff(user);
+            await Repository.DbSync();
             Assert.Null(await Repository.LogInAsync(user));
             TestOutputHelper.WriteLine(
                 $"Successfully log off user {JsonSerializer.Serialize(user, SerializerOptions)}"

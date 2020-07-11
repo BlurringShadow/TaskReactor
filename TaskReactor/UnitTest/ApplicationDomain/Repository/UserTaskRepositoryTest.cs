@@ -46,25 +46,14 @@ namespace UnitTest.ApplicationDomain.Repository
         public UserTaskRepositoryTest([NotNull] ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
             _userRepository = Container.GetExportedValue<IUserRepository>();
-            lock (Repository.Context)
-            {
-                _userRepository.Register(_testUser);
-                Task.WaitAll(Repository.DbSync());
-            }
+            _userRepository.Register(_testUser);
+            Task.WaitAll(Repository.DbSync());
         }
 
         async Task AddToUser([NotNull] UserTask task)
         {
-            await Task.Run(
-                () =>
-                {
-                    lock (Repository.Context)
-                    {
-                        Repository.AddToUser(_testUser, task);
-                        Task.WaitAll(Repository.DbSync());
-                    }
-                }
-            );
+            Repository.AddToUser(_testUser, task);
+            await Repository.DbSync();
             TestOutputHelper.WriteLine(
                 $"Successfully add task {JsonSerializer.Serialize(task, SerializerOptions)} " +
                 $"\nto user {JsonSerializer.Serialize(_testUser, SerializerOptions)}\n"
@@ -93,11 +82,8 @@ namespace UnitTest.ApplicationDomain.Repository
         void Dispose(bool disposing)
         {
             if (_disposed || !disposing) return;
-            lock (Repository.Context)
-            {
-                _userRepository.LogOff(_testUser);
-                Task.WaitAll(Repository.DbSync());
-            }
+            _userRepository.LogOff(_testUser);
+            Task.WaitAll(Repository.DbSync());
 
             _disposed = true;
         }
