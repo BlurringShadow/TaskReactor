@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Data.Database;
 using Data.Database.Entity;
 using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.DataRepository
 {
@@ -19,11 +21,8 @@ namespace Data.DataRepository
 
         public async Task<User> LogInAsync(User user) => await LogInAsync(user, CancellationToken.None);
 
-        public async Task<User> LogInAsync(User user, CancellationToken token)
-        {
-            var found = await FindByKeysAsync(token, user.Id);
-            return found?.Password == user.Password ? found : null;
-        }
+        public async Task<User> LogInAsync(User user, CancellationToken token) =>
+            await DbSet.Where(u => u.Id == user.Id && u.Password == user.Password).SingleOrDefaultAsync(token)!;
 
         public void LogOff(User user) => Remove(user);
     }

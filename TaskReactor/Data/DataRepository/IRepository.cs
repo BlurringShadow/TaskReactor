@@ -11,7 +11,6 @@ namespace Data.DataRepository
     /// <summary>
     /// Provide basic data operation
     /// <para/> Modifier database data actions are not immediately complete
-    /// <para/> Use <code>lock(Context)</code> to prevent concurrency problems
     /// </summary>
     /// <typeparam name="TDataBaseModel"> database entity model </typeparam>
     /// <typeparam name="TDbContext"> database context </typeparam>
@@ -23,7 +22,6 @@ namespace Data.DataRepository
         /// <summary>
         /// Database context <see cref="DbContext"/>
         /// <para/> Be aware of using it in multi-threading code context.
-        /// <para/> Use <code>lock(Context)</code> to prevent concurrency problems
         /// </summary>
         [NotNull] TDbContext Context { get; }
 
@@ -121,7 +119,6 @@ namespace Data.DataRepository
         /// <summary>
         /// Sync changes into database
         /// <para> Be aware of using it in multi-threading code context. </para>
-        /// <para> Use <code>lock(Context)</code> to prevent concurrency problems </para>
         /// </summary>
         /// <returns> Async task with affected rows </returns>
         [NotNull]
@@ -130,7 +127,6 @@ namespace Data.DataRepository
         /// <summary>
         /// Sync changes into database.
         /// <para> Be aware of using it in multi-threading code context. </para>
-        /// <para> Use <code>lock(Context)</code> to prevent concurrency problems </para>
         /// </summary>
         /// <param name="token"> <see cref="CancellationToken"/> </param>
         /// <returns> Async task with affected rows </returns>
