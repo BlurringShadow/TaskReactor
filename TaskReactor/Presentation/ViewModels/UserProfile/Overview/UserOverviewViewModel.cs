@@ -8,6 +8,7 @@
 
 #endregion
 
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
@@ -61,35 +62,46 @@ namespace Presentation.ViewModels.UserProfile.Overview
 
         async Task RefreshTaskData(CancellationToken token)
         {
-            var newTaskItemList = await _userTaskService.GetAllFromUserAsync(CurrentUser, token);
+            IList<UserTaskModel> newTaskItemList = null;
+
+            await Task.Run(
+                () =>
+                {
+                    lock (_userTaskService)
+                        newTaskItemList = _userTaskService.GetAllFromUserAsync(CurrentUser, token).Result;
+                }, token
+            );
 
             var i = 0;
             var newCount = newTaskItemList.Count;
-            var oldCount = UserTaskItems.Count;
-
-            if (newCount > oldCount)
+            lock (UserTaskItems)
             {
-                for (; i < oldCount; ++i)
-                    UserTaskItems[i].TaskModel = newTaskItemList[i]!;
+                var oldCount = UserTaskItems.Count;
 
-                for (; i < newCount; ++i)
+                if (newCount > oldCount)
                 {
-                    var itemViewModel = new UserTaskItemViewModel(
-                        newTaskItemList[i]!, Container.GetExportedValue<IGoalService>()
-                    );
-                    itemViewModel.OnClickEvent += ToUserTaskEdit;
-                    itemViewModel.OnRemoveEvent += OnRemoveTask;
-                    itemViewModel.OnGoalClickEvent += ToGoalEdit;
-                    itemViewModel.OnAddGoalEvent += AddGoal;
-                    UserTaskItems.Add(itemViewModel);
-                }
-            }
-            else
-            {
-                for (; i < newCount; ++i)
-                    UserTaskItems[i].TaskModel = newTaskItemList[i]!;
+                    for (; i < oldCount; ++i)
+                        UserTaskItems[i].TaskModel = newTaskItemList[i]!;
 
-                while (UserTaskItems.Count > newTaskItemList.Count) UserTaskItems.RemoveAt(UserTaskItems.Count - 1);
+                    for (; i < newCount; ++i)
+                    {
+                        var itemViewModel = new UserTaskItemViewModel(
+                            newTaskItemList[i]!, Container.GetExportedValue<IGoalService>()
+                        );
+                        itemViewModel.OnClickEvent += ToUserTaskEdit;
+                        itemViewModel.OnRemoveEvent += OnRemoveTask;
+                        itemViewModel.OnGoalClickEvent += ToGoalEdit;
+                        itemViewModel.OnAddGoalEvent += AddGoal;
+                        UserTaskItems.Add(itemViewModel);
+                    }
+                }
+                else
+                {
+                    for (; i < newCount; ++i)
+                        UserTaskItems[i].TaskModel = newTaskItemList[i]!;
+
+                    while (UserTaskItems.Count > newTaskItemList.Count) UserTaskItems.RemoveAt(UserTaskItems.Count - 1);
+                }
             }
         }
 

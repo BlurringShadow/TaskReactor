@@ -14,6 +14,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
 using GraphX.Controls;
@@ -48,18 +49,19 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
 
         TaskGraphArea _area;
 
-        public EditorControl.EditorMode Mode
+        public bool ModeValue
         {
-            get => _control.Mode;
+            get => _control.Mode != 0;
             set
             {
-                _control.Mode = value;
+                _control.Mode = value ? (EditorControl.EditorMode)1 : 0;
                 NotifyOfPropertyChange();
+                NotifyOfPropertyChange(nameof(ModePresentStr));
             }
         }
 
         public string ModePresentStr =>
-            Mode switch
+            _control.Mode switch
             {
                 EditorControl.EditorMode.Move => "移动",
                 EditorControl.EditorMode.Link => "创建依赖",
@@ -92,59 +94,67 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
             return base.OnActivateAsync(cancellationToken);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "PossibleNullReferenceException"),
+         System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
         public async Task RefreshData()
         {
+            IList<UserTaskModel> taskList = null;
+
             await Task.Run(
                 () =>
                 {
                     while (_area is null) ;
+                    lock (_taskService) taskList = _taskService.GetAllFromUserAsync(CurrentUser).Result;
                 }
             );
 
-            var taskList = await _taskService.GetAllFromUserAsync(CurrentUser);
             var dependencyTaskList = new List<Task<List<TaskDependencyModel>>>(taskList.Count);
 
-            foreach (var task in taskList)
+            var areaDispatcher = _area.Dispatcher;
+
+            try
             {
-                dependencyTaskList.Add(_taskDependencyService.GetDependenciesAsync(task!));
-
+                lock (areaDispatcher)
                 {
-                    var vertex = Container.GetExportedValue<UserTaskVertex>();
+                    areaDispatcher.Invoke(() => _area.ClearLayout());
 
-                    vertex.ID = task.Identity;
+                    foreach (var task in taskList)
+                    {
+                        dependencyTaskList.Add(_taskDependencyService.GetDependenciesAsync(task!));
 
-                    // ReSharper disable once PossibleNullReferenceException
-                    _area.AddVertex(vertex, new TaskVertexControl(vertex));
-                }
-            }
+                        {
+                            var vertex = Container.GetExportedValue<UserTaskVertex>();
 
-            // ReSharper disable PossibleNullReferenceException
-            await _area.Dispatcher.Invoke(
-                async () =>
-                {
-                    // ReSharper disable PossibleNullReferenceException
-                    // ReSharper disable AssignNullToNotNullAttribute
-                    // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
-                    foreach (var dependenciesTask in dependencyTaskList)
-                    foreach (var edgeData in (await dependenciesTask).Select(
-                        dependency => new TaskDependencyEdge { Model = dependency }
+                            vertex.Task = task;
+
+                            areaDispatcher.Invoke(() => _area.AddVertex(vertex, new TaskVertexControl(vertex)));
+                        }
+                    }
+
+
+                    foreach (var edgeData in dependencyTaskList.SelectMany(
+                        dependenciesTask => dependenciesTask.Result.Select(
+                            dependency => new TaskDependencyEdge { Model = dependency }
+                        )
                     ))
                     {
                         edgeData.SetLinkVertexByModel(_area.LogicCore.Graph);
 
                         var vertexList = _area.VertexList;
-                        _area.AddEdge(
-                            edgeData,
-                            new EdgeControl(vertexList[edgeData.Source], vertexList[edgeData.Target], edgeData)
+
+                        areaDispatcher.Invoke(
+                            () => _area.AddEdge(
+                                edgeData, new EdgeControl(
+                                    vertexList[edgeData.Source], vertexList[edgeData.Target], edgeData
+                                )
+                            )
                         );
                     }
 
-                    _area.RelayoutGraph(true);
-
-                    // ReSharper restore PossibleNullReferenceException
-                    // ReSharper restore AssignNullToNotNullAttribute
+                    areaDispatcher.Invoke(() => _area.RelayoutGraph(true));
                 }
-            );
+            }
+            catch (Exception e) { MessageBox.Show($"{e}"); }
         }
     }
 }
