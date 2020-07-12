@@ -23,8 +23,7 @@ namespace Data.DataRepository
             await GetDependenciesAsync(task, CancellationToken.None)!;
 
         public async Task<List<TaskDependency>> GetDependenciesAsync(UserTask task, CancellationToken token) =>
-            (await DbSet.Include(d => d.Target)!
-                    .Include(d => d.Dependency)!
+            (await DbSet.Include(d => d.Target)!.Include(d => d.Dependency)!
                 .Where(dependency => dependency.Target.Id == task.Id).ToListAsync(token)!)!;
 
         public IList<TaskDependency> AddDependencies(UserTask target, params UserTask[] userTasks) =>
