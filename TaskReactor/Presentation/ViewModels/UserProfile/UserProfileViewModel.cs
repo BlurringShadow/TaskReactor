@@ -13,7 +13,7 @@ using Utilities;
 
 namespace Presentation.ViewModels.UserProfile
 {
-    [Export]
+    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class UserProfileViewModel : ConductorOneActiveViewModel<ScreenViewModel>
     {
         [NotNull] UserModel _currentUser;

@@ -7,7 +7,7 @@ using Utilities;
 
 namespace Presentation.ViewModels
 {
-    [Export]
+    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class MainScreenViewModel : ScreenViewModel
     {
         [NotNull] private INavigationService _navigationService;

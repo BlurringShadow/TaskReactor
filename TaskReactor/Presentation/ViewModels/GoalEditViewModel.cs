@@ -11,7 +11,7 @@ using Utilities;
 
 namespace Presentation.ViewModels
 {
-    [Export]
+    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class GoalEditViewModel : ScreenViewModel
     {
         [NotNull] GoalModel _goalModel;

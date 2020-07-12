@@ -27,11 +27,11 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
 {
     using TaskGraph = BidirectionalGraph<UserTaskVertex, TaskDependencyEdge>;
     using TaskGraphLogicCore = IGXLogicCore<
-        UserTaskVertex, 
-        TaskDependencyEdge, 
+        UserTaskVertex,
+        TaskDependencyEdge,
         BidirectionalGraph<UserTaskVertex, TaskDependencyEdge>>;
 
-    [Export]
+    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed partial class GraphEditPageViewModel : ScreenViewModel
     {
         [NotNull] UserModel _currentUser;

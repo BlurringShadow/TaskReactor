@@ -5,7 +5,7 @@ using Utilities;
 
 namespace Presentation.ViewModels.WelcomePage
 {
-    [Export]
+    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class WelcomePageViewModel : ConductorOneActiveViewModel<ScreenViewModel>
     {
         [NotNull, ShareVariable(nameof(NavigationService), typeof(MainScreenViewModel))]

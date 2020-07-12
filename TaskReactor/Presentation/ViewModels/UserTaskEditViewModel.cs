@@ -9,7 +9,7 @@ using Utilities;
 
 namespace Presentation.ViewModels
 {
-    [Export]
+    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class UserTaskEditViewModel : ScreenViewModel
     {
         [NotNull, ShareVariable(nameof(NavigationService), typeof(UserProfileViewModel))]

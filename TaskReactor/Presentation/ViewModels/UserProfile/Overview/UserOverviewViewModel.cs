@@ -20,7 +20,7 @@ using Utilities;
 
 namespace Presentation.ViewModels.UserProfile.Overview
 {
-    [Export]
+    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class UserOverviewViewModel : ScreenViewModel
     {
         [NotNull, Import] private IUserTaskService UserTaskService { get; set; }

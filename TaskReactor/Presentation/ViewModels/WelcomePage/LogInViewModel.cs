@@ -10,13 +10,13 @@ using Utilities;
 
 namespace Presentation.ViewModels.WelcomePage
 {
-    [Export]
+    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public class LogInViewModel : ScreenViewModel
     {
         [NotNull, ShareVariable(nameof(NavigationService), typeof(MainScreenViewModel))]
         public INavigationService NavigationService { get; set; }
 
-        [NotNull] public IUserService UserService { get; set; }
+        [NotNull, Import] public IUserService UserService { get; set; }
 
         private string _password;
 

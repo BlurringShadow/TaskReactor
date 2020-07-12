@@ -8,7 +8,7 @@ using Utilities;
 
 namespace Presentation.ViewModels.WelcomePage
 {
-    [Export]
+    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class RegisterViewModel : ScreenViewModel
     {
         [NotNull, Import] public IUserService UserService { get; set; }
