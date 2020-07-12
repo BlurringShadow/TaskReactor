@@ -17,7 +17,7 @@
         <StackPanel DockPanel.Dock="Right" VerticalAlignment="Stretch">
             <Label Content="双击连线删除依赖，&#x000A;下方按钮可以切换模式" Margin="5"/>
 
-            <metro:ToggleSwitch Content="{Binding ModePresentStr}" Margin="5"/>
+            <metro:ToggleSwitch Content="{Binding ModePresentStr}" IsOn="{Binding ModeValue}" Margin="5"/>
 
             <Button x:Name="RefreshData"
                     Style="{StaticResource MahApps.Styles.Button.MetroSquare.Accent}"
@@ -29,11 +29,10 @@
                     Content="{iconPacks:JamIcons Kind=Refresh}"/>
         </StackPanel>
 
-        <graphx:ZoomControl>
-            <local:TaskGraphArea
-                cm:Message.Attach="[Event SelectedVertex] = [Action OnSelectedVertex];
-                                 [Event DoubleClickEdge] = [Action OnDoubleClickEdge]
-                                 [Event Initialized] = [Action OnBindingGraphArea($source)]"/>
+        <graphx:ZoomControl x:Name="ZoomControl" BorderBrush="Black" BorderThickness="1">
+            <local:TaskGraphArea cm:Message.Attach="[Event VertexSelected] = [Action OnSelectedVertex];
+                                 [Event EdgeDoubleClick] = [Action OnDoubleClickEdge];
+                                 OnBindingGraphLogicCore($source.LogicCore)"/>
         </graphx:ZoomControl>
     </DockPanel>
 </UserControl>
