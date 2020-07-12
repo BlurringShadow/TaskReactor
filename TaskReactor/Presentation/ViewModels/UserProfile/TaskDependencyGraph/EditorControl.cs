@@ -9,16 +9,17 @@
 #endregion
 
 using System.Threading.Tasks;
+using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
-using GraphX.Controls;
 using JetBrains.Annotations;
 using Presentation.Views.UserProfile.TaskDependencyGraph;
+using QuickGraph;
 
 namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
 {
     public partial class GraphEditPageViewModel
     {
-        public class EditorControl
+        internal class EditorControl
         {
             public enum EditorMode
             {
@@ -28,62 +29,69 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
 
             public EditorMode Mode { get; set; }
 
-            VertexControl _selectedVertexControl;
+            UserTaskVertex _selectedVertex;
 
-            public async Task OnSelectedVertex(
-                VertexControl vertexControl,
-                [NotNull] TaskGraphArea area,
+            public async Task<bool> OnSelectedVertex(
+                [NotNull] UserTaskVertex vertex,
+                [NotNull] BidirectionalGraph<UserTaskVertex, TaskDependencyEdge> graph,
                 [NotNull] ITaskDependencyService service
             )
             {
-                var dstData = vertexControl?.GetDataVertex<UserTaskVertex>();
+                if (Mode != EditorMode.Link) return false;
 
-                if (Mode != EditorMode.Link || dstData is null) return;
+                return await Task.Run(
+                    () =>
+                    {
+                        lock (graph)
+                        {
+                            if (_selectedVertex is null ||
+                                _selectedVertex.Task!.StartTime > vertex!.Task!.StartTime ||
+                                graph.ContainsEdge(vertex, _selectedVertex))
+                            {
+                                _selectedVertex = vertex;
+                                return false;
+                            }
 
-                var sourceData = _selectedVertexControl?.GetDataVertex<UserTaskVertex>();
+                            TaskDependencyModel dependencyModel;
+                            lock (service)
+                            {
+                                dependencyModel = service.AddDependencies(vertex.Task!, _selectedVertex.Task)[0];
+                                Task.WaitAll(service.DbSync());
+                            }
 
-                if (sourceData is null ||
-                    sourceData.Task!.StartTime > dstData!.Task!.StartTime ||
-                    area.LogicCore!.Graph!.ContainsEdge(dstData, sourceData))
-                {
-                    _selectedVertexControl = vertexControl;
-                    return;
-                }
+                            var data = new TaskDependencyEdge(vertex, _selectedVertex) { Model = dependencyModel };
+                            graph.AddEdge(data);
+                            _selectedVertex = null;
+                        }
 
-                try
-                {
-                    var dependencyModel = service.AddDependencies(dstData.Task, sourceData.Task)[0];
-                    await service.DbSync();
-
-                    var data = new TaskDependencyEdge(dstData, sourceData) { Model = dependencyModel };
-                    area.AddEdge(data, new EdgeControl(_selectedVertexControl, vertexControl, data));
-                }
-                catch
-                {
-                    // ignored
-                }
+                        return true;
+                    }
+                );
             }
 
-            public async Task OnDoubleClickEdge(
-                EdgeControl edgeControl,
-                [NotNull] TaskGraphArea area,
+            public async Task<bool> OnDoubleClickEdge(
+                [NotNull] TaskDependencyEdge edge,
+                [NotNull] BidirectionalGraph<UserTaskVertex, TaskDependencyEdge> graph,
                 [NotNull] ITaskDependencyService service
-            )
-            {
-                var data = edgeControl?.GetDataEdge<TaskDependencyEdge>();
-                if (data is null) return;
+            ) => await Task.Run(
+                () =>
+                {
+                    lock (graph)
+                        if (graph.ContainsEdge(edge))
+                        {
+                            graph.RemoveEdge(edge);
+                            lock (service)
+                            {
+                                service.Remove(edge.Model!);
+                                Task.WaitAll(service.DbSync());
+                            }
 
-                try
-                {
-                    service.Remove(data.Model!);
-                    await service.DbSync();
-                    area.RemoveEdge(data);
+                            return true;
+                        }
+
+                    return false;
                 }
-                catch
-                {
-                    // ignored
-                }
-            }
+            );
         }
     }
 }

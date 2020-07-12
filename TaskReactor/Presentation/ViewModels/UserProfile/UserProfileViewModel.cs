@@ -34,7 +34,7 @@ namespace Presentation.ViewModels.UserProfile
             }
         }
 
-        [NotNull] readonly IUserService _userService;
+        [NotNull, Import] IUserService UserService { get; set; }
 
         [NotNull, ShareVariable(nameof(NavigationService), typeof(LogInViewModel))]
         public INavigationService NavigationService { get; set; }
@@ -62,23 +62,22 @@ namespace Presentation.ViewModels.UserProfile
             }
         }
 
-        protected override Task ChangeActiveItemAsync(
+        protected override async Task ChangeActiveItemAsync(
             ScreenViewModel newItem,
             bool closePrevious,
             CancellationToken cancellationToken
         )
         {
+            var task = base.ChangeActiveItemAsync(newItem, closePrevious, cancellationToken);
+            if (!(task is null)) await task;
             NotifyOfPropertyChange(nameof(ActiveIndex));
-            return base.ChangeActiveItemAsync(newItem, closePrevious, cancellationToken);
         }
 
         // ReSharper disable once NotNullMemberIsNotInitialized
         [ImportingConstructor]
-        public UserProfileViewModel([NotNull] IocContainer container, [NotNull] IUserService userService) :
+        public UserProfileViewModel([NotNull] IocContainer container) :
             base(container)
         {
-            _userService = userService;
-
             this.ShareWithName(NavigationService, nameof(NavigationService));
 
             // ReSharper disable once PossibleNullReferenceException
@@ -90,7 +89,7 @@ namespace Presentation.ViewModels.UserProfile
         {
             var task = base.OnActivateAsync(token)!;
             // Refresh the user data
-            if (await _userService.FindByKeysAsync(token, CurrentUser.Identity) is null)
+            if (await UserService.FindByKeysAsync(token, CurrentUser.Identity) is null)
             {
                 MessageBox.Show("用户不存在，请重新登录");
                 NavigationService.NavigateToViewModel<WelcomePageViewModel>();

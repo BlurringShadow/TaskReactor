@@ -18,18 +18,19 @@ namespace Presentation.ViewModels
         [NotNull, ShareVariable(nameof(TaskModel), typeof(UserProfileViewModel))]
         public UserTaskModel TaskModel { get; set; }
 
-        [NotNull] readonly IUserTaskService _service;
+        [NotNull, Import] public IUserTaskService Service { get; set; }
 
         [ImportingConstructor,
          System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-        public UserTaskEditViewModel([NotNull] IocContainer container, [NotNull] IUserTaskService service) : 
-            base(container) => _service = service;
+        public UserTaskEditViewModel([NotNull] IocContainer container) : base(container)
+        {
+        }
 
         public async Task Confirm()
         {
-            _service.Update(TaskModel);
+            Service.Update(TaskModel);
             NavigationService.GoBack();
-            await _service.DbSync();
+            await Service.DbSync();
         }
 
         public void Cancel() => NavigationService.GoBack();

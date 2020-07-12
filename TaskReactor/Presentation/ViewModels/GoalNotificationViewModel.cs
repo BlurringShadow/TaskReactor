@@ -1,11 +1,9 @@
-using System.ComponentModel.Composition;
 using JetBrains.Annotations;
 using Notifications.Wpf.Core;
 using ApplicationDomain.DataModel;
 
 namespace Presentation.ViewModels
 {
-    [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class GoalNotificationViewModel : NotificationViewModel
     {
         [NotNull] private GoalModel _goalModel;

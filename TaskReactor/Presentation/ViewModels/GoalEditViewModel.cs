@@ -30,18 +30,19 @@ namespace Presentation.ViewModels
             get => GoalModel.DurationOfOneTime.TotalDays;
         }
 
-        [NotNull] readonly IGoalService _goalService;
+        [NotNull, Import] public IGoalService GoalService { get; set; }
 
         // ReSharper disable once NotNullMemberIsNotInitialized
         [ImportingConstructor]
-        public GoalEditViewModel([NotNull] IocContainer container, [NotNull] IGoalService goalService) :
-            base(container) => _goalService = goalService;
+        public GoalEditViewModel([NotNull] IocContainer container) : base(container)
+        {
+        }
 
         public async Task Confirm()
         {
             GoalModel.Interval.Kind = (IntervalKind)IntervalKindListViewModel.Selected;
-            _goalService.Update(GoalModel);
-            await _goalService.DbSync();
+            GoalService.Update(GoalModel);
+            await GoalService.DbSync();
 
             NavigationService.GoBack();
         }

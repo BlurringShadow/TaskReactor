@@ -11,7 +11,7 @@ namespace Presentation.ViewModels.WelcomePage
     [Export]
     public sealed class RegisterViewModel : ScreenViewModel
     {
-        [NotNull] readonly IUserService _userService;
+        [NotNull, Import] public IUserService UserService { get; set; }
 
         string _userName;
 
@@ -61,16 +61,18 @@ namespace Presentation.ViewModels.WelcomePage
 
         public void SetReInputPassword([NotNull] PasswordBox value) => ReInputPassword = value.Password;
 
+        // ReSharper disable once NotNullMemberIsNotInitialized
         [ImportingConstructor]
-        public RegisterViewModel([NotNull] IocContainer container, [NotNull] IUserService userService) :
-            base(container) => _userService = userService;
+        public RegisterViewModel([NotNull] IocContainer container) : base(container)
+        {
+        }
 
         public async Task Register()
         {
             var user = new UserModel { Name = UserName!, Password = Password! };
-            _userService.Register(user);
+            UserService.Register(user);
 
-            await _userService.DbSync();
+            await UserService.DbSync();
 
             RegisteredId = $"注册成功，账户为{user.Identity}";
         }

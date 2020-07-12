@@ -16,7 +16,7 @@ namespace Presentation.ViewModels.WelcomePage
         [NotNull, ShareVariable(nameof(NavigationService), typeof(MainScreenViewModel))]
         public INavigationService NavigationService { get; set; }
 
-        [NotNull] private readonly IUserService _userService;
+        [NotNull] public IUserService UserService { get; set; }
 
         private string _password;
 
@@ -44,8 +44,9 @@ namespace Presentation.ViewModels.WelcomePage
 
         [ImportingConstructor,
          System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-        public LogInViewModel([NotNull] IocContainer container, [NotNull] IUserService userService) :
-            base(container) => _userService = userService;
+        public LogInViewModel([NotNull] IocContainer container) : base(container)
+        {
+        }
 
         public bool CanLogin => int.TryParse(Identity, out _) && !string.IsNullOrEmpty(Password);
 
@@ -56,7 +57,7 @@ namespace Presentation.ViewModels.WelcomePage
         {
             try
             {
-                var userModel = await _userService.LogInAsync(int.Parse(Identity!), Password!);
+                var userModel = await UserService.LogInAsync(int.Parse(Identity!), Password!);
                 if (userModel is null)
                 {
                     MessageBox.Show("incorrect password or id not exists");

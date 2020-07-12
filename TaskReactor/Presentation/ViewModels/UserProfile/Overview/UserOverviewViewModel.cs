@@ -23,7 +23,7 @@ namespace Presentation.ViewModels.UserProfile.Overview
     [Export]
     public sealed class UserOverviewViewModel : ScreenViewModel
     {
-        [NotNull] readonly IUserTaskService _userTaskService;
+        [NotNull, Import] private IUserTaskService UserTaskService { get; set; }
 
         [NotNull, ShareVariable(nameof(NavigationService), typeof(UserProfileViewModel))]
         public INavigationService NavigationService { get; set; }
@@ -49,10 +49,9 @@ namespace Presentation.ViewModels.UserProfile.Overview
 
         [ImportingConstructor,
          System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-        public UserOverviewViewModel(
-            [NotNull] IocContainer container,
-            [NotNull] IUserTaskService userTaskService
-        ) : base(container) => _userTaskService = userTaskService;
+        public UserOverviewViewModel([NotNull] IocContainer container) : base(container)
+        {
+        }
 
         protected override Task OnActivateAsync(CancellationToken token)
         {
@@ -67,8 +66,8 @@ namespace Presentation.ViewModels.UserProfile.Overview
             await Task.Run(
                 () =>
                 {
-                    lock (_userTaskService)
-                        newTaskItemList = _userTaskService.GetAllFromUserAsync(CurrentUser, token).Result;
+                    lock (UserTaskService)
+                        newTaskItemList = UserTaskService.GetAllFromUserAsync(CurrentUser, token).Result;
                 }, token
             );
 
@@ -122,7 +121,7 @@ namespace Presentation.ViewModels.UserProfile.Overview
             viewModel.OnRemoveEvent -= OnRemoveTask;
 
             UserTaskItems.Remove(viewModel);
-            _userTaskService.Remove(viewModel.TaskModel);
+            UserTaskService.Remove(viewModel.TaskModel);
         }
 
         void ToUserTaskEdit([NotNull] UserTaskItemViewModel viewModel) => NavigateToTaskEdit(viewModel.TaskModel);
