@@ -17,7 +17,7 @@ using QuickGraph;
 
 namespace Presentation.Views.UserProfile.TaskDependencyGraph
 {
-    class TaskDependencyEdge : EdgeBase<UserTaskVertex>
+    public class TaskDependencyEdge : EdgeBase<UserTaskVertex>
     {
         public TaskDependencyModel Model { get; set; }
 
@@ -25,7 +25,7 @@ namespace Presentation.Views.UserProfile.TaskDependencyGraph
         {
         }
 
-        public void SetLinkVertexByModel([NotNull] BidirectionalGraph<UserTaskVertex, EdgeBase<UserTaskVertex>> graph)
+        public void SetLinkVertexByModel([NotNull] BidirectionalGraph<UserTaskVertex, TaskDependencyEdge> graph)
         {
             if (Model is null) throw new NullReferenceException();
             Source = (from vertex in graph.Vertices where vertex.ID == Model.Dependency.Identity select vertex).Single();

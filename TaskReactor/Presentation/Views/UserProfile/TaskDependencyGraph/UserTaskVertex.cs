@@ -26,7 +26,7 @@ namespace Presentation.Views.UserProfile.TaskDependencyGraph
         [ImportingConstructor]
         public UserTaskVertex([NotNull] IUserTaskService service) => _service = service;
 
-        public UserTaskModel Task { get; private set; }
+        public UserTaskModel Task { get; set; }
 
         public double Angle { get; set; }
 
