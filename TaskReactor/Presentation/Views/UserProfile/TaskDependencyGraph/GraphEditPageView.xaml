@@ -38,11 +38,19 @@
                     <Style TargetType="graphx:VertexControl">
                         <Setter Property="Template">
                             <Setter.Value>
-                                <ControlTemplate d:DataContext="{d:DesignInstance local:UserTaskVertex}">
-                                    <TextBlock Background="AliceBlue" Text="{Binding Task.Title}"/>
+                                <ControlTemplate>
+                                    <Border d:DataContext="{d:DesignInstance local:UserTaskVertex}"
+                                            BorderThickness="0.05" 
+                                            Background="Black">
+                                        <TextBlock Background="AliceBlue" Text="{Binding Task.Title}"/>
+                                    </Border>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
+
+                        <Setter Property="graphx:DragBehaviour.IsDragEnabled" Value="True"/>
+
+                        <Setter Property="graphx:DragBehaviour.UpdateEdgesOnMove" Value="True"/>
                     </Style>
                 </local:TaskGraphArea.Resources>
             </local:TaskGraphArea>
