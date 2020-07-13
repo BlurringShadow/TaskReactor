@@ -28,7 +28,7 @@
     <PackageReference Include="GraphX" Version="3.0.0" />
     <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
     <PackageReference Include="MahApps.Metro" Version="2.1.1" />
-    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.2.0" />
+    <PackageReference Include="MahApps.Metro.IconPacks" Version="4.3.0" />
     <PackageReference Include="Notifications.Wpf.Core" Version="1.2.0" />
     <PackageReference Include="System.ComponentModel.Composition" Version="4.7.0" />
   </ItemGroup>
