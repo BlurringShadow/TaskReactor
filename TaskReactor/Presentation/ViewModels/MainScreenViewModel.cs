@@ -22,11 +22,10 @@ namespace Presentation.ViewModels
         {
             // ReSharper disable once AssignNullToNotNullAttribute
             _navigationService = new CMNavigationService(window.NavigationService);
-
-            this.ShareWithName(_navigationService, nameof(WelcomePageViewModel.NavigationService));
             Navigate();
         }
 
-        public void Navigate() => _navigationService.NavigateToViewModel<WelcomePageViewModel>();
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+        public void Navigate() => _navigationService.For<WelcomePageViewModel>().WithParam(vm => vm.NavigationService, _navigationService).Navigate();
     }
 }

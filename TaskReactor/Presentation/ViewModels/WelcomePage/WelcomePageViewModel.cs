@@ -8,8 +8,18 @@ namespace Presentation.ViewModels.WelcomePage
     [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class WelcomePageViewModel : ConductorOneActiveViewModel<ScreenViewModel>
     {
-        [NotNull, ShareVariable(nameof(NavigationService), typeof(MainScreenViewModel))]
-        public INavigationService NavigationService { get; set; }
+        [NotNull] private INavigationService _navigationService;
+
+        [NotNull, System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+        public INavigationService NavigationService
+        {
+            get => _navigationService;
+            set
+            {
+                ((LogInViewModel)Items[0]).NavigationService = value;
+                _navigationService = value;
+            }
+        }
 
         [ImportingConstructor,
          System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]

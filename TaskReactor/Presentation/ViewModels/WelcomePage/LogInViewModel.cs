@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,8 +12,7 @@ namespace Presentation.ViewModels.WelcomePage
     [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public class LogInViewModel : ScreenViewModel
     {
-        [NotNull, ShareVariable(nameof(NavigationService), typeof(MainScreenViewModel))]
-        public INavigationService NavigationService { get; set; }
+        [NotNull] public INavigationService NavigationService { get; set; }
 
         [NotNull, Import] public IUserService UserService { get; set; }
 
@@ -55,20 +53,18 @@ namespace Presentation.ViewModels.WelcomePage
         // TODO display login progress bar
         public async void LogIn()
         {
-            try
+            var userModel = await UserService.LogInAsync(int.Parse(Identity!), Password!);
+            if (userModel is null)
             {
-                var userModel = await UserService.LogInAsync(int.Parse(Identity!), Password!);
-                if (userModel is null)
-                {
-                    MessageBox.Show("incorrect password or id not exists");
-                    return;
-                }
-
-                this.ShareWithName(userModel, nameof(UserProfileViewModel.CurrentUser));
-                this.ShareWithName(NavigationService, nameof(UserProfileViewModel.NavigationService));
-                NavigationService.NavigateToViewModel<UserProfileViewModel>();
+                MessageBox.Show("incorrect password or id not exists");
+                return;
             }
-            catch (Exception e) { MessageBox.Show($"{e}"); }
+
+            // ReSharper disable PossibleNullReferenceException
+            NavigationService.For<UserProfileViewModel>()
+                .WithParam(vm => vm.NavigationService, NavigationService)
+                .WithParam(vm => vm.CurrentUser, userModel).Navigate();
+            // ReSharper restore PossibleNullReferenceException
         }
     }
 }
