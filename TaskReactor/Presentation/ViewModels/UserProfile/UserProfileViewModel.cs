@@ -18,26 +18,35 @@ namespace Presentation.ViewModels.UserProfile
     {
         [NotNull] UserModel _currentUser;
 
-        [NotNull, ShareVariable(nameof(CurrentUser), typeof(LogInViewModel))]
-        public UserModel CurrentUser
+        [NotNull] public UserModel CurrentUser
         {
             get => _currentUser;
             set
             {
                 Set(ref _currentUser, value);
 
-                this.ShareWithName(CurrentUser, nameof(UserOverviewViewModel.CurrentUser));
-
-                // ReSharper disable once PossibleNullReferenceException
-                Items[0] = Container.GetExportedValue<UserOverviewViewModel>();
-                Items[1] = Container.GetExportedValue<GraphEditPageViewModel>();
+                // ReSharper disable PossibleNullReferenceException
+                ((UserOverviewViewModel)Items[0]).CurrentUser = value;
+                ((GraphEditPageViewModel)Items[1]).CurrentUser = value;
+                // ReSharper restore PossibleNullReferenceException
             }
         }
 
         [NotNull, Import] IUserService UserService { get; set; }
 
-        [NotNull, ShareVariable(nameof(NavigationService), typeof(LogInViewModel))]
-        public INavigationService NavigationService { get; set; }
+        [NotNull] INavigationService _navigationService;
+
+        [NotNull] public INavigationService NavigationService
+        {
+            get => _navigationService;
+            set
+            {
+                // ReSharper disable PossibleNullReferenceException
+                ((UserOverviewViewModel)Items[0]).NavigationService = value;
+                // ReSharper restore PossibleNullReferenceException
+                _navigationService = value;
+            }
+        }
 
         public int ActiveIndex
         {
@@ -81,8 +90,8 @@ namespace Presentation.ViewModels.UserProfile
             this.ShareWithName(NavigationService, nameof(NavigationService));
 
             // ReSharper disable once PossibleNullReferenceException
-            Items.Add(null);
-            Items.Add(null);
+            Items.Add(Container.GetExportedValue<UserOverviewViewModel>());
+            Items.Add(Container.GetExportedValue<GraphEditPageViewModel>());
         }
 
         protected override async Task OnActivateAsync(CancellationToken token)
