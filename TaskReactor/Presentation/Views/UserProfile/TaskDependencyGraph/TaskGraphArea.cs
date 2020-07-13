@@ -8,25 +8,37 @@
 
 #endregion
 
+using GraphX;
 using GraphX.Common.Enums;
-using GraphX.Common.Models;
 using GraphX.Controls;
+using GraphX.Controls.Models;
 using GraphX.Logic.Models;
 using QuickGraph;
 
 namespace Presentation.Views.UserProfile.TaskDependencyGraph
 {
     public class TaskGraphArea :
-        GraphArea<UserTaskVertex, EdgeBase<UserTaskVertex>, 
-            BidirectionalGraph<UserTaskVertex, EdgeBase<UserTaskVertex>>>
+        GraphArea<UserTaskVertex, TaskDependencyEdge, BidirectionalGraph<UserTaskVertex, TaskDependencyEdge>>
     {
+        class TaskGraphControlFactory : GraphControlFactory
+        {
+            public TaskGraphControlFactory(GraphAreaBase graphArea) : base(graphArea)
+            {
+            }
+
+            public override VertexControl CreateVertexControl(object vertexData) =>
+                new TaskVertexControl((UserTaskVertex)vertexData);
+        }
+
         public TaskGraphArea()
         {
-            LogicCore = new GXLogicCore<UserTaskVertex, EdgeBase<UserTaskVertex>,
-                BidirectionalGraph<UserTaskVertex, EdgeBase<UserTaskVertex>>>
+            LogicCore = new GXLogicCore<UserTaskVertex, TaskDependencyEdge,
+                BidirectionalGraph<UserTaskVertex, TaskDependencyEdge>>
             {
                 DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.EfficientSugiyama
             };
+
+            ControlFactory = new TaskGraphControlFactory(this);
         }
     }
 }
