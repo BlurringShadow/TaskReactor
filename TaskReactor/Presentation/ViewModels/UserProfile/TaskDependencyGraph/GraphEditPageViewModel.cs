@@ -90,6 +90,7 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
         {
             _logicCore = area.LogicCore;
             _ = RefreshData();
+            NotifyOfPropertyChange(nameof(CanRefreshData));
         }
 
         public async Task OnSelectedVertex(VertexSelectedEventArgs args)
