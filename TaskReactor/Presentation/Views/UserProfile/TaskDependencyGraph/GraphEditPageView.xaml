@@ -30,9 +30,10 @@
         </StackPanel>
 
         <graphx:ZoomControl x:Name="ZoomControl" BorderBrush="Black" BorderThickness="1">
-            <local:TaskGraphArea cm:Message.Attach="[Event VertexSelected] = [Action OnSelectedVertex];
-                                 [Event EdgeDoubleClick] = [Action OnDoubleClickEdge];
-                                 OnBindingGraphLogicCore($source.LogicCore)"/>
+            <local:TaskGraphArea x:Name="GraphArea" 
+                                 cm:Message.Attach="[Event VertexSelected] = [Action OnSelectedVertex($eventArgs)];
+                                 [Event EdgeDoubleClick] = [Action OnDoubleClickEdge($eventArgs)];
+                                 OnBindingGraphLogicCore($source)"/>
         </graphx:ZoomControl>
     </DockPanel>
 </UserControl>

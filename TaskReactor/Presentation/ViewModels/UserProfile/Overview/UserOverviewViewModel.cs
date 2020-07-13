@@ -8,6 +8,7 @@
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Threading;
@@ -21,25 +22,25 @@ using Utilities;
 namespace Presentation.ViewModels.UserProfile.Overview
 {
     [Export, PartCreationPolicy(CreationPolicy.NonShared)]
-    public sealed class UserOverviewViewModel : ScreenViewModel
+    public sealed class UserOverviewViewModel : ScreenViewModel, IAsyncDisposable, IDisposable
     {
         [NotNull, Import] private IUserTaskService UserTaskService { get; set; }
 
-        [NotNull, ShareVariable(nameof(NavigationService), typeof(UserProfileViewModel))]
-        public INavigationService NavigationService { get; set; }
+        [NotNull] public INavigationService NavigationService { get; set; }
 
         [NotNull] UserModel _currentUser;
 
-        [NotNull, ShareVariable(nameof(CurrentUser), typeof(UserProfileViewModel))]
-        public UserModel CurrentUser
+        [NotNull] public UserModel CurrentUser
         {
             get => _currentUser;
             set
             {
                 Set(ref _currentUser, value);
-                _ = RefreshTaskData(CancellationToken.None);
+                _ = RefreshTaskData();
             }
         }
+
+        [NotNull] CancellationTokenSource _refreshDataTokenSource = new CancellationTokenSource();
 
         /// <summary>
         /// User Task collection
@@ -55,12 +56,34 @@ namespace Presentation.ViewModels.UserProfile.Overview
 
         protected override Task OnActivateAsync(CancellationToken token)
         {
-            _ = RefreshTaskData(token);
-            return Task.CompletedTask;
+            Task.Run(RefreshTaskData, token);
+            // ReSharper disable once PossibleNullReferenceException
+            return base.OnActivateAsync(_refreshDataTokenSource.Token);
         }
 
-        async Task RefreshTaskData(CancellationToken token)
+        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
+            lock (_refreshDataTokenSource)
+                if (!_refreshDataTokenSource.IsCancellationRequested)
+                    _refreshDataTokenSource.Cancel();
+            return base.OnDeactivateAsync(close, cancellationToken);
+        }
+
+        async Task RefreshTaskData()
+        {
+            lock (_refreshDataTokenSource)
+            {
+                if (!_refreshDataTokenSource.IsCancellationRequested)
+                {
+                    _refreshDataTokenSource.Cancel();
+                    _refreshDataTokenSource.Dispose();
+                }
+
+                _refreshDataTokenSource = new CancellationTokenSource();
+            }
+
+            var token = _refreshDataTokenSource.Token;
+
             IList<UserTaskModel> newTaskItemList = null;
 
             await Task.Run(
@@ -140,5 +163,22 @@ namespace Presentation.ViewModels.UserProfile.Overview
 
         void AddGoal([NotNull] UserTaskItemViewModel viewModel) =>
             NavigateToGoalEdit(new GoalModel { FromTask = viewModel.TaskModel });
+
+        public ValueTask DisposeAsync()
+        {
+            if (IsActive)
+            {
+                var task = this.DeactivateAsync(true);
+                if (!(task is null))
+                    return new ValueTask(task);
+            }
+
+            _refreshDataTokenSource.Cancel();
+            _refreshDataTokenSource.Dispose();
+
+            return default;
+        }
+
+        public void Dispose() => DisposeAsync().AsTask().Wait();
     }
 }

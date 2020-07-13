@@ -12,6 +12,7 @@ using System;
 using System.ComponentModel.Composition;
 using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
+using Caliburn.Micro;
 using GraphX.Common.Enums;
 using GraphX.Common.Interfaces;
 using JetBrains.Annotations;
@@ -19,14 +20,16 @@ using JetBrains.Annotations;
 namespace Presentation.Views.UserProfile.TaskDependencyGraph
 {
     [Export, PartCreationPolicy(CreationPolicy.NonShared)]
-    public class UserTaskVertex : IGraphXVertex, IEquatable<UserTaskVertex>
+    public class UserTaskVertex : PropertyChangedBase, IGraphXVertex, IEquatable<UserTaskVertex>
     {
         [NotNull] readonly IUserTaskService _service;
 
         [ImportingConstructor]
         public UserTaskVertex([NotNull] IUserTaskService service) => _service = service;
 
-        public UserTaskModel Task { get; set; }
+        UserTaskModel _task;
+
+        public UserTaskModel Task { get => _task; set => Set(ref _task, value); }
 
         public double Angle { get; set; }
 

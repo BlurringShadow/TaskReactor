@@ -16,12 +16,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
+using Caliburn.Micro;
 using GraphX.Common.Interfaces;
 using GraphX.Controls.Models;
 using JetBrains.Annotations;
 using Presentation.Views.UserProfile.TaskDependencyGraph;
 using QuickGraph;
 using Utilities;
+using Action = System.Action;
 
 namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
 {
@@ -32,30 +34,23 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
         BidirectionalGraph<UserTaskVertex, TaskDependencyEdge>>;
 
     [Export, PartCreationPolicy(CreationPolicy.NonShared)]
-    public sealed partial class GraphEditPageViewModel : ScreenViewModel
+    public sealed partial class GraphEditPageViewModel : ScreenViewModel, IAsyncDisposable, IDisposable
     {
         [NotNull] UserModel _currentUser;
 
-        [NotNull, ShareVariable(nameof(CurrentUser), typeof(UserProfileViewModel))]
-        public UserModel CurrentUser
+        [NotNull] public UserModel CurrentUser
         {
             get => _currentUser;
             set
             {
-                Task.Run(
-                    async () =>
-                    {
-                        while (!CanRefreshData) ;
-                        await RefreshData();
-                    }
-                );
+                _ = RefreshData();
                 Set(ref _currentUser, value);
             }
         }
 
-        [NotNull] public IUserTaskService TaskService { get; set; }
+        [NotNull, Import] public IUserTaskService TaskService { get; set; }
 
-        [NotNull] public ITaskDependencyService TaskDependencyService { get; set; }
+        [NotNull, Import] public ITaskDependencyService TaskDependencyService { get; set; }
 
         [NotNull] readonly EditorControl _control = new EditorControl();
 
@@ -83,13 +78,19 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
             _ => throw new ArgumentOutOfRangeException()
         };
 
+        CancellationTokenSource _refreshDataTokenSource;
+
         // ReSharper disable once NotNullMemberIsNotInitialized
         [ImportingConstructor]
         public GraphEditPageViewModel([NotNull] IocContainer container) : base(container)
         {
         }
 
-        public void OnBindingGraphLogicCore([NotNull] TaskGraphLogicCore core) => _logicCore = core;
+        public void OnBindingGraphLogicCore([NotNull] TaskGraphArea area)
+        {
+            _logicCore = area.LogicCore;
+            _ = RefreshData();
+        }
 
         public async Task OnSelectedVertex(VertexSelectedEventArgs args)
         {
@@ -107,38 +108,55 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
             )) RefreshGraph?.Invoke();
         }
 
-        protected override Task OnActivateAsync(CancellationToken cancellationToken)
+        protected override Task OnActivateAsync(CancellationToken token)
         {
-            Task.Run(
-                async () =>
-                {
-                    while (!CanRefreshData) ;
-                    await RefreshData();
-                }, cancellationToken
-            );
-            return base.OnActivateAsync(cancellationToken);
+            _refreshDataTokenSource ??= new CancellationTokenSource();
+            return base.OnActivateAsync(_refreshDataTokenSource.Token);
+        }
+
+        protected override Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
+        {
+            if (!_refreshDataTokenSource!.IsCancellationRequested)
+            {
+                _refreshDataTokenSource.Cancel();
+                _refreshDataTokenSource.Dispose();
+                // ReSharper disable once AssignNullToNotNullAttribute
+                _refreshDataTokenSource = close ? null : new CancellationTokenSource();
+            }
+
+            return base.OnDeactivateAsync(close, cancellationToken);
         }
 
         public bool CanRefreshData => !(_logicCore is null);
 
-        public async Task RefreshData() => await Task.Run(RefreshDataImpl);
+        public async Task RefreshData() => await RefreshData(CancellationToken.None);
 
-        void RefreshDataImpl()
+        public async Task RefreshData(CancellationToken externalToken)
         {
-            IList<UserTaskModel> taskList;
+            if (!CanRefreshData) return;
 
-            lock (TaskService) taskList = TaskService.GetAllFromUserAsync(CurrentUser).Result;
+            var token = CancellationTokenSource.CreateLinkedTokenSource(
+                externalToken, _refreshDataTokenSource!.Token
+            ).Token;
 
-            var dependencyTaskList = new List<Task<List<TaskDependencyModel>>>(taskList.Count);
+            await Task.Run(() => RefreshDataImpl(token), token);
+        }
 
+        void RefreshDataImpl(CancellationToken token)
+        {
             // ReSharper disable once PossibleNullReferenceException
             lock (_logicCore)
             {
                 _graph.Clear();
 
+                var taskList = TaskService.GetAllFromUserAsync(CurrentUser, token).Result;
+
+                var dependencyTaskList = new List<Task<List<TaskDependencyModel>>>(taskList.Count);
+
                 foreach (var task in taskList)
                 {
-                    dependencyTaskList.Add(TaskDependencyService.GetDependenciesAsync(task!));
+                    if (token.IsCancellationRequested) return;
+                    dependencyTaskList.Add(TaskDependencyService.GetDependenciesAsync(task!, token));
                     _graph.AddVertex(FromTaskToUserTaskVertex(task));
                 }
 
@@ -150,6 +168,8 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
                     )
                 ))
                 {
+                    if (token.IsCancellationRequested) return;
+
                     // ReSharper disable once PossibleNullReferenceException
                     edgeData.SetLinkVertexByModel(_graph);
                     _graph.AddEdge(edgeData);
@@ -165,5 +185,19 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
             vertex.Task = task;
             return vertex;
         }
+
+        public ValueTask DisposeAsync()
+        {
+            if (IsActive)
+            {
+                var task = this.DeactivateAsync(true);
+                if (!(task is null))
+                    return new ValueTask(task);
+            }
+
+            return default;
+        }
+
+        public void Dispose() => DisposeAsync().AsTask().Wait();
     }
 }
