@@ -13,9 +13,8 @@
                       xmlns:taskDependencyGraph="clr-namespace:Presentation.Views.UserProfile.TaskDependencyGraph">
     <graphx:VertexControl.Template>
         <ControlTemplate>
-            <!--Insert you content here-->
             <UserControl>
-                <Label Content="Vertex"/>
+                <Label VerticalContentAlignment="Center" HorizontalAlignment="Center" Content="{Binding Task.Title}"/>
             </UserControl>
         </ControlTemplate>
     </graphx:VertexControl.Template>
