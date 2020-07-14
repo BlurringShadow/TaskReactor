@@ -8,6 +8,7 @@
 
 #endregion
 
+using System.Windows;
 using GraphX.Common.Enums;
 using GraphX.Controls;
 using GraphX.Logic.Models;

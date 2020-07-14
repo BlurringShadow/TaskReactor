@@ -24,6 +24,7 @@ namespace Presentation.Views.UserProfile.TaskDependencyGraph
         void OnRefreshGraph()
         {
             GraphArea!.GenerateGraph();
+            GraphArea.ShowAllEdgesLabels(false);
             ZoomControl!.ZoomToFill();
         }
 

@@ -5,7 +5,8 @@ using ApplicationDomain.ModelService;
 using Caliburn.Micro;
 using JetBrains.Annotations;
 using Notifications.Wpf.Core;
-using Presentation.ViewModels.UserProfile;
+using Presentation.ViewModels.UserProfile.Overview;
+using Presentation.Views.UserProfile.Overview;
 using Utilities;
 
 namespace Presentation.ViewModels
@@ -13,25 +14,39 @@ namespace Presentation.ViewModels
     [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed class UserTaskEditViewModel : ScreenViewModel
     {
-        [NotNull, ShareVariable(nameof(NavigationService), typeof(UserProfileViewModel))]
+        [NotNull, ShareVariable(nameof(NavigationService), typeof(UserOverviewViewModel))] 
         public INavigationService NavigationService { get; set; }
 
-        [NotNull, ShareVariable(nameof(TaskModel), typeof(UserProfileViewModel))]
-        public UserTaskModel TaskModel { get; set; }
+        [NotNull] UserTaskModel _taskModel;
 
-        [NotNull, Import] public IUserTaskService Service { get; set; }
+        [NotNull, ShareVariable(nameof(TaskModel), typeof(UserOverviewViewModel))] 
+        public UserTaskModel TaskModel { get => _taskModel; set => Set(ref _taskModel, value); }
+
+        [NotNull] IUserTaskService _service;
+
+        [NotNull, Import] public IUserTaskService Service
+        {
+            get => _service;
+            set
+            {
+                value.NotifyAction = model =>
+                    _ = new UserTaskNotificationViewModel(new NotificationManager(), model!).ShowAsync();
+                _service = value;
+            }
+        }
 
         [ImportingConstructor,
          System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-        public UserTaskEditViewModel([NotNull] IocContainer container) : base(container) =>
-            Service.NotifyAction = model =>
-                _ = new UserTaskNotificationViewModel(new NotificationManager(), model!).ShowAsync();
+        public UserTaskEditViewModel([NotNull] IocContainer container) : base(container)
+        {
+        }
 
         public async Task Confirm()
         {
             Service.Update(TaskModel);
-            NavigationService.GoBack();
             await Service.DbSync();
+
+            NavigationService.GoBack();
         }
 
         public void Cancel() => NavigationService.GoBack();

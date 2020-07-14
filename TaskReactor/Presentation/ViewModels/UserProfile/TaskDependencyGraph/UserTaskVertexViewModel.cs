@@ -10,7 +10,6 @@
 
 using System;
 using System.ComponentModel.Composition;
-using System.Globalization;
 using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
 using Caliburn.Micro;

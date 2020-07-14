@@ -60,11 +60,10 @@ namespace Presentation.ViewModels.WelcomePage
                 return;
             }
 
-            // ReSharper disable PossibleNullReferenceException
-            NavigationService.For<UserProfileViewModel>()
-                .WithParam(vm => vm.NavigationService, NavigationService)
-                .WithParam(vm => vm.CurrentUser, userModel).Navigate();
-            // ReSharper restore PossibleNullReferenceException
+            this.ShareWithName(NavigationService, nameof(UserProfileViewModel.NavigationService));
+            this.ShareWithName(userModel, nameof(UserProfileViewModel.CurrentUser));
+
+            NavigationService.NavigateToViewModel<UserProfileViewModel>();
         }
     }
 }

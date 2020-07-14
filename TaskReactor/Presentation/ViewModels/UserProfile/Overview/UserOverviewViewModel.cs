@@ -26,7 +26,17 @@ namespace Presentation.ViewModels.UserProfile.Overview
     {
         [NotNull, Import] private IUserTaskService UserTaskService { get; set; }
 
-        [NotNull] public INavigationService NavigationService { get; set; }
+        [NotNull] private INavigationService _navigationService;
+
+        [NotNull] public INavigationService NavigationService
+        {
+            get => _navigationService;
+            set
+            {
+                this.ShareWithName(value, nameof(UserTaskEditViewModel.NavigationService));
+                _navigationService = value;
+            }
+        }
 
         [NotNull] UserModel _currentUser;
 
@@ -129,10 +139,8 @@ namespace Presentation.ViewModels.UserProfile.Overview
 
         void NavigateToTaskEdit([NotNull] UserTaskModel taskModel)
         {
-            this.DeactivateAsync(false);
-
             this.ShareWithName(taskModel, nameof(UserTaskEditViewModel.TaskModel));
-            this.ShareWithName(NavigationService, nameof(NavigationService));
+
             NavigationService.NavigateToViewModel<UserTaskEditViewModel>();
         }
 
@@ -147,19 +155,18 @@ namespace Presentation.ViewModels.UserProfile.Overview
             UserTaskService.Remove(viewModel.TaskModel);
         }
 
-        void ToUserTaskEdit([NotNull] UserTaskItemViewModel viewModel) => NavigateToTaskEdit(viewModel.TaskModel);
+        void ToUserTaskEdit([NotNull] UserTaskItemViewModel viewModel) =>
+            NavigateToTaskEdit(viewModel.TaskModel);
 
         void NavigateToGoalEdit([NotNull] GoalModel goalModel)
         {
-            this.DeactivateAsync(false);
-
             this.ShareWithName(goalModel, nameof(GoalEditViewModel.GoalModel));
-            this.ShareWithName(NavigationService, nameof(GoalEditViewModel.NavigationService));
 
             NavigationService.NavigateToViewModel<GoalEditViewModel>();
         }
 
-        void ToGoalEdit([NotNull] GoalItemViewModel viewModel) => NavigateToGoalEdit(viewModel.GoalModel);
+        void ToGoalEdit([NotNull] GoalItemViewModel viewModel) =>
+            NavigateToGoalEdit(viewModel.GoalModel);
 
         void AddGoal([NotNull] UserTaskItemViewModel viewModel) =>
             NavigateToGoalEdit(new GoalModel { FromTask = viewModel.TaskModel });

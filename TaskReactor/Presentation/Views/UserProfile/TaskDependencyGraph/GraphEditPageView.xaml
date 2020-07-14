@@ -73,7 +73,7 @@
 
                                         <TextBlock Grid.Row="2"
                                                    Text="{Binding TimeStampPresent}"
-                                                   FontSize="12"
+                                                   FontSize="10"
                                                    Foreground="FloralWhite"
                                                    HorizontalAlignment="Right"
                                                    VerticalAlignment="Center"/>

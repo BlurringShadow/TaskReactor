@@ -27,8 +27,6 @@ namespace Presentation.ViewModels.WelcomePage
         {
             DisplayName = "Welcome";
 
-            this.ShareWithName(NavigationService, nameof(LogInViewModel.NavigationService));
-
             // ReSharper disable once PossibleNullReferenceException
             Items.Add(Container.GetExportedValue<LogInViewModel>());
             Items.Add(Container.GetExportedValue<RegisterViewModel>());

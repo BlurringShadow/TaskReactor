@@ -18,7 +18,8 @@ namespace Presentation.ViewModels.UserProfile
     {
         [NotNull] UserModel _currentUser;
 
-        [NotNull] public UserModel CurrentUser
+        [NotNull, ShareVariable(nameof(CurrentUser), typeof(LogInViewModel))] 
+        public UserModel CurrentUser
         {
             get => _currentUser;
             set
@@ -36,7 +37,8 @@ namespace Presentation.ViewModels.UserProfile
 
         [NotNull] INavigationService _navigationService;
 
-        [NotNull] public INavigationService NavigationService
+        [NotNull, ShareVariable(nameof(NavigationService), typeof(LogInViewModel))] 
+        public INavigationService NavigationService
         {
             get => _navigationService;
             set
