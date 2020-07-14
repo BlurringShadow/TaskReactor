@@ -39,11 +39,45 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate>
-                                    <Border d:DataContext="{d:DesignInstance local:UserTaskVertex}"
-                                            BorderThickness="0.05" 
-                                            Background="Black">
-                                        <TextBlock Background="AliceBlue" Text="{Binding Task.Title}"/>
-                                    </Border>
+                                    <Grid
+                                        d:DataContext="{d:DesignInstance taskDependencyGraph:UserTaskVertexViewModel}"
+                                        Background="SkyBlue"
+                                        Height="100"
+                                        Width="280"
+                                        TextOptions.TextFormattingMode="Display"
+                                        TextOptions.TextRenderingMode="ClearType"
+                                        metro:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition Height="2*"/>
+                                            <RowDefinition Height="0.8*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Grid.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+                                            </Style>
+                                        </Grid.Resources>
+
+                                        <TextBlock Text="{Binding Task.Title}"
+                                                   Foreground="White"
+                                                   FontSize="20"
+                                                   TextAlignment="Center"/>
+
+                                        <TextBlock Grid.Row="1"
+                                                   Text="{Binding Task.Description}"
+                                                   FontStyle="Italic"
+                                                   Foreground="WhiteSmoke"
+                                                   FontSize="14"
+                                                   HorizontalAlignment="Left"/>
+
+                                        <TextBlock Grid.Row="2"
+                                                   Text="{Binding TimeStampPresent}"
+                                                   FontSize="12"
+                                                   Foreground="FloralWhite"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Center"/>
+                                    </Grid>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>

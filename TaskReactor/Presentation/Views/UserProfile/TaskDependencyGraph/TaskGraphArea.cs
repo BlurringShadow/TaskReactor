@@ -11,17 +11,18 @@
 using GraphX.Common.Enums;
 using GraphX.Controls;
 using GraphX.Logic.Models;
+using Presentation.ViewModels.UserProfile.TaskDependencyGraph;
 using QuickGraph;
 
 namespace Presentation.Views.UserProfile.TaskDependencyGraph
 {
     public class TaskGraphArea :
-        GraphArea<UserTaskVertex, TaskDependencyEdge, BidirectionalGraph<UserTaskVertex, TaskDependencyEdge>>
+        GraphArea<UserTaskVertexViewModel, TaskDependencyEdge, BidirectionalGraph<UserTaskVertexViewModel, TaskDependencyEdge>>
     {
         public TaskGraphArea()
         {
-            LogicCore = new GXLogicCore<UserTaskVertex, TaskDependencyEdge,
-                BidirectionalGraph<UserTaskVertex, TaskDependencyEdge>>
+            LogicCore = new GXLogicCore<UserTaskVertexViewModel, TaskDependencyEdge,
+                BidirectionalGraph<UserTaskVertexViewModel, TaskDependencyEdge>>
             {
                 DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.EfficientSugiyama
             };

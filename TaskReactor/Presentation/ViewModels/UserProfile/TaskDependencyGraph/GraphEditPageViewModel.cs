@@ -27,11 +27,11 @@ using Action = System.Action;
 
 namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
 {
-    using TaskGraph = BidirectionalGraph<UserTaskVertex, TaskDependencyEdge>;
+    using TaskGraph = BidirectionalGraph<UserTaskVertexViewModel, TaskDependencyEdge>;
     using TaskGraphLogicCore = IGXLogicCore<
-        UserTaskVertex,
+        UserTaskVertexViewModel,
         TaskDependencyEdge,
-        BidirectionalGraph<UserTaskVertex, TaskDependencyEdge>>;
+        BidirectionalGraph<UserTaskVertexViewModel, TaskDependencyEdge>>;
 
     [Export, PartCreationPolicy(CreationPolicy.NonShared)]
     public sealed partial class GraphEditPageViewModel : ScreenViewModel, IAsyncDisposable, IDisposable
@@ -96,7 +96,7 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
         public async Task OnSelectedVertex(VertexSelectedEventArgs args)
         {
             if (await _control.OnSelectedVertex(
-                args?.VertexControl!.GetDataVertex<UserTaskVertex>()!, _graph,
+                args?.VertexControl!.GetDataVertex<UserTaskVertexViewModel>()!, _graph,
                 TaskDependencyService
             )) RefreshGraph?.Invoke();
         }
@@ -180,9 +180,9 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
             }
         }
 
-        UserTaskVertex FromTaskToUserTaskVertex(UserTaskModel task)
+        UserTaskVertexViewModel FromTaskToUserTaskVertex(UserTaskModel task)
         {
-            var vertex = Container.GetExportedValue<UserTaskVertex>();
+            var vertex = Container.GetExportedValue<UserTaskVertexViewModel>();
             vertex.Task = task;
             return vertex;
         }

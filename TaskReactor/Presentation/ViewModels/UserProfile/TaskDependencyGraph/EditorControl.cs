@@ -29,11 +29,11 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
 
             public EditorMode Mode { get; set; }
 
-            UserTaskVertex _selectedVertex;
+            UserTaskVertexViewModel _selectedVertexViewModel;
 
             public async Task<bool> OnSelectedVertex(
-                [NotNull] UserTaskVertex vertex,
-                [NotNull] BidirectionalGraph<UserTaskVertex, TaskDependencyEdge> graph,
+                [NotNull] UserTaskVertexViewModel vertexViewModel,
+                [NotNull] BidirectionalGraph<UserTaskVertexViewModel, TaskDependencyEdge> graph,
                 [NotNull] ITaskDependencyService service
             )
             {
@@ -44,24 +44,24 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
                     {
                         lock (graph)
                         {
-                            if (_selectedVertex is null ||
-                                _selectedVertex.Task!.StartTime > vertex!.Task!.StartTime ||
-                                graph.ContainsEdge(vertex, _selectedVertex))
+                            if (_selectedVertexViewModel is null ||
+                                _selectedVertexViewModel.Task!.StartTime > vertexViewModel!.Task!.StartTime ||
+                                graph.ContainsEdge(vertexViewModel, _selectedVertexViewModel))
                             {
-                                _selectedVertex = vertex;
+                                _selectedVertexViewModel = vertexViewModel;
                                 return false;
                             }
 
                             TaskDependencyModel dependencyModel;
                             lock (service)
                             {
-                                dependencyModel = service.AddDependencies(vertex.Task!, _selectedVertex.Task)[0];
+                                dependencyModel = service.AddDependencies(vertexViewModel.Task!, _selectedVertexViewModel.Task)[0];
                                 Task.WaitAll(service.DbSync());
                             }
 
-                            var data = new TaskDependencyEdge(vertex, _selectedVertex) { Model = dependencyModel };
+                            var data = new TaskDependencyEdge(vertexViewModel, _selectedVertexViewModel) { Model = dependencyModel };
                             graph.AddEdge(data);
-                            _selectedVertex = null;
+                            _selectedVertexViewModel = null;
                         }
 
                         return true;
@@ -71,7 +71,7 @@ namespace Presentation.ViewModels.UserProfile.TaskDependencyGraph
 
             public async Task<bool> OnDoubleClickEdge(
                 [NotNull] TaskDependencyEdge edge,
-                [NotNull] BidirectionalGraph<UserTaskVertex, TaskDependencyEdge> graph,
+                [NotNull] BidirectionalGraph<UserTaskVertexViewModel, TaskDependencyEdge> graph,
                 [NotNull] ITaskDependencyService service
             ) => await Task.Run(
                 () =>
