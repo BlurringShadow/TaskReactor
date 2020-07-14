@@ -25,7 +25,7 @@ namespace ApplicationDomain.ModelService
 
         [NotNull] readonly IGoalModelNotificationService _service;
 
-        private Action<GoalModel> _notifyAction;
+        Action<GoalModel> _notifyAction;
 
         public Action<GoalModel> NotifyAction
         {

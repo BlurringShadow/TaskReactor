@@ -4,6 +4,7 @@ using ApplicationDomain.DataModel;
 using ApplicationDomain.ModelService;
 using Caliburn.Micro;
 using JetBrains.Annotations;
+using Notifications.Wpf.Core;
 using Presentation.ViewModels.UserProfile;
 using Utilities;
 
@@ -22,9 +23,9 @@ namespace Presentation.ViewModels
 
         [ImportingConstructor,
          System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")]
-        public UserTaskEditViewModel([NotNull] IocContainer container) : base(container)
-        {
-        }
+        public UserTaskEditViewModel([NotNull] IocContainer container) : base(container) =>
+            Service.NotifyAction = model =>
+                _ = new UserTaskNotificationViewModel(new NotificationManager(), model!).ShowAsync();
 
         public async Task Confirm()
         {

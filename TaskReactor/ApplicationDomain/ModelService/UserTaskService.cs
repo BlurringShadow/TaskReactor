@@ -27,7 +27,7 @@ namespace ApplicationDomain.ModelService
 
         [NotNull] readonly IUserTaskModelNotificationService _service;
 
-        private Action<UserTaskModel> _notifyAction;
+        Action<UserTaskModel> _notifyAction;
 
         public Action<UserTaskModel> NotifyAction
         {

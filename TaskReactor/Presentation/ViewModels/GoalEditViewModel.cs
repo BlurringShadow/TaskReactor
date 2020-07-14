@@ -6,6 +6,7 @@ using ApplicationDomain.ModelService;
 using Caliburn.Micro;
 using Data.Database.Entity;
 using JetBrains.Annotations;
+using Notifications.Wpf.Core;
 using Presentation.ViewModels.UserProfile;
 using Utilities;
 
@@ -30,19 +31,19 @@ namespace Presentation.ViewModels
             get => GoalModel.DurationOfOneTime.TotalDays;
         }
 
-        [NotNull, Import] public IGoalService GoalService { get; set; }
+        [NotNull, Import] public IGoalService Service { get; set; }
 
         // ReSharper disable once NotNullMemberIsNotInitialized
         [ImportingConstructor]
-        public GoalEditViewModel([NotNull] IocContainer container) : base(container)
-        {
-        }
+        public GoalEditViewModel([NotNull] IocContainer container) : base(container) =>
+            Service.NotifyAction = model =>
+                _ = new GoalNotificationViewModel(new NotificationManager(), model!).ShowAsync();
 
         public async Task Confirm()
         {
             GoalModel.Interval.Kind = (IntervalKind)IntervalKindListViewModel.Selected;
-            GoalService.Update(GoalModel);
-            await GoalService.DbSync();
+            Service.Update(GoalModel);
+            await Service.DbSync();
 
             NavigationService.GoBack();
         }
